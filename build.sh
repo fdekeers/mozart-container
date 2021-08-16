@@ -4,9 +4,16 @@
 #
 # Author: François De Keersmaeker
 
-# Name of the container
-CONTAINER="mozart-1.4.0"
+# Variables
+CONTAINER="mozart-1.4.0"  # Name of the container
+
+# Disable host access control, to allow GUI applications from containers
+xhost +
 
 # Build and run the container
 sudo docker build -t $CONTAINER .
-sudo docker run --rm --name $CONTAINER -it $CONTAINER /bin/bash
+sudo docker run --rm --name $CONTAINER -it \
+    --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
+    --env="DISPLAY" \
+    --net=host \
+    $CONTAINER
