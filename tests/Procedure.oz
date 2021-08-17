@@ -17,3 +17,17 @@ end
 declare Code Size in
 {ExprCode plus(plus(a 3) b) nil Code 0 Size}
 {Browse Size#Code} % 5#[push(a) push(3) plus push(b) plus]
+
+
+%last call optimization
+
+declare
+proc {Loop10 I}
+   if I==10 then skip
+   else
+      {Browse I}
+      {Loop10 I+1}
+   end
+end
+
+{Loop10 0} % display 0 up to 9
