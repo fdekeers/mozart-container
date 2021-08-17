@@ -58,3 +58,9 @@ local Xs Ys S in
    {Browse Xs} {Browse Ys}
    {Browse S} %11249925000
 end
+
+
+% test {wait}
+declare X % (1)
+thread X={fun lazy {$} {Delay 3000} 11*11 end} end % (2)
+thread {Wait X} {Browse X} end % wait 3sec and then display 121
