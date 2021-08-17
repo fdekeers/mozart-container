@@ -23,3 +23,14 @@ end
 
 % enumerate elements
 for I in 0..10 do {Browse I} end
+
+
+%static scoping
+local X in
+   X=1
+   local X in
+      X=2
+      {Browse X} %2
+   end
+   {Browse X} %1
+end
