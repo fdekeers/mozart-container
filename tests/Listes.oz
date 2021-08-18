@@ -3,8 +3,10 @@
 declare
 L = [1 2 3 4 5]
 L1 = 1|2|3|4|5|nil
+L2 = 1|(2|(3|(4|(5|nil)))) 
 {Browse L} % [1 2 3 4 5]
 {Browse L1} % [1 2 3 4 5]
+{Browse L2}
 {Browse L.1} % 1
 {Browse L.2} % [2 3 4 5]
 {Browse L.2.1} % 2

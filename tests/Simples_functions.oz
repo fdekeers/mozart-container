@@ -122,8 +122,8 @@ declare Q1 Q2 Q3 Q4 Q5 Q6 Q7 in
 Q1={NewQueue}
 Q2={Insert Q1 peter}
 Q3={Insert Q2 paul}
-local X in Q4={Delete Q3 X} {Browse X} end
-local X in Q5={Delete Q4 X} {Browse X} end
-local X in Q6={Delete Q5 X} {Browse X} end
+local X in Q4={Delete Q3 X} {Browse X} end %peter
+local X in Q5={Delete Q4 X} {Browse X} end %paul
+local X in Q6={Delete Q5 X} {Browse X} end %mary
 Q7={Insert Q6 mary}
 
