@@ -6,8 +6,20 @@ X = {New Open.file init(name: 'foo.txt' flags: [write create] mode: mode(owner:[
 {X write(vs: "Strings are ok too.\n" len : 20)}
 {X close}
 
-
 % the created file contains : 
 %   This comes in the file.
 %   The result of 43*43 is 1849.
 %   Strings are ok too.
+
+
+
+declare 
+X = {New Open.file init(name: 'foo.txt' flags: [read] mode: mode(owner:[read] all:[read]))}
+L
+{X read(list: L tail: nil size: 1024 len:73)}
+for I in L do
+    {Browse I}}
+end
+{X close}
+
+
