@@ -6,7 +6,9 @@ V = 9999*9999
 {Browse 1*2*3*4*5*6*7*8*9*10} % 3628800
 X = 10
 Y = 20
-{Browse X + Y}
+{Browse X + Y} %30
+{Browse X mod Y} % 10
+{Browse Y div X} % 2
 local A=1.0 B=3.0 C=2.0 D RealSol X1 X2 in
    D=B*B-4.0*A*C
    if D>=0.0 then
