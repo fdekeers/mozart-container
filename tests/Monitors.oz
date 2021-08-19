@@ -148,3 +148,6 @@ thread
       end
    end
 end
+
+% Ca affiche les nombres de 0 à 10 mais l'ordre peut changer d'un run à l'autre.
+% Cela commencre juste toujours par 5 pui 0.
