@@ -18,7 +18,7 @@ X = {New Open.file init(name: 'foo.txt' flags: [read] mode: mode(owner:[read] al
 L
 {X read(list: L tail: nil size: 1024 len:73)}
 for I in L do
-    {Browse I}}
+    {Browse {Char.toAtom I}}
 end
 {X close}
 
