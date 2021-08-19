@@ -7,6 +7,7 @@ class Account
    meth init(I)
       balance:=I
    end
+   
    meth transfer(Amt)
       balance:=@balance+Amt
    end
@@ -37,6 +38,7 @@ end
 
 % inhéritance
 
+declare
 class VerboseAccount from Account
    meth verboseTransfer(Amt)
       {self transfer(Amt)}
