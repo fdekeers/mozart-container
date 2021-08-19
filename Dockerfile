@@ -3,24 +3,44 @@
 #
 # Author: François De Keersmaeker
 
-# Base image: 32-bit CentOS 7
-FROM i386/centos:7
+# Base image: 64-bit Ubuntu 18.04
+FROM ubuntu:18.04
 
-# Update/install needed packages
-RUN yum update -y
-RUN yum install -y gcc
-RUN yum install -y gcc-c++
-RUN yum install -y make
-RUN yum install -y wget
-RUN yum install -y git
-RUN yum install -y emacs
-RUN yum install -y flex
-RUN yum install -y bison
-RUN yum install -y tk-devel
+# Prevents interactive commands when building container image
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Download and install Mozart 1.4.0
-WORKDIR /usr/local
-#RUN wget https://rpmfind.net/linux/atrpms/sl5-i386/atrpms/testing/gmp-4.1.4-12.3_2.el5.i386.rpm
-RUN wget https://downloads.sourceforge.net/project/mozart-oz/v1/1.4.0-2008-07-03-GENERIC-i386/mozart-1.4.0.20080704-16189.i386.rpm
-RUN wget https://downloads.sourceforge.net/project/mozart-oz/v1/1.4.0-2008-07-03-GENERIC-i386/mozart-doc-1.4.0.20080704-16189.i386.rpm
-#RUN wget https://downloads.sourceforge.net/project/mozart-oz/v1/1.4.0-2008-07-03-GENERIC-i386/mozart-1.4.0.20080704-16189.src.rpm
+# Update/Install required packages
+RUN dpkg --add-architecture i386
+RUN apt-get update
+RUN apt-get install -y wget
+RUN apt-get install -y git
+RUN apt-get install -y emacs
+RUN apt-get install -y flex
+RUN apt-get install -y bison
+RUN apt-get install -y tk-dev
+RUN apt-get install -y build-essential
+RUN apt-get install -y g++-multilib
+RUN apt-get install -y zlib1g-dev:i386
+RUN apt-get install -y libgmp-dev:i386
+RUN apt-get install -y libgmp3-dev:i386
+RUN ln -s /usr/include/i386-linux-gnu/gmp.h /usr/include/gmp.h
+
+# Create and switch to unprivileged user
+RUN groupadd -g 999 user
+RUN useradd -r -u 999 -g user user
+RUN mkdir /home/user
+RUN chmod og+rwx /home/user
+USER user
+WORKDIR /home/user
+
+# Install Mozart 1.4.0 (following instructions from https://github.com/mozart/mozart/tree/master)
+RUN mkdir -p /home/user/dev/mozart
+WORKDIR /home/user/dev/mozart
+RUN git clone https://github.com/mozart/mozart
+RUN mkdir build
+WORKDIR build
+RUN ../mozart/configure --prefix=/home/user/oz --disable-contrib-gdbm
+RUN make
+RUN make install
+ENV OZHOME=/home/user/oz
+ENV PATH=$PATH:$OZHOME/bin
