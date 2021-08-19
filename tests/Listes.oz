@@ -6,14 +6,14 @@ L1 = 1|2|3|4|5|nil
 L2 = 1|(2|(3|(4|(5|nil)))) 
 {Browse L} % [1 2 3 4 5]
 {Browse L1} % [1 2 3 4 5]
-{Browse L2}
+{Browse L2} % [1 2 3 4 5]
 {Browse L.1} % 1
 {Browse L.2} % [2 3 4 5]
 {Browse L.2.1} % 2
 
 declare
 X = 7|Y
-{Browse X} % 7|Y
+{Browse X} % Attend que Y puis Z soient assignés, puis Browse X = [7 5 3] -S
 Y = 5|Z
 Z = 3|nil  % X = [7 5 3]
 

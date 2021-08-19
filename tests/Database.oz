@@ -1,4 +1,48 @@
 %%%%%%%%% database %%%%%%%%
+
+% Implémentation de la fonction SolveAll, voir p.779 du livre de réf/p.822 du pdf -S
+
+declare
+fun {Solve Script}
+    {SolveStep {Space.new Script} nil}
+end
+
+fun {SolveStep S SolTail}
+    case {Space.ask S}
+        of failed then SolTail
+        [] succeeded then {Space.merge S}|SolTail
+        [] alternatives(N) then {SolveLoop S 1 N SolTail}
+    end
+end
+
+fun lazy {SolveLoop S I N SolTail}
+    if I>N then
+        SolTail
+    elseif I==N then
+        {Space.commit S I}
+        {SolveStep S SolTail}
+    else
+        C={Space.clone S}
+        NewTail={SolveLoop S I+1 N SolTail}
+    in
+        {Space.commit C I}
+        {SolveStep C NewTail}
+    end
+end
+
+declare
+fun {SolveAll F}
+    L={Solve F}
+    proc {TouchAll L}
+        if L==nil then skip else {TouchAll L.2} end
+    end
+in
+    {TouchAll L}
+    L
+end
+
+% Début des tests
+
 declare
 proc {Choose ?X Ys}
     choice Ys=X|_

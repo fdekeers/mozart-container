@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%% Tree %%%%%%%%%%%%%%
 
-% creat a tree
+% create a tree
 declare
 fun {Insert X V T}
    case T
@@ -13,6 +13,7 @@ fun {Insert X V T}
       tree(Y W T1 {Insert X V T2})
    end
 end
+
 fun {RemoveSmallest T}
    case T
       of leaf then none
@@ -40,6 +41,7 @@ fun {Delete X T}
 end
 
 
+declare
 T1 = {Insert 1 2 leaf}
 {Browse T1}
 T2 = {Insert 2 1 T1}
@@ -57,7 +59,8 @@ T11 = {Delete 9 T10}
 
 
 % look for a key
-% use the previous T11 
+% use the previous T11
+declare
 fun {Lookup X T}
    case T
    of leaf then notfound
@@ -66,12 +69,12 @@ fun {Lookup X T}
    [] tree(Y V T1 T2) andthen X>Y then {Lookup X T2}
    end
 end
-
 {Browse {Lookup 8 T11}} % found(7)
 {Browse {Lookup 9 T11}} % notfound
 
 
 % DFS
+declare
 proc {DFS T}
    case T
    of leaf then skip
@@ -85,7 +88,7 @@ end
 
 %%%%%%%%%%%% Array %%%%%%%%%%%%%
 declare
-A={NewArray 0 10 1} 
+A={NewArray 0 10 1}
 {Array.put A 5 9}
 {Browse{Array.get A 5}} % 9
 {Browse{Array.get A 0}} % 1
@@ -118,11 +121,10 @@ fun {NewExtensibleArray L H Init}
    end
 in extArray(get:Get put:Put)
 end
-
 A = {NewExtensibleArray 0 10 1} 
-{Browse {A.get 5}}
+{Browse {A.get 5}} % Displays 1
 {A.put 5 8}
-{Browse {A.get 5}}
+{Browse {A.get 5}} % Displays 8
 
 
 
@@ -133,17 +135,17 @@ D1={NewDictionary}
 {Dictionary.put D1 1 'un'}
 {Dictionary.put D1 'deux' 2}
 R={Dictionary.toRecord 'record' D1}
-{Browse R}
+{Browse R} % record(1:un deux:2)
 D={Record.toDictionary R}
 D2={Dictionary.clone D}
 R1 = {Dictionary.toRecord 'record' D1}
-{Browse R1}
+{Browse R1} % record(1:un deux:2)
 {Browse {Dictionary.get D 1}} % un
 {Browse {Dictionary.get D 'deux'}} % 2
-{Browse {Dictionary.condGet D 3 'None'}} %None
-{Browse {Dictionary.condGet D 1 'None'}} %un
+{Browse {Dictionary.condGet D 3 'None'}} % None
+{Browse {Dictionary.condGet D 1 'None'}} % un
 {Dictionary.remove D 1}
-{Browse {Dictionary.condGet D 1 'None'}} %None
+{Browse {Dictionary.condGet D 1 'None'}} % None
 local B B1 in
    {Dictionary.member D 1 B}
    {Dictionary.member D 'deux' B1}
@@ -153,7 +155,7 @@ end
 
 %%%%%%%%% Stack %%%%%%%
 declare
-fun {NewStack}
+fun {NewStack} % => LIFO
    Stack={NewCell nil}
    proc {Push X}
    S in
@@ -172,14 +174,14 @@ N = {NewStack}
 {N.push 10}
 {N.push 20}
 {N.push 30}
-{Browse {N.pop}}
-{Browse {N.pop}}
-{Browse {N.pop}}
+{Browse {N.pop}} % 30
+{Browse {N.pop}} % 20
+{Browse {N.pop}} % 10
 
 
 %%%%%%% Queue %%%%%%%
 declare
-fun {NewQueue}
+fun {NewQueue} % => FIFO
    X C={NewCell q(0 X X)}
    proc {Insert X}
    N S E1 in
@@ -200,6 +202,6 @@ Q = {NewQueue}
 {Q.insert 10}
 {Q.insert 20}
 {Q.insert 30}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
+{Browse{Q.delete}} % 10
+{Browse{Q.delete}} % 20
+{Browse{Q.delete}} % 30
