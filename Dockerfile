@@ -45,3 +45,6 @@ RUN mkdir /home/user
 RUN chmod og+rwx /home/user
 USER user
 WORKDIR /home/user
+
+# Run Mozart inside the container
+CMD oz
