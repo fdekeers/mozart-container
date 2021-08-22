@@ -68,15 +68,16 @@ def get_xserv_ip(filename):
 # STEP 1: Download and install VcXsrv #
 #######################################
 
-# VcSrv SourceForge download link
+# Check if VcXsrv is already installed
+print("VcXsrv allows GUI applications inside Docker containers.")
+# VcXsrv SourceForge download link
 vcxsrv_url = "https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.9.0/vcxsrv-64.1.20.9.0.installer.exe"
 vcxsrv_file = "vcxsrv-64.1.20.9.0.installer.exe"
 vcxsrv_md5 = "3fe9fbdcc47b934cdd8e0c01f9008125"
-
 # Download VcXsrv installer
-print("Downloading VcXsrv to allow GUI applications inside Docker.")
+print("Downloading VcXsrv installer.")
 command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
-#subprocess.run(command, shell=True)
+subprocess.run(command, shell=True)
 # Check MD5 hash of downloaded file
 if compute_md5(vcxsrv_file) != vcxsrv_md5:
     # MD5 not identical, exit
@@ -87,9 +88,9 @@ if compute_md5(vcxsrv_file) != vcxsrv_md5:
 print("MD5 of downloded file verified.")
 # Install VcXsrv
 print("Installing VcXsrv.")
-#subprocess.run(vcxsrv_file, shell=True)
+subprocess.run(vcxsrv_file, shell=True)
 # Remove installer file
-#os.remove(vcxsrv_file)
+os.remove(vcxsrv_file)
 
 
 ########################################
@@ -153,3 +154,6 @@ command = f"docker build -q -t {container} ."
 subprocess.run(command, shell=True)
 command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}" -e DISPLAY={ip} {container}'
 subprocess.run(command, shell=True)
+
+# Stop X11 server
+

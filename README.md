@@ -10,6 +10,9 @@ and it only exists as a 32-bit program.
 To overcome this, and allow it to run on the widest range of platforms,
 this repository provides a Docker image to run Mozart 1.4 on multiple platforms.
 
+For Mozart documentatio, please visit
+http://mozart2.org/mozart-v1/doc-1.4.0/.
+
 ## Prerequisites
 
 To use the Docker container, Docker must be installed on the computer.
@@ -22,15 +25,37 @@ https://www.python.org/downloads/.
 
 ## Build and run the container
 
-Linux:
+Scripts are provided to ease the building and deployment of the container,
+depending on the host platform:
+- Linux: Bash script [build.sh](build.sh)
+- Windows: Python script [build.py](build.py)
+
+The container will share a directory with the host machine,
+which can be used to store the Oz source code files.
+By default, this directory is located at the following path:
+- `./oz-files` on the host
+- `/home/user/oz-files` inside the container
+
+Another host directory can be chosen to be shared,
+by specifying its path as an optional command line argument.
+In that case, the shared folder will be placed in
+`home/user/FOLDER_BASENAME` inside the container.
+
+To summarize, the Mozart 1.4 container can be built and deployed with the following commands:
+- Linux:
 ```
-./build.sh $OZ_FILES_FOLDER
+./build.sh [OZ_FOLDER_HOST]
+```
+- Windows:
+```
+python build.py [OZ_FOLDER_HOST]
 ```
 
-Windows:
-```
-python build.py $OZ_FILES_FOLDER
-```
+To use a GUI, the Windows script will first download and install the
+[X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
+[VcXsrv](https://sourceforge.net/projects/vcxsrv/),
+that provides GUI capabilities to applications inside containers.
+
 
 ## Support for different platforms
 
