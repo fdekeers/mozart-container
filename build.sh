@@ -22,7 +22,7 @@ echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 xhost +
 
 # Build and run the container
-echo "Please wait while the container is built..."
+echo "Building container, please wait..."
 sudo docker build -q -t $CONTAINER .
 sudo docker run --rm --name $CONTAINER -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER" \
