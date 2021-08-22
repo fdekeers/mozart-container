@@ -4,7 +4,7 @@ Python script to build and deploy the Mozart 1.4 container on Windows.
 Author: François De Keersmaeker
 '''
 
-import os, subprocess, hashlib
+import os, sys, subprocess, hashlib
 
 # Full name of the X11 server network interface
 x11_interface = "VirtualBox Host-Only Ethernet Adapter"
@@ -74,7 +74,7 @@ vcxsrv_md5 = "3fe9fbdcc47b934cdd8e0c01f9008125"
 # Download VcXsrv installer
 print("Downloading VcXsrv to allow GUI applications inside Docker.")
 command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
-subprocess.run(command, shell=True)
+#subprocess.run(command, shell=True)
 # Check MD5 hash of downloaded file
 if compute_md5(vcxsrv_file) == vcxsrv_md5:
     # MD5 OK
@@ -86,9 +86,9 @@ else:
     exit(-1)
 # Install VcXsrv
 print("Installing VcXsrv.")
-subprocess.run(vcxsrv_file, shell=True)
+#subprocess.run(vcxsrv_file, shell=True)
 # Remove installer file
-os.remove(vcxsrv_file)
+#os.remove(vcxsrv_file)
 
 
 ########################################
@@ -100,7 +100,8 @@ print("Searching for VcXsrv executable, please wait...")
 vcxsrv_exec = find_file("xlaunch.exe")
 # Launch executable with config file
 print("Starting X11 server.")
-subprocess.run(f"{vcxsrv_exec} -run config.xlaunch")
+command = f'"{vcxsrv_exec}" -run config.xlaunch'
+subprocess.run(command, shell=True)
 
 
 ########################################
@@ -108,7 +109,8 @@ subprocess.run(f"{vcxsrv_exec} -run config.xlaunch")
 ########################################
 
 # Save ipconfig results into file
-subprocess.run("ipconfig /all > ipconfig.txt", shell=True)
+command = "ipconfig /all > ipconfig.txt"
+subprocess.run(command, shell=True)
 # Get the X11 server IPv4 address from file, and append port
 ip = f"{get_xserv_ip('ipconfig.txt')}:0.0"
 # Remove file
@@ -121,7 +123,19 @@ os.remove("ipconfig.txt")
 
 # Name of the container
 container = "mozart-1.4"
+# Directories for Oz files
+oz_dir_host = f"{os.getcwd()}\oz-files"   # Host
+oz_dir_container = "/home/user/oz-files"  # Container
+# Update directories if a command line argument was specified
+if len(sys.argv) > 1:
+    path = sys.argv[1]  # New Oz directory
+    oz_dir_host = os.path.abspath(path)
+    oz_dir_container = f"/home/user/{os.path.basename(path)}"
+print(f"Oz files are in {oz_dir_host} on the host.")
+print(f"They will be placed in {oz_dir_container} inside the container.")
 # Build and run container
 print("Building container, please wait...")
-subprocess.run(f"docker build -q -t {container} .", shell=True)
-subprocess.run(f"docker run --rm --name {container} -it -e DISPLAY={ip} {container}", shell=True)
+command = f"docker build -q -t {container} ."
+subprocess.run(command, shell=True)
+command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}" -e DISPLAY={ip} {container}'
+subprocess.run(command, shell=True)
