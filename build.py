@@ -34,12 +34,14 @@ def find_file(filename):
     '''
     Searches for a file in the whole directory tree,
     and returns its path.
+    Returns `None` if file was not found.
     From https://stackoverflow.com/questions/1724693/find-a-file-in-python
     '''
     for path in ["C:\\", "D:\\"]:
         for root, dirs, files in os.walk(path):
             if filename in files:
                 return os.path.join(root, filename)
+    return None
 
 
 def get_xserv_ip(filename):
@@ -76,14 +78,13 @@ print("Downloading VcXsrv to allow GUI applications inside Docker.")
 command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
 #subprocess.run(command, shell=True)
 # Check MD5 hash of downloaded file
-if compute_md5(vcxsrv_file) == vcxsrv_md5:
-    # MD5 OK
-    print("MD5 of downloded file verified.")
-else:
-    # MD5 not identical
-    print("MD5 verification failed !")
-    print("Please run the script again.")
+if compute_md5(vcxsrv_file) != vcxsrv_md5:
+    # MD5 not identical, exit
+    sys.stderr.write("MD5 verification failed !")
+    sys.stderr.write("Please run the script again to retry.")
     exit(-1)
+# MD5 identical, proceed
+print("MD5 of downloded file verified.")
 # Install VcXsrv
 print("Installing VcXsrv.")
 #subprocess.run(vcxsrv_file, shell=True)
@@ -98,6 +99,11 @@ print("Installing VcXsrv.")
 # Find VcXsrv executable
 print("Searching for VcXsrv executable, please wait...")
 vcxsrv_exec = find_file("xlaunch.exe")
+if vcxsrv_exec is None:
+    # Executable not found, exit
+    sys.stderr.write("Could not find VcXsrv executable.")
+    sys.stderr.write("Please check VcXsrv installation.")
+    exit(-1)
 # Launch executable with config file
 print("Starting X11 server.")
 command = f'"{vcxsrv_exec}" -run config.xlaunch'
@@ -111,10 +117,18 @@ subprocess.run(command, shell=True)
 # Save ipconfig results into file
 command = "ipconfig /all > ipconfig.txt"
 subprocess.run(command, shell=True)
-# Get the X11 server IPv4 address from file, and append port
-ip = f"{get_xserv_ip('ipconfig.txt')}:0.0"
+# Get the X11 server IPv4 address from file
+ip = get_xserv_ip('ipconfig.txt')
 # Remove file
 os.remove("ipconfig.txt")
+# Check if IP was found
+if ip is None:
+    # IP was not found, exit
+    sys.stderr.write("Could not find X11 server IP.")
+    sys.stderr.write("Please check VcXsrv installation.")
+    exit(-1)
+# Add port to address
+ip = f"{ip}:0.0"
 
 
 ##########################################
