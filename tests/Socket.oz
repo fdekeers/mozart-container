@@ -1,35 +1,75 @@
 %%%%%%%%% Socket %%%%%%%%
 
-% /!\ ici testé en localhost, il faudra tester entre différents processurs, ordinateurs et réseaux
-
+% Helper functions/imports, feed it before the tests
 declare
+[Open]={Module.link ["x-oz://system/Open.ozf"]}
 MyBrow = {New Browser.'class' init}
-{MyBrow option(representation strings:true)}
-
-X = _
-H = _
-P = _
-
+{MyBrow option(representation strings:true)} % => to change the default string browsing, ASCII list [1 2 3]
+proc {Browse Msg} {MyBrow browse(Msg)} end
 proc {ReadingLoop Server}
-    {Server read(list:{MyBrow browse($)})}
+    {Server read(list:{Browse})}
     {ReadingLoop Server}
 end
 
-[Open]={Module.link ["x-oz://system/Open.ozf"]}
-Server = {New Open.socket init(type:stream protocol:"" time:~1)}
+% Start of tests
+% Localhost
+declare
+X
+H
+P
+Server = {New Open.socket init}
 {Server bind(port:X)}
-{MyBrow browse("Port: "#X)}
+{Browse ("Port: "#X)}
 {Server listen}
-{MyBrow browse(H#": "#P)}
+{Browse ("Client IP: "#H)}
+{Browse ("Client port: "#P)}
 thread {Server accept(host:H port:P)} end
-Client = {New Open.socket init(type:stream protocol:"" time:~1)}
-{Client connect(host:"127.0.0.1" port:X)}
 thread {ReadingLoop Server} end
+Client = {New Open.socket init}
+{Client connect(host:"localhost" port:X)}
 {Client write(vs:'Hello, good'#" old Server!")}
 {Delay 2000}
 {Client write(vs:"What a lovely day!")}
 {Delay 2000}
 {Client write(vs:"Goodbye server!")}
+% ----- Close when done -----
 {Server shutDown(how:[send receive])}
+{Client shutDown(how:[send receive])}
 {Server close}
 {Client close}
+% The browser should display the 3 messages with an interval of 2sec, with additional info such as IP/port
+
+
+% /!\ for remote socket
+% LAN/remote => Server side
+declare
+X
+H
+P
+% Server
+% {Server server(host:H port:P)}
+Server = {New Open.socket init}
+{Server bind(port:X)}
+{Browse ("Port: "#X)}
+{Server listen}
+{Browse ("Client IP: "#H)}
+{Browse ("Client port: "#P)}
+thread {Server accept(host:H port:P)} end   % => Once the reading loop started, give to the client the private (LAN) or public (remote)
+thread {ReadingLoop Server} end             % IP of the server and the port to connect to (see next block of code)
+% ----- Close when done -----
+{Server shutDown(how:[send receive])}
+{Server close}
+
+% LAN/remote => Client side
+declare
+Client = {New Open.socket init}
+{Client connect(host:"192.168.1.58" port:64222)}   % => Enter private (LAN) or public (remote) IP of the server in host string and
+{Client write(vs:'Hello, good'#" old Server!")}    % port number to connect to
+{Delay 2000}
+{Client write(vs:"What a lovely day!")}
+{Delay 2000}
+{Client write(vs:"Goodbye server!")}
+% ----- Close when done -----
+{Client shutDown(how:[send receive])}
+{Client close}
+% The browser should display the 3 messages with an interval of 2sec, with additional info such as IP/port
