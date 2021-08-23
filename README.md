@@ -55,6 +55,8 @@ To use a GUI, the Windows script will first download and install the
 [X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
 [VcXsrv](https://sourceforge.net/projects/vcxsrv/),
 that provides GUI capabilities to applications inside containers.
+Please keep the default installation directory,
+`C:\Program Files\VcXsrv`.
 
 
 ## Support for different platforms

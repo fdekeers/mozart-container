@@ -32,15 +32,14 @@ def compute_md5(filename):
 
 def find_file(filename):
     '''
-    Searches for a file in the whole directory tree,
+    Searches for a file in `C:\Program Files`,
     and returns its path.
     Returns `None` if file was not found.
     From https://stackoverflow.com/questions/1724693/find-a-file-in-python
     '''
-    for path in ["C:\\", "D:\\"]:
-        for root, dirs, files in os.walk(path):
-            if filename in files:
-                return os.path.join(root, filename)
+    for root, dirs, files in os.walk(r"C:\Program Files"):
+        if filename in files:
+            return os.path.join(root, filename)
     return None
 
 
@@ -68,38 +67,44 @@ def get_xserv_ip(filename):
 # STEP 1: Download and install VcXsrv #
 #######################################
 
-# Check if VcXsrv is already installed
 print("VcXsrv allows GUI applications inside Docker containers.")
-# VcXsrv SourceForge download link
-vcxsrv_url = "https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.9.0/vcxsrv-64.1.20.9.0.installer.exe"
-vcxsrv_file = "vcxsrv-64.1.20.9.0.installer.exe"
-vcxsrv_md5 = "3fe9fbdcc47b934cdd8e0c01f9008125"
-# Download VcXsrv installer
-print("Downloading VcXsrv installer.")
-command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
-subprocess.run(command, shell=True)
-# Check MD5 hash of downloaded file
-if compute_md5(vcxsrv_file) != vcxsrv_md5:
-    # MD5 not identical, exit
-    sys.stderr.write("MD5 verification failed !")
-    sys.stderr.write("Please run the script again to retry.")
-    exit(-1)
-# MD5 identical, proceed
-print("MD5 of downloded file verified.")
-# Install VcXsrv
-print("Installing VcXsrv.")
-subprocess.run(vcxsrv_file, shell=True)
-# Remove installer file
-os.remove(vcxsrv_file)
+# Check if VcXsrv is already installed
+print("Checking if VcXsrv is already installed, please wait...")
+vcxsrv_exec = find_file("xlaunch.exe")
+if vcxsrv_exec is None:  # VcXsrv is not installed
+    print("VcXsrv is not installed.")
+    # VcXsrv SourceForge download link
+    vcxsrv_url = "https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.9.0/vcxsrv-64.1.20.9.0.installer.exe"
+    vcxsrv_file = "vcxsrv-64.1.20.9.0.installer.exe"
+    vcxsrv_md5 = "3fe9fbdcc47b934cdd8e0c01f9008125"
+    # Download VcXsrv installer
+    print("Downloading VcXsrv installer.")
+    command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
+    subprocess.run(command, shell=True)
+    # Check MD5 hash of downloaded file
+    if compute_md5(vcxsrv_file) != vcxsrv_md5:
+        # MD5 not identical, exit
+        sys.stderr.write("MD5 verification failed !")
+        sys.stderr.write("Please run the script again to retry.")
+        exit(-1)
+    # MD5 identical, proceed
+    print("MD5 of downloded file verified.")
+    # Install VcXsrv
+    print("Installing VcXsrv.")
+    subprocess.run(vcxsrv_file, shell=True)
+    # Remove installer file
+    os.remove(vcxsrv_file)
+    # Find VcXsrv executable
+    print("Searching for VcXsrv executable, please wait...")
+    vcxsrv_exec = find_file("xlaunch.exe")
+else:  # VcXsrv is already installed
+    print("VcXsrv is already installed.")
 
 
 ########################################
 # STEP 2: Start X11 server with VcXsrv #
 ########################################
 
-# Find VcXsrv executable
-print("Searching for VcXsrv executable, please wait...")
-vcxsrv_exec = find_file("xlaunch.exe")
 if vcxsrv_exec is None:
     # Executable not found, exit
     sys.stderr.write("Could not find VcXsrv executable.")
