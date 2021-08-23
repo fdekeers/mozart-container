@@ -155,7 +155,7 @@ print(f"Oz files are in {oz_dir_host} on the host.")
 print(f"They will be placed in {oz_dir_container} inside the container.")
 # Build and run container
 print("Building container, please wait...")
-command = f"docker build -q -t {container} ."
+command = f"docker build -t {container} ."
 subprocess.run(command, shell=True)
 command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}" -e DISPLAY={ip} {container}'
 subprocess.run(command, shell=True)

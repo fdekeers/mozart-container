@@ -23,7 +23,7 @@ xhost +
 
 # Build and run the container
 echo "Building container, please wait..."
-sudo docker build -q -t $CONTAINER .
+sudo docker build -t $CONTAINER .
 sudo docker run --rm --name $CONTAINER -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
