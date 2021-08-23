@@ -5,10 +5,10 @@ fun lazy {Ints N}
    N|{Ints N+1}
 end
 L = {Ints 0}
-{Browse L}
-{Browse L.1}
-{Browse L.2.2.1}
-{Browse L.1}
+{Browse L} %0|1|2|_
+{Browse L.1} % 0
+{Browse L.2.2.1} %2
+{Browse L.1} %0
 
 L1 = {Ints 0}
 case L1 of A|B|C|_ then {Browse A+B+C} end % 3
@@ -39,5 +39,5 @@ fun lazy {PascalList Row}
 end
 
 L = {PascalList [1]}
-{Browse L.2.2.2.2.2.2.2.1}
-{Browse L}
+{Browse L.2.2.2.2.2.2.2.1} %[1] [1 1] [1 2 1] [1 3 3 1] ... [1 7 21 35 35 21 7 1]
+{Browse L} % [1 7 21 35 35 21 7 1]

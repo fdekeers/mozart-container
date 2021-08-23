@@ -36,7 +36,7 @@ fun {GoodEnough Guess X}
 end
 fun {Abs X} if X<0.0 then ~X else X end end
 
-{Browse {Sqrt 2.0}} %1.5
+{Browse {Sqrt 2.0}} %1.4142
 
 
 % others tests of differents versions of SQRT
@@ -59,7 +59,7 @@ fun {Sqrt X}
 in
    {SqrtIter Guess}
 end
-{Browse {Sqrt 2.0}} %1.5
+{Browse {Sqrt 2.0}} %1.4142
 
 %2
 declare
@@ -83,7 +83,7 @@ in
       {SqrtIter Guess X}
    end
 end
-{Browse {Sqrt 2.0}} %1.5
+{Browse {Sqrt 2.0}} %1.4142
 
 
 
@@ -102,7 +102,7 @@ fun {Sqrt X}
     fun {$ G} {Abs X-G*G}/X<0.00001 end
     fun {$ G} (G+X/G)/2.0 end}
 end
-{Browse {Sqrt 2.0}} % 1.5
+{Browse {Sqrt 2.0}} % 1.4142
 
 
 %queue :

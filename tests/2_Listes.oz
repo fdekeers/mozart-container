@@ -27,7 +27,7 @@ Y = [2 3 4]
 declare
 L=[5 6 7 8]
 case L of H|T then {Browse H} {Browse T} end % 5 [6 7 8]
-for I in L do {Browse I} end
+for I in L do {Browse I} end % 5 6 7 8
 
 
 
@@ -40,7 +40,7 @@ for I in L do {Browse I} end
 
 declare
 fun {CreatList N}
-   if N == 0 then N
+   if N == 0 then N|nil
    else
       N|{CreatList N-1}
    end
@@ -98,7 +98,7 @@ fun {Reverse Xs}
    end
 end
 
-{Browse {Reverse [1 2 3 4 5 6]}}
+{Browse {Reverse [1 2 3 4 5 6]}} %[6 5 4 3 2 1]
 
 
 % len of a list of lists :
@@ -128,7 +128,7 @@ fun {Merge Xs Ys}
       end
    end
 end
-{Browse {Merge [1 3 5 6] [1 2 4 5 6 7 8 9]}}
+{Browse {Merge [1 3 5 6] [1 2 4 5 6 7 8 9]}} %[1 1 2 3 4 5 5 6 6 7 8 9]
 
 % merge sort with accumulator :
 
@@ -151,7 +151,7 @@ fun {MergeSort Xs}
 in
    {MergeSortAcc Xs {Length Xs}}.1
 end
-{Browse {MergeSort [8 4 5 9 3 1 8 9 5 2 7]}}
+{Browse {MergeSort [8 4 5 9 3 1 8 9 5 2 7]}} % [1 2 3 4 5 5 7 8 8 9 9]
 
 % function to calculate the nth row of Pascal's triangle :
 
@@ -199,4 +199,4 @@ fun {GenericPascal Op N}
    end
 end
 
-{Browse {GenericPascal Add 10}}
+{Browse {GenericPascal Add 10}} % [1 9 36 84 126 126 84 36 9 1]

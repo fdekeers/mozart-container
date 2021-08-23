@@ -10,7 +10,7 @@ thread Y2=lead|to|rhodes|_ end
 
 declare X in
 thread {Delay 2000} X=99 end
-{Browse start} {Browse X*X}
+{Browse start} {Browse X*X} % start 9801
 
 declare
 fun {Fib X}
