@@ -10,7 +10,7 @@ and it only exists as a 32-bit program.
 To overcome this, and allow it to run on the widest range of platforms,
 this repository provides a Docker image to run Mozart 1.4 on multiple platforms.
 
-For Mozart documentatio, please visit
+For Mozart documentation, please visit
 http://mozart2.org/mozart-v1/doc-1.4.0/.
 
 ## Prerequisites
@@ -51,6 +51,10 @@ To summarize, the Mozart 1.4 container can be built and deployed with the follow
 - Windows:
 ```
 python build.py [OZ_FOLDER_HOST]
+```
+
+- MacOS:
+```
 ```
 
 To use a GUI, the Windows script will first download and install the
