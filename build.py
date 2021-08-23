@@ -155,5 +155,11 @@ subprocess.run(command, shell=True)
 command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}" -e DISPLAY={ip} {container}'
 subprocess.run(command, shell=True)
 
-# Stop X11 server
 
+#############################
+# CLEANING: Stop X11 server #
+#############################
+
+print("Stopping X11 server.")
+command = "taskkill /f /im vcxsrv.exe"
+subprocess.run(command, shell=True)
