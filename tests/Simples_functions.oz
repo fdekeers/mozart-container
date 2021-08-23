@@ -1,5 +1,4 @@
-%%%%%%%%%%% Functions  %%%%%%%%%%%%% 
-
+%%%%%%%%%%% Functions  %%%%%%%%%%%%%
 
 % factoriel
 declare
@@ -16,7 +15,7 @@ end
 {Browse {Comb 10 3}} % 120
 
 
-% SQRT 
+% SQRT
 declare
 fun {Sqrt X}
    Guess=1.0
@@ -35,7 +34,7 @@ end
 fun {GoodEnough Guess X}
    {Abs X-Guess*Guess}/X < 0.00001
 end
-fun {Abs X} if X<0.0 then ˜X else X end end
+fun {Abs X} if X<0.0 then ~X else X end end
 
 {Browse {Sqrt 2.0}} %1.5
 

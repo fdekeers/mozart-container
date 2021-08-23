@@ -34,18 +34,20 @@ The container will share a directory with the host machine,
 which can be used to store the Oz source code files.
 By default, this directory is located at the following path:
 - `./oz-files` on the host
-- `/home/user/oz-files` inside the container
+- `/root/oz-files` inside the container
 
 Another host directory can be chosen to be shared,
 by specifying its path as an optional command line argument.
 In that case, the shared folder will be placed in
-`home/user/FOLDER_BASENAME` inside the container.
+`/root/FOLDER_BASENAME` inside the container.
 
 To summarize, the Mozart 1.4 container can be built and deployed with the following commands:
 - Linux:
 ```
 ./build.sh [OZ_FOLDER_HOST]
 ```
+    **Warning**: the user that runs the Linux script must have `sudo` rights.
+
 - Windows:
 ```
 python build.py [OZ_FOLDER_HOST]

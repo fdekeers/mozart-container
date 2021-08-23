@@ -38,13 +38,6 @@ ENV OZHOME=/usr/mozart
 ENV PATH=$PATH:$OZHOME/bin
 RUN rm -rf /tmp/mozart
 
-# Create and switch to unprivileged user
-RUN groupadd -g 999 user
-RUN useradd -r -u 999 -g user user
-RUN mkdir /home/user
-RUN chmod og+rwx /home/user
-USER user
-WORKDIR /home/user
-
 # Run Mozart inside the container
+WORKDIR /root
 CMD oz
