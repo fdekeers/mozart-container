@@ -68,9 +68,7 @@ Please keep the default installation directory,
 ## Support for different platforms
 
 The image has been tested and approved on the following platforms:
-- Windows
-    - Windows 10
-- Mac OS
 - Linux
     - Ubuntu 20.04
-    - CentOS
+- Windows
+    - Windows 10
