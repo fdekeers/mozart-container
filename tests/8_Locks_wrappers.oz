@@ -77,12 +77,12 @@ thread
    {Delay 10}
    {Q.insert 30}
 end
-{Browse{Q.delete}}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
-{Browse{Q.delete}}
+{Browse{Q.delete}} %10
+{Browse{Q.delete}} %10
+{Browse{Q.delete}} %20
+{Browse{Q.delete}} %20
+{Browse{Q.delete}} %30
+{Browse{Q.delete}} %30
 
 %%%%%%%%% wrapper %%%%%%%%%%
 declare
@@ -115,5 +115,5 @@ local S3 X Y in
    S3 = {Pop S2 X}
    {Browse X} % 10
    S4 = {Pop S3 Y}
-   {Browse Y} % 10
+   {Browse Y} % 5
 end

@@ -3,7 +3,7 @@
 declare
 C={NewCell 0}
 C:=@C+1
-{Browse @C}
+{Browse @C} %1
 
 % Pascal with cell
 declare
@@ -31,7 +31,7 @@ fun {FastPascal N}
    {GenericPascal Add N}
 end
 
-{Browse {FastPascal 10}}
+{Browse {FastPascal 10}} % [1 9 36 84 126 126 84 36 9 1]
 
 
 declare
@@ -72,7 +72,7 @@ fun {FastPascal N}
    {Browse {Bump}}
    {GenericPascal Add N}
 end
-{Browse {FastPascal 10}}
+{Browse {FastPascal 10}} % [1 9 36 84 126 126 84 36 9 1]
 
 
 declare

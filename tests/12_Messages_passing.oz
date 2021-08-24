@@ -1,9 +1,9 @@
 %%%%%%%%%% message-passing concurrent %%%%%%%%
 declare S P in
 {NewPort S P}
-{Browse S}
+{Browse S} 
 {Send P a}
-{Send P b}   
+{Send P b}   % a|b|_<future>
 
 % Port objects 
 declare
