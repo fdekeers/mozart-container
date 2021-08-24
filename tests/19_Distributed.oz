@@ -37,9 +37,9 @@ T = {Connection.offerUnlimited X}
 X = 11
 
 % LAN/remote #1 => side 2
-declare X in
-X = {Connection.take 'oz-ticket://192.168.1.58:9000/h8544528#1'}  % => replace '...' with the string of the ticket created in side 1
-{Browse X*X}
+declare X2 in
+X2 = {Connection.take 'oz-ticket://192.168.1.58:9000/h8015188#0'}  % => replace '...' with the string of the ticket created in side 1
+{Browse X2*X2}
 
 % LAN/remote #2 => side 1
 declare Xs Sum in

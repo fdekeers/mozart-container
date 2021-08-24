@@ -34,7 +34,6 @@ Client = {New Open.socket init}
 {Client write(vs:"Goodbye server!")}
 % ----- Close when done -----
 {Server shutDown(how:[send receive])}
-{Client shutDown(how:[send receive])}
 {Server close}
 {Client close}
 % The browser should display the 3 messages with an interval of 2sec, with additional info such as IP/port
@@ -61,15 +60,14 @@ thread {ReadingLoop Server} end             % IP of the server and the port to c
 {Server close}
 
 % LAN/remote => Client side
-declare
+declare 
 Client = {New Open.socket init}
-{Client connect(host:"192.168.1.58" port:64222)}   % => Enter private (LAN) or public (remote) IP of the server in host string and
+{Client connect(host:"192.168.1.58" port:55008)}   % => Enter private (LAN) or public (remote) IP of the server in host string and
 {Client write(vs:'Hello, good'#" old Server!")}    % port number to connect to
 {Delay 2000}
 {Client write(vs:"What a lovely day!")}
 {Delay 2000}
 {Client write(vs:"Goodbye server!")}
 % ----- Close when done -----
-{Client shutDown(how:[send receive])}
 {Client close}
 % The browser should display the 3 messages with an interval of 2sec, with additional info such as IP/port
