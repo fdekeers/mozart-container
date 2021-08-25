@@ -11,7 +11,7 @@
 # STEP 1: Install the X11 server XQuartz #
 ##########################################
 
-# Install the `brew` package manager
+# Install Homebrew, the package manager
 echo "Installing brew, a package manager."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # Install socat, a tool to redirect sockets
