@@ -1,53 +1,38 @@
 # Dockerfile describing the container used to run
 # Mozart 1.4.0 on 64-bit architectures.
 #
-# Author: François De Keersmaeker
+# Author: Francois De Keersmaeker
 
-# Base image: 64-bit Ubuntu 18.04
-FROM ubuntu:18.04
-
-# Prevents interactive commands when building container image
-ENV DEBIAN_FRONTEND=noninteractive
+# Base image: 64-bit Fedora 34
+FROM fedora:34
 
 # Update/Install required packages
-RUN dpkg --add-architecture i386
-RUN apt-get update
-RUN apt-get install -y wget
-RUN apt-get install -y git
-RUN apt-get install -y emacs
-RUN apt-get install -y flex
-RUN apt-get install -y bison
-RUN apt-get install -y tk-dev
-RUN apt-get install -y build-essential
-RUN apt-get install -y g++-multilib
-RUN apt-get install -y zlib1g-dev:i386
-RUN apt-get install -y libgmp-dev:i386
-RUN apt-get install -y libgmp3-dev:i386
-RUN ln -s /usr/include/i386-linux-gnu/gmp.h /usr/include/gmp.h
+RUN yum update -y
+RUN yum install -y glibc.i686
+RUN yum install -y gcc
+RUN yum install -y gcc-c++
+RUN yum install -y make
+RUN yum install -y wget
+RUN yum install -y emacs
+RUN yum install -y flex
+RUN yum install -y bison
+RUN yum install -y tk-devel
+RUN yum install -y zlib-devel.i686
+RUN yum install -y libX11-devel.i686
+RUN yum install -y libnsl.i686
+RUN yum install -y gmp-devel.i686
+RUN ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3
 
-# Install Mozart 1.4 (following instructions from https://github.com/mozart/mozart)
-RUN mkdir -p /tmp/mozart
-WORKDIR /tmp/mozart
-RUN git clone https://github.com/mozart/mozart.git src
-RUN mkdir build
-WORKDIR build
-RUN ../src/configure --prefix=/usr/mozart --disable-contrib-gdbm
-RUN make
-RUN make install
+# Install Mozart 1.4.0
+WORKDIR /usr
+RUN wget https://downloads.sourceforge.net/project/mozart-oz/v1/1.4.0-2008-07-02-tar/mozart-1.4.0.20080704-linux-i486.tar.gz
+RUN gzip -cd mozart-1.4.0.20080704-linux-i486.tar.gz | tar xvf -
+# Small modification to the `ozplatform` file to consider the image arch as i486
+RUN sed -i "s/unknown-unknown/linux-i486/" /usr/mozart/bin/ozplatform
 ENV OZHOME=/usr/mozart
 ENV PATH=$PATH:$OZHOME/bin
+RUN rm -f mozart-1.4.0.20080704-linux-i486.tar.gz
 
-# Install Mozart standard library (following instructions from https://github.com/mozart/mozart-stdlib)
-RUN mkdir -p /tmp/mozart/stdlib
-WORKDIR /tmp/mozart/stdlib
-RUN git clone https://github.com/mozart/mozart-stdlib.git src
-RUN mkdir build
-WORKDIR build
-RUN ../src/configure --prefix=/usr/mozart --disable-contrib-gdbm
-RUN make
-RUN make install
-RUN rm -rf /tmp/mozart
-
-# Run Mozart inside the container
 WORKDIR /root
-CMD oz
+# Run Mozart without displaying error messages and while still having access to the terminal
+CMD oz 2> /dev/null & /bin/bash

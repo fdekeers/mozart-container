@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Bash script to build and deploy the Mozart 1.4 Docker container.
+# Bash script to build and deploy the Mozart 1.4.0 Docker container.
 #
-# Author: François De Keersmaeker
+# Author: Francois De Keersmaeker
 
 # Variables
-CONTAINER="mozart-1.4"  # Name of the container
-OZ_DIR_HOST="$(dirname `pwd`)/oz-files"  # Directory containing the Oz files on the host
+CONTAINER="mozart-1.4.0"  # Name of the container
+OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
 OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
 
 # First argument is the directory containing the Oz files
@@ -23,7 +23,7 @@ xhost +
 
 # Build and run the container
 echo "Building container, please wait..."
-sudo docker build -t $CONTAINER ..
+sudo docker build -t $CONTAINER .
 sudo docker run --rm --name $CONTAINER -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \

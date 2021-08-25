@@ -2,4 +2,4 @@ oz-files
 ipconfig.txt
 vcxsrv-64.1.20.9.0.installer.exe
 *.oz~
-linux/build.py
+build-2.py

@@ -1,7 +1,7 @@
 '''
-Python script to build and deploy the Mozart 1.4 container on Windows.
+Python script to build and deploy the Mozart 1.4.0 container on Windows.
 
-Author: François De Keersmaeker
+Author: Francois De Keersmaeker
 '''
 
 import os, sys, subprocess, hashlib
@@ -142,9 +142,9 @@ ip = f"{ip}:0.0"
 ##########################################
 
 # Name of the container
-container = "mozart-1.4"
+container = "mozart-1.4.0"
 # Directories for Oz files
-oz_dir_host = f"{os.path.dirname(os.getcwd())}\oz-files"   # Host
+oz_dir_host = f"{os.getcwd()}\oz-files"   # Host
 oz_dir_container = "/root/oz-files"       # Container
 # Update directories if a command line argument was specified
 if len(sys.argv) > 1:
@@ -155,7 +155,7 @@ print(f"Oz files are in {oz_dir_host} on the host.")
 print(f"They will be placed in {oz_dir_container} inside the container.")
 # Build and run container
 print("Building container, please wait...")
-command = f"docker build -t {container} .."
+command = f"docker build -t {container} ."
 subprocess.run(command, shell=True)
 command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {container}'
 subprocess.run(command, shell=True)
