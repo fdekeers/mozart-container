@@ -157,7 +157,7 @@ print(f"They will be placed in {oz_dir_container} inside the container.")
 print("Building container, please wait...")
 command = f"docker build -t {container} ."
 subprocess.run(command, shell=True)
-command = f'docker run --rm --name {container} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {container}'
+command = f'docker run --rm --name {container} -it -P --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {container}'
 subprocess.run(command, shell=True)
 
 
