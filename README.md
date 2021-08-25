@@ -53,9 +53,7 @@ Please keep the default installation directory,
 
 The image has been tested and approved on the following platforms:
 - Linux
-    - Ubuntu 20.04
-    - Ubuntu 18.04.5
-    - Ubuntu 16.04.7
-    - Debian 11.0.0
+    - Ubuntu 20.04, 18.04, 16.04
+    - Debian 11
 - Windows
     - Windows 10

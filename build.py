@@ -22,7 +22,7 @@ if system == "Linux":
     os.system("linux/build.sh %s" % oz_dir_host)
 elif system == "Windows":
     print("Your OS is Windows.")
-    execfile("windows\build.py %s" % oz_dir_host)
+    os.system("python windows\\build.py %s" % oz_dir_host)
 elif system == "Darwin":  # MacOS
     # Run MacOS script
     print("Your OS is MacOS.")
