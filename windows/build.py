@@ -142,22 +142,22 @@ ip = f"{ip}:0.0"
 ##########################################
 
 # Name of the container
-container = "mozart-1.4.0"
+image = "mozart-1.4.0"
 # Directories for Oz files
 oz_dir_host = f"{os.getcwd()}\oz-files"   # Host
 oz_dir_container = "/root/oz-files"       # Container
 # Update directories if a command line argument was specified
-if len(sys.argv) > 1:
-    path = sys.argv[1]  # New Oz directory
+if len(sys.argv) > 2:
+    path = sys.argv[2]  # New Oz directory
     oz_dir_host = os.path.abspath(path)
     oz_dir_container = f"/root/{os.path.basename(path)}"
 print(f"Oz files are in {oz_dir_host} on the host.")
 print(f"They will be placed in {oz_dir_container} inside the container.")
 # Build and run container
 print("Building container, please wait...")
-command = f"docker build -t {container} ."
+command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
-command = f'docker run --rm --name {container} -it -P --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {container}'
+command = f'docker run --rm --name {sys.argv[1]} -it -P --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
 
 

@@ -5,7 +5,10 @@ depending on the host architecture.
 Author: Francois De Keersmaeker
 '''
 
-import sys, os, platform
+import sys, os, platform, subprocess
+
+# Check OS
+system = platform.system()
 
 oz_dir_host = ""
 
@@ -13,16 +16,23 @@ oz_dir_host = ""
 if len(sys.argv) > 1:
     oz_dir_host = sys.argv[1]  # Arg 1: Oz directory on the host
 
-# Check OS
-system = platform.system()
+# Define name of the container, based on the number of already running containers
+container = "mozart-1.4.0_"
+command = "docker ps -a -f ancestor=mozart-1.4.0"
+if system == "Linux":
+    # Linux command needs to add `sudo`
+    command = "sudo " + command
+output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0]
+lines = output.count("\n")
+container += str(lines - 1)
 
 # Run script for the identified OS
 if system == "Linux":
     print("Your OS is Linux.")
-    os.system("linux/build.sh %s" % oz_dir_host)
+    os.system("linux/build.sh %s %s" % (container, oz_dir_host))
 elif system == "Windows":
     print("Your OS is Windows.")
-    os.system("python windows\\build.py %s" % oz_dir_host)
+    os.system("python windows\\build.py %s %s" % (container, oz_dir_host))
 elif system == "Darwin":  # MacOS
     print("Your OS is MacOS.")
-    os.system("mac-os/build.sh %s" % oz_dir_host)
+    os.system("mac-os/build.sh %s %s" % (container, oz_dir_host))
