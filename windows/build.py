@@ -112,7 +112,7 @@ if vcxsrv_exec is None:
     exit(-1)
 # Launch executable with config file
 print("Starting X11 server.")
-command = f'"{vcxsrv_exec}" -run config.xlaunch'
+command = f'"{vcxsrv_exec}" -run windows\\config.xlaunch'
 subprocess.run(command, shell=True)
 
 
