@@ -10,7 +10,7 @@ import sys, os, platform
 oz_dir_host = ""
 
 # Get command line arguments
-if len(sys.argv) > 0:
+if len(sys.argv) > 1:
     oz_dir_host = sys.argv[1]  # Arg 1: Oz directory on the host
 
 # Check OS
