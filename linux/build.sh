@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bash script to build and deploy the Mozart 1.4.0 Docker container.
+# Bash script to build and deploy the Mozart 1.4.0 Docker container on Linux.
 #
 # Author: Francois De Keersmaeker
 
@@ -19,7 +19,7 @@ echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 
 # Disable host access control, to allow GUI applications from containers
-xhost +
+xhost +local:*
 
 # Build and run the container
 echo "Building container, please wait..."
@@ -30,3 +30,6 @@ sudo docker run --rm --name $CONTAINER -it -P \
     --env="DISPLAY" \
     --net=host \
     $CONTAINER
+
+# Enable host access control back
+xhost -local:*
