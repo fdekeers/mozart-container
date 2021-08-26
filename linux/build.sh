@@ -6,17 +6,25 @@
 
 # Variables
 IMAGE="mozart-1.4.0"  # Name of the container image
+INSTANCE=$IMAGE  # Name of the container instance
 OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
 OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
 
-# Second argument is the directory containing the Oz files
-if [[ $# -gt 1 ]]
+# First (optional) argument is the host directory containing the Oz files
+if [[ $# -gt 0 ]]
 then
-    OZ_DIR_HOST="$(cd "$(dirname "$2")"; pwd)/$(basename "$2")"
+    OZ_DIR_HOST="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
     OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
 fi
 echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
+
+# Second (optional) argument is the name of the container instance
+if [[ $# -gt 1 ]]
+then
+    INSTANCE=$2
+fi
+echo "The container instance will be named '$INSTANCE'."
 
 # Disable host access control for X11, to allow GUI applications from containers
 xhost +local:*
@@ -24,7 +32,7 @@ xhost +local:*
 # Build and run the container
 echo "Building container, please wait..."
 sudo docker build -t $IMAGE .
-sudo docker run --rm --name $1 -it -P \
+sudo docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
     --env="DISPLAY" \

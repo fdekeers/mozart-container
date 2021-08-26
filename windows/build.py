@@ -138,27 +138,40 @@ if ip is None:
 ip = f"{ip}:0.0"
 
 
-##########################################
-# STEP 4: Build and run Docker container #
-##########################################
+######################################
+# STEP 3: Get command line arguments #
+######################################
 
 # Name of the container
-image = "mozart-1.4.0"
+image = "mozart-1.4.0"  # Image
+instance = image        # Instance
 # Directories for Oz files
 oz_dir_host = f"{os.getcwd()}\oz-files"   # Host
 oz_dir_container = "/root/oz-files"       # Container
-# Update directories if a command line argument was specified
-if len(sys.argv) > 2:
-    path = sys.argv[2]  # New Oz directory
+
+# First (optional) argument is the directory containing the Oz files
+if len(sys.argv) > 1:
+    path = sys.argv[1]  # New Oz directory
     oz_dir_host = os.path.abspath(path)
     oz_dir_container = f"/root/{os.path.basename(path)}"
 print(f"Oz files are in {oz_dir_host} on the host.")
 print(f"They will be placed in {oz_dir_container} inside the container.")
+
+# Second (optional) argument is the name of the container instance
+if len(sys.argv) > 2:
+    instance = sys.argv[2]
+print(f"The container instance will be named '{instance}'.")
+
+
+##########################################
+# STEP 5: Build and run Docker container #
+##########################################
+
 # Build and run container
 print("Building container, please wait...")
 command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
-command = f'docker run --rm --name {sys.argv[1]} -it -P --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
+command = f'docker run --rm --name {sys.argv[1]} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
 
 
