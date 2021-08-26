@@ -3,8 +3,8 @@
 #
 # Author: Francois De Keersmaeker
 
-# Base image: 64-bit Fedora 34
-FROM fedora:34
+# Base image: 64-bit CentOS 8
+FROM centos:8
 
 # Update/Install required packages
 RUN yum update -y
@@ -22,6 +22,7 @@ RUN yum install -y libX11-devel.i686
 RUN yum install -y libnsl.i686
 RUN yum install -y gmp-devel.i686
 RUN ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3
+RUN yum install -y net-tools
 
 # Install Mozart 1.4.0
 WORKDIR /usr
