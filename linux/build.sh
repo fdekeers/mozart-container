@@ -18,7 +18,7 @@ fi
 echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 
-# Disable host access control, to allow GUI applications from containers
+# Disable host access control for X11, to allow GUI applications from containers
 xhost +local:*
 
 # Build and run the container
@@ -31,5 +31,8 @@ sudo docker run --rm --name $1 -it -P \
     --net=host \
     $IMAGE
 
-# Enable host access control back
-xhost -local:*
+# Clean: re-enable host access control for X11, if all the containers are stopped
+if [[ -z $(docker ps -aq -f ancestor=$IMAGE) ]]
+then
+    xhost -local:*
+fi

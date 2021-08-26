@@ -18,13 +18,14 @@ if len(sys.argv) > 1:
 
 # Define name of the container, based on the number of already running containers
 container = "mozart-1.4.0_"
-command = "docker ps -a -f ancestor=mozart-1.4.0"
+command = "docker ps -aq -f ancestor=mozart-1.4.0"
 if system == "Linux":
     # Linux command needs to add `sudo`
     command = "sudo " + command
 output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0]
 lines = output.count("\n")
-container += str(lines - 1)
+print(lines)
+container += str(lines)
 
 # Run script for the identified OS
 if system == "Linux":
