@@ -72,6 +72,7 @@ IP=$(ipconfig getifaddr en0)  # Host IP address
 # Build and run the container
 echo "Building container, please wait..."
 docker build -t $IMAGE .
+# Ports range: 32768–60999
 docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \

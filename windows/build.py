@@ -161,6 +161,7 @@ print(f"The container instance will be named '{instance}'.")
 ##########################################
 
 # Build and run container
+# Ports range: 32768–60999
 print("Building container, please wait...")
 command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
