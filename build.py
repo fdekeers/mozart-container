@@ -7,6 +7,11 @@ Author: Francois De Keersmaeker
 
 import sys, os, platform, subprocess
 
+# Check correct python version
+if int(sys.version[0]) < 3:
+    print("You need python version 3 at least for this builder")
+    sys.exit()
+
 # Check OS
 system = platform.system()
 
@@ -22,7 +27,7 @@ command = "docker ps -aq -f ancestor=mozart-1.4.0"
 if system == "Linux":
     # Linux command needs to add `sudo`
     command = "sudo " + command
-output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0]
+output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
 lines = output.count("\n")
 print(lines)
 container += str(lines)

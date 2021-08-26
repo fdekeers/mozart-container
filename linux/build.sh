@@ -30,6 +30,8 @@ echo "The container instance will be named '$INSTANCE'."
 xhost +local:*
 
 # Build and run the container
+echo "Starting docker daemon"
+sudo systemctl start docker
 echo "Building container, please wait..."
 sudo docker build -t $IMAGE .
 sudo docker run --rm --name $INSTANCE -it \
