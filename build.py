@@ -7,11 +7,6 @@ Author: Francois De Keersmaeker
 
 import sys, os, platform, subprocess
 
-# Check correct python version
-if int(sys.version[0]) < 3:
-    print("You need python version 3 at least for this builder")
-    sys.exit()
-
 # Check OS
 system = platform.system()
 
