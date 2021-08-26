@@ -75,4 +75,5 @@ docker build -t $IMAGE .
 docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
+    --net=host \
     $IMAGE
