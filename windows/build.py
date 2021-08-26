@@ -164,7 +164,7 @@ print(f"The container instance will be named '{instance}'.")
 print("Building container, please wait...")
 command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
-command = f'docker run --rm --name {instance} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} --net=host {image}'
+command = f'docker run --rm --name {instance} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
 
 
