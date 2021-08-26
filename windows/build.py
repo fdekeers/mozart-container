@@ -6,9 +6,6 @@ Author: Francois De Keersmaeker
 
 import os, sys, subprocess, hashlib
 
-# Full name of the X11 server network interface
-x11_interface = "VirtualBox Host-Only Ethernet Adapter"
-
 
 #############
 # Functions #
@@ -43,19 +40,14 @@ def find_file(filename):
     return None
 
 
-def get_xserv_ip(filename):
+def get_ip(filename):
     '''
-    Retrieves the IPv4 address associated to an X11 server,
-    from an `ipconfig` file output.
-    Returns `None` if no X11 IPv4 address was found.
+    Retrieves the IPv4 address from an `ipconfig` file output.
+    Returns `None` if no IPv4 address was found.
     '''
-    found_interface = False
     with open(filename, "r") as file:
         for line in file.readlines():
-            if not found_interface and x11_interface in line:
-                # Found the information block about the interface
-                found_interface = True
-            if found_interface and "IPv4" in line:
+            if "IPv4" in line:
                 # Found the line with the IPv4 address, extract address
                 ip = line.split(":")[1].strip()
                 ip = ip.partition("(")[0].strip()
@@ -107,7 +99,7 @@ else:  # VcXsrv is already installed
 
 if vcxsrv_exec is None:
     # Executable not found, exit
-    sys.stderr.write("Could not find VcXsrv executable.")
+    sys.stderr.write("Could not find VcXsrv executable. ")
     sys.stderr.write("Please check VcXsrv installation.")
     exit(-1)
 # Launch executable with config file
@@ -124,14 +116,15 @@ subprocess.run(command, shell=True)
 filename = ".ipconfig"
 command = f"ipconfig /all > {filename}"
 subprocess.run(command, shell=True)
-# Get the X11 server IPv4 address from file
-ip = get_xserv_ip(filename)
+# Get IPv4 address from file
+ip = get_ip(filename)
+print(f"Your local IPv4 address is {ip}")
 # Remove file
 os.remove(filename)
 # Check if IP was found
 if ip is None:
     # IP was not found, exit
-    sys.stderr.write("Could not find X11 server IP.")
+    sys.stderr.write("Could not find X11 server IP. ")
     sys.stderr.write("Please check VcXsrv installation.")
     exit(-1)
 # Add port to address
