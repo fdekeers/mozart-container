@@ -26,6 +26,8 @@ https://www.python.org/downloads/.
 
 ## Build and run the container
 
+First of all, make sure the Docker daemon is running on your machine.
+
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of the container.
 To run this script, simply run it with Python in this directory, with the following command:
 ```shell
@@ -40,19 +42,26 @@ If the argument is not specified, the default host folder to be shared is
 `./oz-files`.
 
 Notes:
+- On Linux, the user that runs the script must have `sudo` rights.
 - On Windows, the deployment script will first download and install the
 [X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
 [VcXsrv](https://sourceforge.net/projects/vcxsrv/),
 that provides GUI capabilities to applications inside containers.
 Please keep the default installation directory,
 `C:\Program Files\VcXsrv`.
-- On Linux, the user that runs the script must have `sudo` rights.
-
+- On MacOS, additional necessary tools are installed during the execution of the script:
+    - [Homebrew](https://brew.sh/index_fr), a package manager to install other software
+    - `socat`, a tool to forward sockets
+    - A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
+    [XQuartz](https://www.xquartz.org/),
+    that provides GUI capabilities to applications inside containers.
 
 ## Support for different platforms
 
 The image has been tested and approved on the following platforms:
 - Linux
-    - Ubuntu 20.04
+    - Ubuntu 20.04, 18.04, 16.04
+    - Debian 11
 - Windows
     - Windows 10
+- MacOS

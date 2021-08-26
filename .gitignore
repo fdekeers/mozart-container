@@ -1,5 +1,10 @@
-oz-files
-ipconfig.txt
-vcxsrv-64.1.20.9.0.installer.exe
+# Temporary Oz files
 *.oz~
-build-2.py
+*.oz#
+
+# Default shared folder
+oz-files
+
+# Windows temporary files
+windows/.ipconfig
+windows/vcxsrv-64.1.20.9.0.installer.exe
