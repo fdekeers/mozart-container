@@ -25,7 +25,7 @@ echo "Please log out and log back in to your MacOS session to confirm installati
 
 
 ################################
-# Step 2: Setup the X11 server #
+# STEP 2: Setup the X11 server #
 ################################
 
 # Redirect socket to the X11 server
@@ -37,29 +37,42 @@ echo "Please go to the preferences of XQuartz (top left corner of the screen),"
 echo "'Security' tab, and check both checkboxes."
 
 
-##########################################
-# STEP 3: Build and run Docker container #
-##########################################
+######################################
+# STEP 3: Get command line arguments #
+######################################
 
-# Variables
-IP=$(ipconfig getifaddr en0)  # Host IP address
 IMAGE="mozart-1.4.0"  # Name of the container
+INSTANCE=$IMAGE  # Name of the container instance
 OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
 OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
 
-# Update directories if a command line argument was specified
+# First (optional) argument is the host directory containing the Oz files
 if [[ $# -gt 0 ]]
 then
-    OZ_DIR_HOST="$(cd "$(dirname "$2")"; pwd)/$(basename "$2")"
+    OZ_DIR_HOST="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
     OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
 fi
 echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 
+# Second (optional) argument is the name of the container instance
+if [[ $# -gt 1 ]]
+then
+    INSTANCE=$2
+fi
+echo "The container instance will be named '$INSTANCE'."
+
+
+##########################################
+# STEP 4: Build and run Docker container #
+##########################################
+
+IP=$(ipconfig getifaddr en0)  # Host IP address
+
 # Build and run the container
 echo "Building container, please wait..."
 docker build -t $IMAGE .
-docker run --rm --name $1 -it -P \
+docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE

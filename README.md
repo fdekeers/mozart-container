@@ -27,6 +27,7 @@ https://www.python.org/downloads/.
 ## Build and run the container
 
 First of all, make sure the Docker daemon is running on your machine.
+(If you use Linux, it will be automatically started when deploying the container.)
 
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of the container.
 To run this script, simply run it with Python in this directory, with the following command:
