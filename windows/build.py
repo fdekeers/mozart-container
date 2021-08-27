@@ -99,13 +99,17 @@ else:  # VcXsrv is already installed
 
 if vcxsrv_exec is None:
     # Executable not found, exit
-    sys.stderr.write("Could not find VcXsrv executable. ")
-    sys.stderr.write("Please check VcXsrv installation.")
+    sys.stderr.write("Could not find VcXsrv executable.\n")
+    sys.stderr.write("Please check that the VcXsrv installation was correctly done in the directory C:\\Program Files\\VcXsrv.")
     exit(-1)
-# Launch executable with config file
-print("Starting X11 server.")
-command = f'"{vcxsrv_exec}" -run windows\\config.xlaunch'
-subprocess.run(command, shell=True)
+
+# Launch VcXsrv executable with config file, if it has not been already started
+command = 'tasklist /fi "ImageName eq vcxsrv.exe" /fo csv 2>NUL | find /I "vcxsrv.exe" > NUL'
+if subprocess.run(command, shell=True).returncode != 0:
+    # VcXsrv has not been started yet
+    print("Starting X11 server.")
+    command = f'"{vcxsrv_exec}" -run windows\\config.xlaunch'
+    subprocess.run(command, shell=True)
 
 
 ########################################
