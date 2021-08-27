@@ -42,7 +42,7 @@ parser.add_argument("-n", "--name", type=str,
                     help="name of the container instance")
 # Third argument: Port mappings between host and container
 parser.add_argument("-p", "--port", type=str, action="append",
-                    help="port mapping host_port:container_port")
+                    help="port mapping host_port:container_port (for multiple mappings, use this option multiple times)")
 # Parse arguments
 args = parser.parse_args()
 shared_dir = os.path.abspath(args.directory) if args.directory else shared_dir
@@ -50,7 +50,7 @@ instance = args.name if args.name else instance
 port_mappings = args.port if args.port else port_mappings
 
 # Argument formatting for OS-specific scripts
-args = "%s %s" % (shared_dir, instance)
+args = "\"%s\" %s" % (shared_dir, instance)
 for port in port_mappings:
     args += " %s" % port
 
