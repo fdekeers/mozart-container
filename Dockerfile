@@ -36,4 +36,4 @@ RUN rm -f mozart-1.4.0.20080704-linux-i486.tar.gz
 
 WORKDIR /root
 # Run Mozart without displaying error messages and while still having access to the terminal
-CMD oz 2> /dev/null & /bin/bash
+CMD nohup oz & /bin/bash
