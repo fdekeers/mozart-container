@@ -66,3 +66,33 @@ The image has been tested and approved on the following platforms:
 - Windows
     - Windows 10
 - MacOS
+
+
+## Limitations
+
+When binding a socket on a port, the port can be chosen automatically in the range of available ports,
+which is 32768 – 60999 (according to https://en.wikipedia.org/wiki/Ephemeral_port
+and observation), with the following instruction, where `X` is a declared but not assigned variable:
+```oz
+{Server bind(port:X)}
+```
+
+However, as *host networking* is not available on Windows or MacOS
+(https://docs.docker.com/network/host/), this would require to map this entire
+range of ports to host ports, in order to accomodate all the possible ports.
+This is untractable, and this instruction can therefore not be used on the
+Windows or MacOS versions of the container.
+Instead, the port to bind to can be set by the programmer with the following
+instruction, where `PortNumber` is the number of the port:
+```oz
+{Server bind(takePort:PortNumber)}
+```
+
+In this way, only the port used for binding must be published to the host,
+with the option `-p` in the `docker run` command.
+By default, on Windows and MacOS, the following ports are published:
+- Container port 33000 mapped to host port 33000
+- Container port 34000 mapped to host port 34000
+- Container port 35000 mapped to host port 35000
+- Container port 36000 mapped to host port 36000
+- Container port 37000 mapped to host port 37000

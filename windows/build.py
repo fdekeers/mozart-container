@@ -160,12 +160,14 @@ print(f"The container instance will be named '{instance}'.")
 # STEP 5: Build and run Docker container #
 ##########################################
 
-# Build and run container
-# Ports range: 32768–60999
+# Build container
 print("Building container, please wait...")
 command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
-command = f'docker run --rm --name {instance} -it --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
+# Run an instance of the container
+# The published ports can be modified here
+published_ports = "-p 33000:33000 -p 34000:34000 -p 35000:35000 -p 36000:36000 -p 37000:37000"
+command = f'docker run --rm --name {instance} -it {published_ports} --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
 
 

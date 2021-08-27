@@ -69,11 +69,14 @@ echo "The container instance will be named '$INSTANCE'."
 
 IP=$(ipconfig getifaddr en0)  # Host IP address
 
-# Build and run the container
+# Build container image
 echo "Building container, please wait..."
 docker build -t $IMAGE .
-# Ports range: 32768–60999
+# Run an instance of the container
+# The published ports can be modified here
+PUBLISHED-PORTS="-p 33000:33000 -p 34000:34000 -p 35000:35000 -p 36000:36000 -p 37000:37000"
 docker run --rm --name $INSTANCE -it \
+    $PUBLISHED_PORTS \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE
