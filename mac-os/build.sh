@@ -55,13 +55,14 @@ echo "The container instance will be named '$INSTANCE'."
 
 # Remaining arguments are the port mappings host_port:container_port
 PUBLISHED_PORTS=""
-i=1
+i=0
 for PORT in "$@"
 do
-    if [[ $i -gt 2 ]]
+    if [[ $i -gt 1 ]]
     then
         PUBLISHED_PORTS="$PUBLISHED_PORTS-p $PORT "
     fi
+    ((i=i+1))
 done
 
 
