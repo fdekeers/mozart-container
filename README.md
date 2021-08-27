@@ -24,23 +24,46 @@ Python must be installed.
 Please follow the instructions on the Python website:
 https://www.python.org/downloads/.
 
-## Build and run the container
+## Build and run instances of the container
 
 First of all, make sure the Docker daemon is running on your machine.
 (If you use Linux, it will be automatically started when deploying the container.)
 
-A Python script ([build.py](./build.py)) is provided to ease the building and deployment of the container.
+A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
 To run this script, simply run it with Python in this directory, with the following command:
 ```shell
-python build.py [OZ_DIR_HOST]
+python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 
-The first command line argument, `OZ_DIR_HOST`, is optional,
-and indicates the directory on the host that will be shared with the container.
-This directory can be used to store Oz source code files.
+On Windows, you can also simply double-click on the [windows.bat](./windows.bat)
+file to run the deployment script and build and run the container,
+with the default values for the optional command line arguments,
+that will be described below.
+
+The `-d` option allows to provide the path of a host directory
+that will be shared with the container.
+This directory can be used, for example, to store Oz source code files.
 Inside the container, this directory will be located in `/root/DIR_BASENAME`.
-If the argument is not specified, the default host folder to be shared is
+If the argument is not specified, the default host directory to be shared is
 `./oz-files`.
+
+The `-n` option allows to provide the name to give to the container instance.
+Please note that two running instances can not have the same name.
+If the argument is not specified, the default value is `mozart-1.4.0_n`,
+where `n` is the index of this instance, starting from 0.
+
+The `-p` option allows to provide the port mappings between the host ports
+and the container ports, with the syntax `host_port:container_port`.
+This option is ignored on Linux, since *host networking* is used,
+which means that the container uses the host network stack directly.
+To provide multiple mappings, simply provide this option multiple times.
+If this option is not specified, the default port mappings are
+the following:
+- 33000:33000
+- 34000:34000
+- 35000:35000
+- 36000:36000
+- 37000:37000
 
 Notes:
 - On Linux, the user that runs the script must have `sudo` rights.
@@ -89,10 +112,4 @@ instruction, where `PortNumber` is the number of the port:
 ```
 
 In this way, only the port used for binding must be published to the host,
-with the option `-p` in the `docker run` command.
-By default, on Windows and MacOS, the following ports are published:
-- Container port 33000 mapped to host port 33000
-- Container port 34000 mapped to host port 34000
-- Container port 35000 mapped to host port 35000
-- Container port 36000 mapped to host port 36000
-- Container port 37000 mapped to host port 37000
+with the command line option `-p` of the deployment script.

@@ -10,21 +10,19 @@ INSTANCE=$IMAGE  # Name of the container instance
 OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
 OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
 
-# First (optional) argument is the host directory containing the Oz files
-if [[ $# -gt 0 ]]
-then
-    OZ_DIR_HOST="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
-    OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
-fi
+# Command line arguments
+# First argument is the host directory containing the Oz files
+OZ_DIR_HOST=$1
+OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
 echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 
-# Second (optional) argument is the name of the container instance
-if [[ $# -gt 1 ]]
-then
-    INSTANCE=$2
-fi
+# Second argument is the name of the container instance
+INSTANCE=$2
 echo "The container instance will be named '$INSTANCE'."
+
+# Remaining arguments are the port mappings, useless in the case of Linux,
+# since host networking is used.
 
 # Disable host access control for X11, to allow GUI applications from containers
 xhost +local:*

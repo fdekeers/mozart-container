@@ -124,8 +124,8 @@ os.remove(filename)
 # Check if IP was found
 if ip is None:
     # IP was not found, exit
-    sys.stderr.write("Could not find X11 server IP. ")
-    sys.stderr.write("Please check VcXsrv installation.")
+    sys.stderr.write("Could not find X11 server IP.\n")
+    sys.stderr.write("Please check that the VcXsrv installation was correctly done in the directory C:\\Program Files\\VcXsrv.")
     exit(-1)
 # Add port to address
 ip = f"{ip}:0.0"
@@ -135,39 +135,34 @@ ip = f"{ip}:0.0"
 # STEP 3: Get command line arguments #
 ######################################
 
-# Name of the container
-image = "mozart-1.4.0"  # Image
-instance = image        # Instance
-# Directories for Oz files
-oz_dir_host = f"{os.getcwd()}\oz-files"   # Host
-oz_dir_container = "/root/oz-files"       # Container
+# First argument: path of shared folder on the host
+shared_dir_host = sys.argv[1]
+shared_dir_container = f"/root/{os.path.basename(shared_dir_host)}"
+print(f"The path of the host shared directory is {shared_dir_host}.")
+print(f"It will be placed in {shared_dir_container} in the container.")
 
-# First (optional) argument is the directory containing the Oz files
-if len(sys.argv) > 1:
-    path = sys.argv[1]  # New Oz directory
-    oz_dir_host = os.path.abspath(path)
-    oz_dir_container = f"/root/{os.path.basename(path)}"
-print(f"Oz files are in {oz_dir_host} on the host.")
-print(f"They will be placed in {oz_dir_container} inside the container.")
-
-# Second (optional) argument is the name of the container instance
-if len(sys.argv) > 2:
-    instance = sys.argv[2]
+# Second argument is the name of the container instance
+instance = sys.argv[2]
 print(f"The container instance will be named '{instance}'.")
+
+# Remaining arguments: port mappings host_port:container_port
+port_mappings = ""
+for port in sys.argv[3:]:
+    port_mappings += f"-p {port} "
 
 
 ##########################################
 # STEP 5: Build and run Docker container #
 ##########################################
 
+# Name of the container image
+image = "mozart-1.4.0"
 # Build container
 print("Building container, please wait...")
 command = f"docker build -t {image} ."
 subprocess.run(command, shell=True)
 # Run an instance of the container
-# The published ports can be modified here
-published_ports = "-p 33000:33000 -p 34000:34000 -p 35000:35000 -p 36000:36000 -p 37000:37000"
-command = f'docker run --rm --name {instance} -it {published_ports} --volume="{oz_dir_host}:{oz_dir_container}:rw" -e DISPLAY={ip} {image}'
+command = f'docker run --rm --name {instance} -it {port_mappings} --volume="{shared_dir_host}:{shared_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
 
 

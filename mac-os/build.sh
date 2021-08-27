@@ -42,25 +42,27 @@ echo "'Security' tab, and check both checkboxes."
 ######################################
 
 IMAGE="mozart-1.4.0"  # Name of the container
-INSTANCE=$IMAGE  # Name of the container instance
-OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
-OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
 
-# First (optional) argument is the host directory containing the Oz files
-if [[ $# -gt 0 ]]
-then
-    OZ_DIR_HOST="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
-    OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
-fi
+# First argument is the host directory containing the Oz files
+OZ_DIR_HOST=$1
+OZ_DIR_COTAINER="/root/$(basename $OZ_DIR_HOST)"
 echo "Oz files are in $OZ_DIR_HOST on the host."
 echo "They will be placed in $OZ_DIR_COTAINER inside the container."
 
-# Second (optional) argument is the name of the container instance
-if [[ $# -gt 1 ]]
-then
-    INSTANCE=$2
-fi
+# Second argument is the name of the container instance
+INSTANCE=$2
 echo "The container instance will be named '$INSTANCE'."
+
+# Remaining arguments are the port mappings host_port:container_port
+PUBLISHED_PORTS=""
+i=1
+for PORT in "$@"
+do
+    if [[ $i -gt 2 ]]
+    then
+        PUBLISHED_PORTS="$PUBLISHED_PORTS-p $PORT "
+    fi
+done
 
 
 ##########################################
@@ -73,8 +75,6 @@ IP=$(ipconfig getifaddr en0)  # Host IP address
 echo "Building container, please wait..."
 docker build -t $IMAGE .
 # Run an instance of the container
-# The published ports can be modified here
-PUBLISHED-PORTS="-p 33000:33000 -p 34000:34000 -p 35000:35000 -p 36000:36000 -p 37000:37000"
 docker run --rm --name $INSTANCE -it \
     $PUBLISHED_PORTS \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
