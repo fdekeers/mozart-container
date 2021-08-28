@@ -54,6 +54,9 @@ where `n` is the index of this instance, starting from 0.
 
 The `-p` option allows to provide the port mappings between the host ports
 and the container ports, with the syntax `host_port:container_port`.
+More precisely, this means that, for every mapping,
+the port `container_port` inside the container can be accessed from
+the host port `host_port`.
 This option is ignored on Linux, since *host networking* is used,
 which means that the container uses the host network stack directly.
 To provide multiple mappings, simply provide this option multiple times.

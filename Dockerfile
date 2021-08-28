@@ -21,7 +21,7 @@ RUN yum install -y zlib-devel.i686
 RUN yum install -y libX11-devel.i686
 RUN yum install -y libnsl.i686
 RUN yum install -y gmp-devel.i686
-RUN ln -s /usr/lib/libgmp.so.10.4.0 /usr/lib/libgmp.so.3
+RUN ln -s /usr/lib/libgmp.so.10.3.2 /usr/lib/libgmp.so.3
 RUN yum install -y net-tools
 
 # Install Mozart 1.4.0
