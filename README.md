@@ -34,6 +34,7 @@ To run this script, simply run it with Python in this directory, with the follow
 ```shell
 python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
+(or python3 instead of python to suit your OS' python command)
 
 On Windows, you can also simply double-click on the [windows.bat](./windows.bat)
 file to run the deployment script and build and run the container,

@@ -72,9 +72,20 @@ done
 
 IP=$(ipconfig getifaddr en0)  # Host IP address
 
-# Build container image
-echo "Building container, please wait..."
-docker build -t $IMAGE .
+# Load container image if not loaded
+var=$(docker images)
+if [[ $var != *"mozart-1.4.0"* ]] || [[ $var != *"centos"* ]]
+then
+    echo "Loading docker images, please wait..."
+fi
+if [[ $var != *"centos"* ]]
+then
+    docker load < images/centos.tar
+fi
+if [[ $var != *"mozart-1.4.0"* ]]
+then
+    docker load < images/mozart-1.4.0.tar
+fi
 # Run an instance of the container
 docker run --rm --name $INSTANCE -it \
     $PUBLISHED_PORTS \

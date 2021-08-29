@@ -27,11 +27,25 @@ echo "The container instance will be named '$INSTANCE'."
 # Disable host access control for X11, to allow GUI applications from containers
 xhost +local:*
 
-# Build and run the container
+# Load container images
 echo "Starting docker daemon."
 sudo systemctl start docker
-echo "Building container, please wait..."
-sudo docker build -t $IMAGE .
+# Checking if images are already loaded, load them if not
+var=$(sudo docker images)
+if [[ $var != *"mozart-1.4.0"* ]] || [[ $var != *"centos"* ]]
+then
+    echo "Loading docker images, please wait..."
+fi
+if [[ $var != *"centos"* ]]
+then
+    sudo docker load < images/centos.tar
+fi
+if [[ $var != *"mozart-1.4.0"* ]]
+then
+    sudo docker load < images/mozart-1.4.0.tar
+fi
+# Run the container
+echo "Running the container."
 sudo docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \

@@ -161,10 +161,17 @@ for port in sys.argv[3:]:
 
 # Name of the container image
 image = "mozart-1.4.0"
-# Build container
-print("Building container, please wait...")
-command = f"docker build -t {image} ."
-subprocess.run(command, shell=True)
+# Load container images if not loaded
+command = f"docker images"
+output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
+if "mozart-1.4.0" not in output or "centos" not in output:
+    print("Loading container images, please wait...")
+    if "centos" not in output:
+        command = f"docker load -i images\\centos.tar ."
+        subprocess.run(command, shell=True)
+    if "mozart-1.4.0" not in output:
+        command = f"docker load -i images\\mozart-1.4.0.tar ."
+        subprocess.run(command, shell=True)
 # Run an instance of the container
 command = f'docker run --rm --name {instance} -it {port_mappings} --volume="{shared_dir_host}:{shared_dir_container}:rw" -e DISPLAY={ip} {image}'
 subprocess.run(command, shell=True)
