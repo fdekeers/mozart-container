@@ -53,7 +53,7 @@ Toolbar=lr(glue:we
 TextHandle
  
 Window={QTk.build td(Toolbar
-                     text(glue:nswe handle:TextHandle bg:black tdscrollbar:true))}
+                     text(glue:nswe handle:TextHandle bg:white tdscrollbar:true))}
  
 {Window show}
 
