@@ -17,7 +17,7 @@ http://mozart2.org/mozart-v1/doc-1.4.0/.
 
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit Docker's installation instructions for your machine:
-https://docs.docker.com/get-docker/.
+https://docs.docker.com/get-docker/. Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the Docker installation guide for Windows. 
 
 Additionally, to run the script to build and deploy the container,
 Python must be installed.
@@ -27,7 +27,7 @@ https://www.python.org/downloads/.
 ## Build and run instances of the container
 
 First of all, make sure the Docker daemon is running on your machine.
-(If you use Linux, it will be automatically started when deploying the container.)
+(If you use Linux, it will be automatically started when deploying the container. If you use Windows or MacOS, launching the Docker Desktop app will start the Docker daemon if it is not already running.)
 
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
 To run this script, simply run it with Python in this directory, with the following command:
@@ -89,6 +89,8 @@ The image has been tested and approved on the following platforms:
 - Linux
     - Ubuntu 20.04, 18.04, 16.04
     - Debian 11
+    - Fedora 34, 33
+    - Centos 8, 7
 - Windows
     - Windows 10
 - MacOS
@@ -96,7 +98,7 @@ The image has been tested and approved on the following platforms:
 
 ## Limitations
 
-When binding a socket on a port, the port can be chosen automatically in the range of available ports,
+In Oz, when binding a socket on a port, the port can be chosen automatically in the range of available ports,
 which is 32768 – 60999 (according to https://en.wikipedia.org/wiki/Ephemeral_port
 and observation), with the following instruction, where `X` is a declared but not assigned variable:
 ```oz
