@@ -129,7 +129,7 @@ end
 B = {New Buffer init(3)}
 
 thread 
-   for I in 0..5 do 
+   for I in 0..4 do 
       {Delay 1}
       {B put(I)}
    end
