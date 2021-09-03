@@ -167,10 +167,10 @@ output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communica
 if "mozart-1.4.0" not in output or "centos" not in output:
     print("Loading container images, please wait...")
     if "centos" not in output:
-        command = f"docker load -i images\\centos.tar ."
+        command = f"docker load -i images//centos.tar"
         subprocess.run(command, shell=True)
     if "mozart-1.4.0" not in output:
-        command = f"docker load -i images\\mozart-1.4.0.tar ."
+        command = f"docker load -i images//mozart-1.4.0.tar"
         subprocess.run(command, shell=True)
 # Run an instance of the container
 command = f'docker run --rm --name {instance} -it {port_mappings} --volume="{shared_dir_host}:{shared_dir_container}:rw" -e DISPLAY={ip} {image}'
