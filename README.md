@@ -17,7 +17,7 @@ http://mozart2.org/mozart-v1/doc-1.4.0/.
 
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit Docker's installation instructions for your machine:
-https://docs.docker.com/get-docker/. Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the Docker installation guide for Windows. 
+https://docs.docker.com/get-docker/. Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the Docker installation guide for Windows.
 
 Additionally, to run the script to build and deploy the container,
 Python must be installed.
@@ -37,9 +37,11 @@ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 (or python3 instead of python to suit your OS' python command)
 
 On Windows, you can also simply double-click on the [windows.bat](./windows.bat)
-file to run the deployment script and build and run the container,
+batch file to run the deployment script and build and run the container,
 with the default values for the optional command line arguments,
 that will be described below.
+You can not move the batch file, but you can create a shortcut to it
+that you can place wherever you want on your Windows machine.
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.

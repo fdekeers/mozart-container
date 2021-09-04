@@ -41,7 +41,7 @@ echo "'Security' tab, and check both checkboxes."
 # STEP 3: Get command line arguments #
 ######################################
 
-IMAGE="mozart-1.4.0"  # Name of the container
+IMAGE="fdekeers/mozart-1.4.0"  # Name of the container
 
 # First argument is the host directory containing the Oz files
 OZ_DIR_HOST=$1
@@ -72,23 +72,12 @@ done
 
 IP=$(ipconfig getifaddr en0)  # Host IP address
 
-# Load container image if not loaded
-var=$(docker images)
-if [[ $var != *"mozart-1.4.0"* ]] || [[ $var != *"centos"* ]]
-then
-    echo "Loading docker images, please wait..."
-fi
-if [[ $var != *"centos"* ]]
-then
-    docker load < images/centos.tar
-fi
-if [[ $var != *"mozart-1.4.0"* ]]
-then
-    docker load < images/mozart-1.4.0.tar
-fi
+# Pull container image from DockerHub
+echo "Pulling container image from DockerHub, please wait..."
+docker pull fdekeers/mozart-1.4.0
 # Run an instance of the container
 docker run --rm --name $INSTANCE -it \
-    $PUBLISHED_PORTS \
+    $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE

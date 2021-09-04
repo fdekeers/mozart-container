@@ -5,7 +5,7 @@
 # Author: Francois De Keersmaeker
 
 # Variables
-IMAGE="mozart-1.4.0"  # Name of the container image
+IMAGE="fdekeers/mozart-1.4.0"  # Name of the container image
 INSTANCE=$IMAGE  # Name of the container instance
 OZ_DIR_HOST="$(pwd)/oz-files"  # Directory containing the Oz files on the host
 OZ_DIR_COTAINER="/root/oz-files"  # Directory containing the Oz files inside the container
@@ -30,20 +30,9 @@ xhost +local:*
 # Load container images
 echo "Starting docker daemon."
 sudo systemctl start docker
-# Checking if images are already loaded, load them if not
-var=$(sudo docker images)
-if [[ $var != *"mozart-1.4.0"* ]] || [[ $var != *"centos"* ]]
-then
-    echo "Loading docker images, please wait..."
-fi
-if [[ $var != *"centos"* ]]
-then
-    sudo docker load < images/centos.tar
-fi
-if [[ $var != *"mozart-1.4.0"* ]]
-then
-    sudo docker load < images/mozart-1.4.0.tar
-fi
+# Pull container image from DockerHub
+echo "Pulling container image from DockerHub, please wait..."
+docker pull fdekeers/mozart-1.4.0
 # Run the container
 echo "Running the container."
 sudo docker run --rm --name $INSTANCE -it \
