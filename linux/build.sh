@@ -8,8 +8,8 @@
 #         INSTANCE_NAME is the name that will be given to the container instance
 #
 # Remark: This script should not be used directly,it should only be called by
-# the general `build.sh` python script in the parent directory.
-# Please use the `build.sh` python script to deploy instances of the mozart-1.4.0 container.
+# the general `build.py` python script in the parent directory.
+# Please use the `build.py` python script to deploy instances of the mozart-1.4.0 container.
 #
 # Author: Francois De Keersmaeker
 
@@ -43,7 +43,7 @@ echo "Starting docker daemon."
 sudo systemctl start docker
 # Pull container image from DockerHub
 echo "Pulling container image from DockerHub, please wait..."
-docker pull fdekeers/mozart-1.4.0
+docker pull $IMAGE
 
 # Run an instance of the container
 # Options:
@@ -51,7 +51,8 @@ docker pull fdekeers/mozart-1.4.0
 #     --name NAME -> set the container instance name
 #     -i (interactive) -> keep STDIN open even if not attached
 #     -t (tty) -> allocate a pseudo-TTY
-#     --volume="HOST_DIR:CONTAINER_DIR:MODE" -> share a directory between the host and the container, with the specified access mode
+#     --volume="HOST_DIR:CONTAINER_DIR:MODE" -> share a directory between the host and the container,
+#                                               with the specified access mode (rw for read-write)
 #     --env -> set environmental variables (here, "DISPLAY" to allow GUI applications inside the container)
 #     --net -> set networking mode (here, host networking)
 echo "Running the container."
@@ -62,9 +63,11 @@ sudo docker run --rm --name $INSTANCE -it \
     --net=host \
     $IMAGE
 
-# Re-enable host access control for X11, if all the containers are stopped,
-# to prevent unwanted clients to connect
+# Re-enable host access control for X11, if all the container instances are stopped,
+# to prevent unwanted clients to connect.
+# Check if the list of running instances of the image fdekeers/mozart-1.4.0 is empty
 if [[ -z $(docker ps -aq -f ancestor=$IMAGE) ]]
 then
+    # List is empty, re-enable host access control
     xhost -local:*
 fi

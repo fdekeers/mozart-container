@@ -12,8 +12,8 @@
 #             with the syntax "host_port:container_port"
 #
 # Remark: This script should not be used directly,it should only be called by
-# the general `build.sh` python script in the parent directory.
-# Please use the `build.sh` python script to deploy instances of the mozart-1.4.0 container.
+# the general `build.py` python script in the parent directory.
+# Please use the `build.py` python script to deploy instances of the mozart-1.4.0 container.
 #
 # Author: Francois De Keersmaeker
 
@@ -89,7 +89,7 @@ IP=$(ipconfig getifaddr en0)
 
 # Pull container image from DockerHub
 echo "Pulling container image from DockerHub, please wait..."
-docker pull fdekeers/mozart-1.4.0
+docker pull $IMAGE
 
 # Run an instance of the container
 # Options:
@@ -99,7 +99,8 @@ docker pull fdekeers/mozart-1.4.0
 #     -t (tty) -> allocate a pseudo-TTY
 #     -p HOST_PORT:CONTAINER_PORT -> port mappings between the host and the container.
 #         The specified container ports can be accessed from the mapped host ports.
-#     --volume="HOST_DIR:CONTAINER_DIR:MODE" -> share a directory between the host and the container, with the specified access mode
+#     --volume="HOST_DIR:CONTAINER_DIR:MODE" -> share a directory between the host and the container,
+#                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 docker run --rm --name $INSTANCE -it \
