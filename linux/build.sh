@@ -2,9 +2,10 @@
 
 # Bash script to build and deploy the Mozart 1.4.0 Docker container on Linux.
 #
-# Usage: linux/build.sh SHARED_DIR_HOST INSTANCE_NAME
-#     SHARED_DIR_HOST is the host directory that will be shared with the container
-#     INSTANCE_NAME is the name that will be given to the container instance
+# Usage, from the parent directory:
+#     linux/build.sh SHARED_DIR_HOST INSTANCE_NAME
+#         SHARED_DIR_HOST is the host directory that will be shared with the container
+#         INSTANCE_NAME is the name that will be given to the container instance
 #
 # Remark: This script should not be used directly,it should only be called by
 # the general `build.sh` python script in the parent directory.
@@ -46,13 +47,13 @@ docker pull fdekeers/mozart-1.4.0
 
 # Run an instance of the container
 # Options:
-#     --rm: container instance is removed when stopped
-#     --name NAME: set the container instance name
-#     -i (interactive): keep STDIN open even if not attached
-#     -t (tty): allocate a pseudo-TTY
-#     --volume="HOST_DIR:CONTAINER_DIR:MODE": share a directory between the host and the container, with the specified access mode
-#     --env: set environmental variables (here, "DISPLAY" to allow GUI applications inside the container)
-#     --net: set networking mode (here, host networking)
+#     --rm -> container instance is removed when stopped
+#     --name NAME -> set the container instance name
+#     -i (interactive) -> keep STDIN open even if not attached
+#     -t (tty) -> allocate a pseudo-TTY
+#     --volume="HOST_DIR:CONTAINER_DIR:MODE" -> share a directory between the host and the container, with the specified access mode
+#     --env -> set environmental variables (here, "DISPLAY" to allow GUI applications inside the container)
+#     --net -> set networking mode (here, host networking)
 echo "Running the container."
 sudo docker run --rm --name $INSTANCE -it \
     --volume="$SHARED_DIR_HOST:$SHARED_DIR_CONTAINER:rw" \
