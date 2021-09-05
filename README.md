@@ -4,7 +4,7 @@ This repository contains the setup files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
 inside a Docker container.
 
-The 1.4.0 version of Mozart proposes the most functionality,
+The 1.4.0 version of Mozart provides the most functionality,
 but its maintenance has been stopped,
 and it only exists as a 32-bit program.
 To overcome this, and allow it to run on the widest range of platforms,
@@ -34,7 +34,7 @@ To run this script, simply run it with Python in this directory, with the follow
 ```shell
 python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
-(or python3 instead of python to suit your OS' python command)
+(or `python3` instead of `python` to suit your OS' python command)
 
 On Windows, you can also simply double-click on the [windows.bat](./windows.bat)
 batch file to run the deployment script and build and run the container,
@@ -61,7 +61,8 @@ More precisely, this means that, for every mapping,
 the port `container_port` inside the container can be accessed from
 the host port `host_port`.
 This option is ignored on Linux, since *host networking* is used,
-which means that the container uses the host network stack directly.
+which means that the container uses the host network stack directly,
+and thus that the host and container share IP addresses and ports.
 To provide multiple mappings, simply provide this option multiple times.
 If this option is not specified, the default port mappings are
 the following:
