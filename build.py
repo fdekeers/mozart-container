@@ -24,7 +24,7 @@ Author: Francois De Keersmaeker
 
 import sys, os, platform, subprocess, argparse
 
-# Description of the script
+# Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
 
 # Check OS, as the behaviour depends on the host OS
@@ -39,13 +39,14 @@ if system == "Windows":
     # Windows does not have the same path syntax as Linux or MacOS
     shared_dir = "%s\\%s" %(os.getcwd(), shared_dir)
 else:
+    # Linux and MacOS path
     shared_dir = "%s/%s" %(os.getcwd(), shared_dir)
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
-image = "mozart-1.4.0"  # Name of the container image
+image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
-command = "docker ps -aq -f ancestor=%s" % image  # Command to get the list of already running instances of the image mozart-1.4.0
+command = "docker ps -aq -f ancestor=%s" % image  # Docker command to get the list of already running instances of the image mozart-1.4.0
 if system == "Linux":
     # Linux command needs to add `sudo`
     command = "sudo " + command
@@ -53,36 +54,37 @@ output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communica
 lines = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(lines)  # Append the index number to the instance name
 
-# Port mappings host:container
-# The container port can be accessed from the host port
+# Default port mappings host_port:container_port
+# Those mapping are used for Windows and MacOS,
+# such that the container ports can be accessed from the host IP address.
 port_mappings = ["33000:33000", "34000:34000", "35000:35000", "36000:36000", "37000:37000"]
 
 # Command line argument parsing, using an ArgumentParser object
-# Initialize argument parser
+# Initialize argument parser with the description of the script
 parser = argparse.ArgumentParser(description=description)
-# First argument: host shared directory
+# First argument: host shared directory, option `-d` or `--directory`
 help = """Host directory that will be shared with the container.
 Default is ./oz-files."""
 parser.add_argument("-d", "--directory", type=str,
                     help=help)
-# Second argument: container instance name
+# Second argument: container instance name, option `-n` or `--name`
 help = """Name of the container instance.
 Default is 'mozart_1.4.0_n', where n is the index of this instance."""
 parser.add_argument("-n", "--name", type=str,
                     help=help)
-# Third argument: Port mappings between host and container
+# Third argument: Port mappings between host and container, option `-p` or `--port`
 help = """Port mapping host_port:container_port.
 For multiple mappings, use this option multiple times.
 Default mappings are 33000:33000, 34000:34000, 35000:35000, 36000:36000, 37000:37000."""
 parser.add_argument("-p", "--port", type=str, action="append",
                     help=help)
-# Parse arguments
+# Parse arguments, and replace their default value if they are present
 args = parser.parse_args()
 shared_dir = os.path.abspath(args.directory) if args.directory else shared_dir
 instance = args.name if args.name else instance
 port_mappings = args.port if args.port else port_mappings
 
-# Argument formatting for OS-specific scripts
+# Argument formatting for following OS-specific scripts
 args = "\"%s\" %s" % (shared_dir, instance)
 for port in port_mappings:
     args += " %s" % port
