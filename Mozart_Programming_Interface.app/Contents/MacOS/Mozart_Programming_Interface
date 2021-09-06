@@ -1,4 +1,4 @@
 #!/bin/zsh
 osascript -e 'tell app "Terminal"
-    do script "cd /Applications/Mozart_Programming_Interface.app/Contents/MacOS/ && python build.py"
+    do script "cd ~/Applications/Mozart_Programming_Interface.app/Contents/MacOS/ && python build.py"
 end tell'
