@@ -2,7 +2,7 @@
 
 This repository contains the setup files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
-inside a Docker container.
+inside a Docker container, for a MacOS operating system.
 
 The 1.4.0 version of Mozart provides the most functionality,
 but its maintenance has been stopped,
@@ -10,7 +10,7 @@ and it only exists as a 32-bit program.
 To overcome this, and allow it to run on the widest range of platforms,
 this repository provides a Docker image to run Mozart 1.4.0 on multiple platforms.
 
-For Mozart 1.4.0 documentation, please visit
+You can find here
 http://mozart2.org/mozart-v1/doc-1.4.0/.
 
 ## Prerequisites

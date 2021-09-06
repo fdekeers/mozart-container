@@ -9,7 +9,7 @@ Options (optional):
         Show the help message.
     * -d SHARED_DIR, --directory SHARED_DIR
         Indicate the host directory that will be shared with the container, to store (for example) Oz source code files.
-        Default is ./oz-files.
+        Default is ~/Desktop/oz-files.
     * -n NAME, --name Name
         Indicate the name of the container instance that will be deployed.
         Default is `mozart-1.4.0_n`, where `n` is the index of this instance among the running instances (starting from 0).
@@ -18,7 +18,7 @@ Options (optional):
         Syntax: host_port:container_port
         A mapping means that the container port is accessible from the host port.
         To define multiple mappings, simple provide this option multiple times.
-        Default mappings are 33000:33000, 34000:34000, 35000:35000, 36000:36000, 37000:37000.
+        Default mappings are 9000:9000, 33000:33000, 34000:34000, 35000:35000, 36000:36000.
 
 Author: Francois De Keersmaeker
 '''
