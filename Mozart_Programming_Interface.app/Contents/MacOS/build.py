@@ -1,3 +1,4 @@
+#!/usr/bin/python
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
 depending on the host operating system.
@@ -98,4 +99,4 @@ elif system == "Windows":
     os.system("python windows\\build.py " + args)
 elif system == "Darwin":  # MacOS
     print("Your OS is MacOS.")
-    os.system("mac-os/build.sh " + args)
+    os.system('$(dirname "$0")/mac-os/build.sh ' + args)
