@@ -46,6 +46,7 @@ open -a Xquartz
 # Prompt the user to check both cases in the "Security" tab of XQuartz preferences
 echo "Please go to the preferences of XQuartz (top left corner of the screen),"
 echo "'Security' tab, and check both checkboxes."
+read -s -k $'?Press any key when this is done.\n'
 
 
 ######################################
