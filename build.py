@@ -17,47 +17,35 @@ Options (optional):
         Syntax: host_port:container_port
         A mapping means that the container port is accessible from the host port.
         To define multiple mappings, simple provide this option multiple times.
-        Default mappings are 33000:33000, 34000:34000, 35000:35000, 36000:36000, 37000:37000.
+        Default mappings are 9000:9000, 33000:33000, 34000:34000, 35000:35000, 36000:36000.
 
 Author: Francois De Keersmaeker
 '''
 
-import sys, os, platform, subprocess, argparse
+import os, platform, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
-
-# Check OS, as the behaviour depends on the host OS
-system = platform.system()
 
 
 # Default values for optional command line arguments
 
 # Shared host drectory, default is ./oz-files
-shared_dir = "oz-files"
-if system == "Windows":
-    # Windows does not have the same path syntax as Linux or MacOS
-    shared_dir = "%s\\%s" %(os.getcwd(), shared_dir)
-else:
-    # Linux and MacOS path
-    shared_dir = "%s/%s" %(os.getcwd(), shared_dir)
+shared_dir = "%s\\%s" %(os.getcwd(), "oz-files")
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
 image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
 command = "docker ps -aq -f ancestor=%s" % image  # Docker command to get the list of already running instances of the image mozart-1.4.0
-if system == "Linux":
-    # Linux command needs to add `sudo`
-    command = "sudo " + command
 output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")  # Run command and retrieve output
 lines = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(lines)  # Append the index number to the instance name
 
 # Default port mappings host_port:container_port
-# Those mapping are used for Windows and MacOS,
+# Those mapping are used for Windows
 # such that the container ports can be accessed from the host IP address.
-port_mappings = ["33000:33000", "34000:34000", "35000:35000", "36000:36000", "37000:37000"]
+port_mappings = ["9000:9000", "33000:33000", "34000:34000", "35000:35000", "36000:36000"]
 
 # Command line argument parsing, using an ArgumentParser object
 # Initialize argument parser with the description of the script
@@ -75,7 +63,7 @@ parser.add_argument("-n", "--name", type=str,
 # Third argument: Port mappings between host and container, option `-p` or `--port`
 help = """Port mapping host_port:container_port.
 For multiple mappings, use this option multiple times.
-Default mappings are 33000:33000, 34000:34000, 35000:35000, 36000:36000, 37000:37000."""
+Default mappings are 9000:9000, 33000:33000, 34000:34000, 35000:35000, 36000:36000."""
 parser.add_argument("-p", "--port", type=str, action="append",
                     help=help)
 # Parse arguments, and replace their default value if they are present
@@ -84,18 +72,10 @@ shared_dir = os.path.abspath(args.directory) if args.directory else shared_dir
 instance = args.name if args.name else instance
 port_mappings = args.port if args.port else port_mappings
 
-# Argument formatting for following OS-specific scripts
+# Argument formatting
 args = "\"%s\" %s" % (shared_dir, instance)
 for port in port_mappings:
     args += " %s" % port
 
-# Run script for the identified OS
-if system == "Linux":
-    print("Your OS is Linux.")
-    os.system("linux/build.sh " + args)
-elif system == "Windows":
-    print("Your OS is Windows.")
-    os.system("python windows\\build.py " + args)
-elif system == "Darwin":  # MacOS
-    print("Your OS is MacOS.")
-    os.system("mac-os/build.sh " + args)
+# Run script for Windows
+os.system("python windows\\build.py " + args)
