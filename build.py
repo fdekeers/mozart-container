@@ -22,7 +22,7 @@ Options (optional):
 Author: Francois De Keersmaeker
 '''
 
-import os, platform, subprocess, argparse
+import os, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."

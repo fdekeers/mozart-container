@@ -13,6 +13,15 @@
 #
 # Author: Francois De Keersmaeker
 
+# Creating Desktop launcher
+echo "[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/path/to/executable
+Name=Name of Application
+Icon=/path/to/icon"
+
 # Variables
 IMAGE="fdekeers/mozart-1.4.0"  # Name of the container image
 INSTANCE="mozart-1.4.0"  # Name of the container instance
