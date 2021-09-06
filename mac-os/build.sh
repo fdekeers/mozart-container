@@ -23,8 +23,15 @@
 ##########################################
 
 # Install Homebrew, the package manager, to ease the installation of following tools
-echo "Installing brew, a package manager."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo "Checking if Homebrew, the package manager, is installed."
+if which -s brew &> /dev/null
+then
+    # Homebrew is already installed
+    echo "Homebrew is already installed."
+else
+    echo "Installing Homebrew."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 # Install socat, a tool to redirect sockets
 echo "Installing socat, a tool to redirect sockets."
 brew install socat
