@@ -75,6 +75,10 @@ that provides GUI capabilities to applications inside containers.
 Please keep the default installation directory,
 `C:\Program Files\VcXsrv`.
 
+## Supported platforms
+
+- Windows 10
+
 ## Limitations
 
 In Oz, when binding a socket on a port, the port can be chosen automatically in the range of available ports,
