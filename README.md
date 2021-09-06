@@ -50,7 +50,7 @@ Notes:
 - There is no port mapping option unlike for Windows and MacOS, because the container will use host networking (only supported on Linux), which means that the container uses the host network stack directly, and thus that the host and container share IP addresses and ports.
 - The user that runs the script must have `sudo` rights.
 
-## Support for different platforms
+## Supported platforms
 
 The image has been tested and approved on the following platforms:
 - Ubuntu 20.04, 18.04, 16.04
