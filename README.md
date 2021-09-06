@@ -10,7 +10,7 @@ and it only exists as a 32-bit program.
 To overcome this, and allow it to run on the widest range of platforms,
 this repository provides a Docker image to run Mozart 1.4.0 on multiple platforms.
 
-You can find here [Documentation for Mozart 1.4.0](http://mozart2.org/mozart-v1/doc-1.4.0/).
+You can find here [Mozart 1.4.0 Documentation](http://mozart2.org/mozart-v1/doc-1.4.0/).
 
 ## Prerequisites
 

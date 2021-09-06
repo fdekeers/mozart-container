@@ -78,4 +78,4 @@ for port in port_mappings:
     args += " %s" % port
 
 # Run script for Windows
-os.system("python windows\\build.py " + args)
+os.system("python resources\\build.py " + args)
