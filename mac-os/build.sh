@@ -93,7 +93,7 @@ done
 ##########################################
 
 # Get host IP address, necessary for GUI application inside the container
-IP=$(ipconfig getifaddr en0)
+IP=$(ifconfig | grep -w inet | grep -v 127.0.0.1 | cut -d' ' -f2)
 
 # Pull container image from DockerHub
 echo "Pulling container image from DockerHub, please wait..."
