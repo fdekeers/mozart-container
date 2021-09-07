@@ -62,7 +62,8 @@ def get_ip(filename):
                 # Found the line with the IPv4 address, extract address
                 ip = line.split(":")[1].strip()
                 ip = ip.partition("(")[0].strip()
-                return ip
+                if "192" in ip[:3] :
+                    return ip
     return None
 
 
@@ -144,14 +145,14 @@ subprocess.run(command, shell=True)
 ip = get_ip(filename)
 print(f"Your local IPv4 address is {ip}")
 # Remove temporary ipconfig results file
-os.remove(filename)
+#os.remove(filename)
 # Check if IP was found
 if ip is None:
     # IP was not found, exit
     sys.stderr.write("Could not find any host IPv4 address.\n")
     exit(-1)
 # Add port to address, which will be used for GUI applications inside the container
-ip = f"{ip}:0.0"
+ip = f"{ip}:0"
 
 
 ######################################
