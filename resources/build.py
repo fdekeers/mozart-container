@@ -57,13 +57,23 @@ def get_ip(filename):
     Returns `None` if no IPv4 address was found.
     '''
     with open(filename, "r") as file:
+        lst_of_ip = []
         for line in file.readlines():
             if "IPv4" in line:
                 # Found the line with the IPv4 address, extract address
                 ip = line.split(":")[1].strip()
                 ip = ip.partition("(")[0].strip()
-                if "192" in ip[:3] :
-                    return ip
+                lst_of_ip.append(ip)
+        for ip in lst_of_ip :
+            if "192" in ip[:3]: # IP that begin with "192" are the preferred one
+                return ip
+        for ip in lst_of_ip :
+            if "130" in ip[:3]:
+                return ip
+        for ip in lst_of_ip :
+            if "172" in ip[:3]:
+                return ip
+        return lst_of_ip[0] # if it doesn't exist an IP that begin with "192" or "130" or "172", we return the first IP found
     return None
 
 
@@ -145,7 +155,7 @@ subprocess.run(command, shell=True)
 ip = get_ip(filename)
 print(f"Your local IPv4 address is {ip}")
 # Remove temporary ipconfig results file
-#os.remove(filename)
+os.remove(filename)
 # Check if IP was found
 if ip is None:
     # IP was not found, exit
