@@ -14,13 +14,14 @@
 # Author: Francois De Keersmaeker
 
 # Creating Desktop launcher
+echo $(pwd)
 echo "[Desktop Entry]
 Version=1.0
 Type=Application
 Terminal=true
-Exec=$HOME/mozart-container/Mozart_Programming_Interface.sh
+Exec=$(pwd)/Mozart_Programming_Interface.sh
 Name=Mozart_Programming_Interface
-Icon=$HOME/mozart-container/resources/icon.ico
+Icon=$(pwd)/resources/icon.ico
 Categories=Development;IDE;" > ~/.local/share/applications/Mozart_Programming_Interface.desktop
 
 # Variables
