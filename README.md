@@ -21,7 +21,7 @@ Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
-Lastly, when you clone/download a zip of this project, be sure to put it in your user applications folder (~/applications) for it to work properly.
+Lastly, when you clone/download a zip of this project, be sure to put it in your user applications folder (/applications) for it to work properly.
 
 ## Build and run instances of the container
 
@@ -35,7 +35,7 @@ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 (or `python3`, `py`, ... instead of `python` to suit your python command)
 
 You can also simply double-click on the [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
-application bundle to run the deployment script and build and run the container,
+application bundle or search for it with Spotlight to run the deployment script and build and run the container,
 with the default values for the optional command line arguments,
 that will be described below.
 
@@ -44,7 +44,8 @@ that will be shared with the container.
 This directory can be used, for example, to store Oz source code files.
 Inside the container, this directory will be located in `/root/DIR_BASENAME`.
 If the argument is not specified, the default host directory to be shared is
-`~/Desktop/oz-files`.
+`~/Desktop/oz-files`, which will be created if not present. NB : the files you create/modify and save on the container directory will be saved in the host directory too.
+
 
 The `-n` option allows to provide the name to give to the container instance.
 Please note that two running instances can not have the same name.
@@ -76,7 +77,7 @@ On MacOS, additional necessary tools are installed during the execution of the s
 
 ## Support for different platforms
 
-- BigSur 11.2
+- Tested on BigSur 11.2, should be supported on other versions too
 
 ## Limitations
 
