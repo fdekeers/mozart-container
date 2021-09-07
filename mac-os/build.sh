@@ -32,14 +32,31 @@ else
     echo "Installing Homebrew."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
+
 # Install socat, a tool to redirect sockets
-echo "Installing socat, a tool to redirect sockets."
-brew install socat
+echo "Checking if socat, a tool to redirect sockets, is installed."
+if which -s socat &> /dev/null
+then
+    # socat is already installed
+    echo "socat is already installed."
+else
+    echo "Installing socat".
+    brew install socat
+fi
+
 # Install XQuartz, the X11 server for MacOS
 echo "Installing XQuartz, a X11 to allow GUI applications inside Docker containers."
-brew install xquartz
+if which -s xquartz &> /dev/null
+then
+    # XQuartz is already installed
+    echo "XQuartz is already installed."
+else
+    echo "Installing XQuartz."
+    brew install xquartz
+fi
+
 # Prompt the user to log out and log back in such that everything is setup
-echo "Please log out and log back in to your MacOS session to confirm installation."
+#echo "Please log out and log back in to your MacOS session to confirm installation."
 
 
 ################################
