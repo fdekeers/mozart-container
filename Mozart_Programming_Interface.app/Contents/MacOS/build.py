@@ -32,7 +32,7 @@ description = "Build and deploy the Mozart 1.4.0 container."
 # Default values for optional command line arguments
 
 # Shared host drectory, default is ./oz-files
-shared_dir = "~/Desktop/oz-files"
+shared_dir = "$HOME/Desktop/oz-files"
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
