@@ -18,9 +18,9 @@ echo "[Desktop Entry]
 Version=1.0
 Type=Application
 Terminal=true
-Exec=$HOME/Desktop/job/mozart-container/Mozart_Programming_Interface.sh
+Exec=$HOME/mozart-container/Mozart_Programming_Interface.sh
 Name=Mozart_Programming_Interface
-Icon=$HOME/Desktop/job/mozart-container/resources/icon.ico
+Icon=$HOME/mozart-container/resources/icon.ico
 Categories=Development;IDE;" > ~/.local/share/applications/Mozart_Programming_Interface.desktop
 
 # Variables
