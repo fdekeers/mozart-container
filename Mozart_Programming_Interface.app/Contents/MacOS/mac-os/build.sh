@@ -133,3 +133,13 @@ docker run --rm --name $INSTANCE -it \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE
+
+# Re-enable host access control for X11, if all the container instances are stopped,
+# to prevent unwanted clients to connect.
+# Check if the list of running instances of the image fdekeers/mozart-1.4.0 is empty
+if [[ -z $(docker ps -aq -f ancestor=$IMAGE) ]]
+then
+    # List is empty, re-enable host access control
+    osascript -e 'quit app "XQuartz"'
+    killall socat
+fi
