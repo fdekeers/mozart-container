@@ -21,8 +21,6 @@ Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
-Lastly, when cloning/downloading the zip of this version of the container, you will have to place it in your user home folder (~) in order to get a desktop launcher. If you don't mind missing it, place it wherever you want.
-
 ## Build and run instances of the container
 
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.

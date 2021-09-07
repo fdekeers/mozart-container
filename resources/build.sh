@@ -14,7 +14,6 @@
 # Author: Francois De Keersmaeker
 
 # Creating Desktop launcher
-echo $(pwd)
 echo "[Desktop Entry]
 Version=1.0
 Type=Application
