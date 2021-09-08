@@ -37,7 +37,7 @@ You can do so by simply launching the Docker Desktop application.
 Download the repository files as a ZIP, by clicking the green *Code* button
 on the top right corner, then the *Download ZIP* button, and extract it.
 The newly created directory `mozart-container-windows` contains the necessary
-files, and can be placed wherever you want.
+files, and can be placed wherever you want on your machine.
 
 To launch and use the Mozart 1.4.0 container, you can simply double-click on the
 [Mozart_Programming_Interface.bat](Mozart_Programming_Interface.bat)
