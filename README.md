@@ -1,4 +1,4 @@
-# Docker container for Mozart 1.4.0
+# Docker container for Mozart 1.4.0 - MacOS
 
 **Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
 **Date: Sep. 8, 2021** \
