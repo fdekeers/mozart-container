@@ -130,13 +130,12 @@ echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
 # Create function to replace correctly the emacs window
-function movewindow(){
-    sleep 5
-    pids=$(xdotool search --class "emacs")
-    for pid in $pids; do
-        xdotool windowmove $pid 50 50
-    done
-}
+echo "sleep 3
+pids=\$(xdotool search --class 'emacs')
+for pid in \$pids; do
+    xdotool windowmove \$pid 200 200
+done
+" > temp.sh && chmod +x temp.sh
 
 # Run an instance of the container
 # Options:
@@ -151,13 +150,14 @@ function movewindow(){
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
-movewindow &
+./test.sh &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE
 
+rm temp.sh
 # Re-enable host access control for X11, if all the container instances are stopped,
 # to prevent unwanted clients to connect.
 # Check if the list of running instances of the image fdekeers/mozart-1.4.0 is empty
