@@ -66,7 +66,10 @@ fi
 # Redirect socket to the X11 server
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 # Start XQuartz
-open -a Xquartz
+xdotool search --onlyvisible --name 'Xquartz' XquartzActivate
+XQUARTS_ID=$(XquartzActivate)
+xdotool windowsize $XQUARTS_ID 800 800
+xdotool windowmove $XQUARTS_ID 100 100
 # Prompt the user to check both cases in the "Security" tab of XQuartz preferences
 echo "Please go to the preferences of XQuartz (top left corner of the screen),"
 echo "'Security' tab, and check both checkboxes."
