@@ -54,6 +54,9 @@ This allows modifying files, for example Oz source code files,
 outside of the container, and access them inside of it.
 By default, this directory is found at the path `~/Desktop/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
 
+To exit the Mozart 1.4.0 container, exit the Mozart window, and type
+`exit`, or `CTRL+D` inside the container terminal.
+
 
 ## Customization or problems
 
@@ -107,6 +110,22 @@ Note: Additional necessary tools are installed during the execution of the scrip
 - A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
     [XQuartz](https://www.xquartz.org/),
     that provides GUI capabilities to applications inside containers.
+
+
+### Access to the container shell
+
+When the container is launched, a Mozart window is directly opened.
+However, the container shell stays open, such that advanced users can
+run shell commands inside the container.
+
+It is also possible to open other Mozart windows from the container shell,
+with the command `oz`, however this will launch the Mozart process in the foreground,
+and the shell will not be accessible anymore.
+To launch other Mozart processes in the background, run the following command
+into the container shell:
+```console
+# nohup oz
+```
 
 ### Display problems with multiple screens
 
