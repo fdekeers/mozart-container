@@ -22,23 +22,41 @@ Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
 
-## Build and run instances of the container
+## Use the container
 
-First of all, make sure the Docker daemon is running on your machine. You can do this simply by launching the Docker Desktop application.
+First of all, make sure the Docker daemon is running on your machine.
+You can do so by simply launching the Docker Desktop application.
+
+To deploy and use the Mozart 1.4.0 container, you can simply double-click on the
+[Mozart_Programming_Interface.bat](Mozart_Programming_Interface.bat)
+file.
+
+You can not move this file, but you can create a shortcut to it
+that you can place wherever you want on your Windows machine. An icon is given in the [resources](resources) folder if you want your shortcut to have a Mozart appearence.
+
+This file will actually run a Python script ([build.py](build.py))
+that builds and deploys the container with the default options.
+This script, and its command line options, are described in more detail below,
+if you want more precise parameterization of the container.
+
+Note: If it is not already installed,
+the [X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
+[VcXsrv](https://sourceforge.net/projects/vcxsrv/),
+that provides GUI capabilities to applications inside containers,
+will first be downloaded and installed.
+Please keep the default installation directory,
+`C:\Program Files\VcXsrv`.
+
+
+## Python script for container deployment
 
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
-To run this script, simply run it with Python in this directory, with the following command:
+To run this script, simply run it with Python in this directory,
+by typing the following command inside a shell (CMD or PowerShell):
 ```shell
-python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+> python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 (or `python3`, `py`, ... instead of `python` to suit your python command)
-
-You can also simply double-click on the [windows.bat](./windows.bat)
-batch file to run the deployment script and build and run the container,
-with the default values for the optional command line arguments,
-that will be described below.
-You can not move the batch file, but you can create a shortcut to it
-that you can place wherever you want on your Windows machine. An icon is given in the [resources](resources) folder if you want your shortcut to have a Mozart appearence.
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
@@ -67,14 +85,6 @@ the following:
 - 35000:35000
 - 36000:36000
 
-Note:
-
-On Windows, the deployment script will first download and install the
-[X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
-[VcXsrv](https://sourceforge.net/projects/vcxsrv/),
-that provides GUI capabilities to applications inside containers.
-Please keep the default installation directory,
-`C:\Program Files\VcXsrv`.
 
 ## Supported platforms
 
