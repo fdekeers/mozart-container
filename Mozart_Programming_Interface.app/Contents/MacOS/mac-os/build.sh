@@ -77,10 +77,7 @@ fi
 # Redirect socket to the X11 server
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 # Start XQuartz
-xdotool search --onlyvisible --name 'Xquartz' XquartzActivate
-XQUARTS_ID=$(XquartzActivate)
-xdotool windowsize $XQUARTS_ID 800 800
-xdotool windowmove $XQUARTS_ID 100 100
+open -a Xquartz
 # Prompt the user to check both cases in the "Security" tab of XQuartz preferences
 echo "Please go to the preferences of XQuartz (top left corner of the screen),"
 echo "'Security' tab, and check both checkboxes."
@@ -125,6 +122,7 @@ done
 
 # Get host IP address, necessary for GUI application inside the container, and add it to the X11 allowed addresses
 IP=$(ifconfig | grep -w inet | grep -v 127.0.0.1 | cut -d' ' -f2 | sed -n 1p)
+echo "Connecting to XQuartz with IP $IP"
 xhost +$IP
 
 # Pull container image from DockerHub
@@ -136,7 +134,7 @@ function movewindow(){
     sleep 5
     pids=$(xdotool search --class "emacs")
     for pid in $pids; do
-        xdotool movewindow $pid 50 50
+        xdotool windowmove $pid 50 50
     done
 }
 
@@ -158,7 +156,7 @@ docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
-    $IMAGE && movewindows
+    $IMAGE
 
 # Re-enable host access control for X11, if all the container instances are stopped,
 # to prevent unwanted clients to connect.
