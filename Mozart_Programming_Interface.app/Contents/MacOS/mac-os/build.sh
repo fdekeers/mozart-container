@@ -58,17 +58,6 @@ fi
 # Prompt the user to log out and log back in such that everything is setup
 #echo "Please log out and log back in to your MacOS session to confirm installation."
 
-# Install xdotool, to move the XQuartz windows that appear offscreen
-echo "Installing xdotool, to allow moving the XQuartz windows that appear offscreen (mainly when using more than one monitor)."
-if which -s xdotool &> /dev/null
-then
-    # xdotool is already installed
-    echo "xdotool is already installed."
-else
-    echo "Installing xdotool."
-    brew install xdotool
-fi
-
 
 ################################
 # STEP 2: Setup the X11 server #
@@ -125,15 +114,6 @@ xhost +$IP
 echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
-# Create function to replace correctly the emacs window
-echo "sleep 10
-pids=\$(xdotool search --class 'emacs')
-for pid in \$pids; do
-    xdotool windowmove \$pid 100 100
-    xdotool windowactivate \$pid
-done
-" > temp.sh && chmod +x temp.sh
-
 # Run an instance of the container
 # Options:
 #     --rm -> container instance is removed when stopped
@@ -147,14 +127,12 @@ done
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
-bash ./temp.sh 2> /dev/null &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
     $IMAGE
 
-rm temp.sh
 # Re-enable host access control for X11, if all the container instances are stopped,
 # to prevent unwanted clients to connect.
 # Check if the list of running instances of the image fdekeers/mozart-1.4.0 is empty
