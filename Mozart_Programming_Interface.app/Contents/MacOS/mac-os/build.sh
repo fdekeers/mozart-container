@@ -58,6 +58,17 @@ fi
 # Prompt the user to log out and log back in such that everything is setup
 #echo "Please log out and log back in to your MacOS session to confirm installation."
 
+# Install xdotool, to move the XQuartz windows that appear offscreen
+echo "Installing xdotool, to allow moving the XQuartz windows that appear offscreen (mainly when using more than one monitor)."
+if which -s xdotool &> /dev/null
+then
+    # xdotool is already installed
+    echo "xdotool is already installed."
+else
+    echo "Installing xdotool."
+    brew install xdotool
+fi
+
 
 ################################
 # STEP 2: Setup the X11 server #
@@ -109,8 +120,9 @@ done
 # STEP 4: Build and run Docker container #
 ##########################################
 
-# Get host IP address, necessary for GUI application inside the container
-IP=$(ifconfig | grep -w inet | grep -v 127.0.0.1 | cut -d' ' -f2)
+# Get host IP address, necessary for GUI application inside the container, and add it to the X11 allowed addresses
+IP=$(ifconfig | grep -w inet | grep -v 127.0.0.1 | cut -d' ' -f2 | sed -n 1p)
+xhost +$IP
 
 # Pull container image from DockerHub
 echo "Pulling container image from DockerHub, please wait..."
@@ -128,6 +140,15 @@ docker pull $IMAGE
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
+function movewindow(){
+    sleep 5
+    pids=$(xdotool search --class "emacs")
+    for pid in $pids do
+        xdotool movewindow $pid 50 50
+    done
+}
+
+movewindow &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
@@ -142,4 +163,5 @@ then
     # List is empty, re-enable host access control
     osascript -e 'quit app "XQuartz"'
     killall socat
+    xhost -$IP
 fi
