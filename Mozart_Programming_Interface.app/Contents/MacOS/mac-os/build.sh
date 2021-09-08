@@ -168,9 +168,5 @@ then
     # List is empty, re-enable host access control
     osascript -e 'quit app "XQuartz"'
     killall socat
-<<<<<<< HEAD
     xhost -$IP
 fi
-=======
-fi
->>>>>>> 74f368483f71319bba52e42ed71a14e49eee648e
