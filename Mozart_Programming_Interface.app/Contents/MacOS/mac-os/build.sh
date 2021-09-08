@@ -112,6 +112,19 @@ done
 # STEP 4: Build and run Docker container #
 ##########################################
 
+function movewindows(){
+  sleep 3
+  pids=$(xdotool search --class "emacs")
+  for pid in $pids; do
+     echo $pid
+     # name=$(xdotool getwindowname $pid)
+     # if [[ $name == *"TODO"* ]]; then
+     # #Do what you want, $pid is your sought for PID,
+     # #matching both class gvim and TODO in title
+     # fi
+  done
+}
+
 # Get host IP address, necessary for GUI application inside the container
 IP=$(ifconfig | grep -w inet | grep -v 127.0.0.1 | cut -d' ' -f2)
 
@@ -135,7 +148,7 @@ docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
-    $IMAGE
+    $IMAGE && movewindows
 
 # Re-enable host access control for X11, if all the container instances are stopped,
 # to prevent unwanted clients to connect.
