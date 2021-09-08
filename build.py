@@ -109,7 +109,6 @@ command = f"docker ps -aq -f ancestor={image}"  # Docker command to get the list
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
 lines = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(lines)  # Append the index number to the instance name
-print(instance)
 
 # Default port mappings host_port:container_port
 # Those mapping are used for Windows
