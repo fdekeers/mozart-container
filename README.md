@@ -60,7 +60,7 @@ To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
 
-## Customization
+## Customization and troubleshooting
 
 If you want to somewhat customize the container, or if you encounter some problems,
 please read this section.
