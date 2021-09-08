@@ -78,10 +78,6 @@ fi
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 # Start XQuartz
 open -a Xquartz
-# Prompt the user to check both cases in the "Security" tab of XQuartz preferences
-echo "Please go to the preferences of XQuartz (top left corner of the screen),"
-echo "'Security' tab, and check both checkboxes."
-read -s -k $'?Press any key when this is done.\n'
 
 
 ######################################
@@ -130,7 +126,7 @@ echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
 # Create function to replace correctly the emacs window
-echo "sleep 7
+echo "sleep 10
 pids=\$(xdotool search --class 'emacs')
 for pid in \$pids; do
     xdotool windowmove \$pid 100 100
