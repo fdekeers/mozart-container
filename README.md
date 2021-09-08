@@ -127,7 +127,7 @@ and the shell will not be accessible anymore.
 To launch other Mozart processes in the background, run the following command
 into the container shell:
 ```console
-# nohup oz &
+# nohup oz &> /dev/null &
 ```
 
 ### Display problems with multiple screens
