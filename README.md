@@ -21,7 +21,34 @@ Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
-## Build and run instances of the container
+## Installation
+
+The Mozart 1.4.0 container can be installed as a Linux desktop application,
+such that it can be launched by simply clicking its icon in the list of applications.
+To install the application, please run the [install.sh](install.sh) script
+at the root of this repository, with the following command:
+```shell
+$ ./install.sh
+```
+
+After the installation, an application named "Mozart Programming Interface" will
+be placed in the list of applications.
+Simply click on it to launch the container.
+
+A directory will be shared between the host and the container,
+such that files can be modified outside of the container,
+but accessed inside of it.
+By default, this directory is found at the path `~/oz-files` on the host
+(it is created if it does not exist),
+and at the path `/root/oz-files` inside the container.
+
+This application actually runs a Python script
+([Mozart_Programming_Interface.py](Mozart_Programming_Interface.py))
+that builds and deploys the container with the default options.
+This script, and its command line options, are described in more detail below,
+if you want more precise parameterization of the container.
+
+## Python script for container deployment
 
 A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
 To run this script, simply run it with Python in this directory, with the following command:
@@ -29,8 +56,6 @@ To run this script, simply run it with Python in this directory, with the follow
 python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
 ```
 (or `python3`, `py`, ... instead of `python` to suit your python command)
-
-After the first usage with the python command, which also acts as an installation, there will also be a desktop launcher linked with the container (placed in ~/.local/share/applications/), which will allow you to launch the container simply by searching and running the Mozart_Programming_Interface application.
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
