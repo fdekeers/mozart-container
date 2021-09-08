@@ -60,7 +60,7 @@ Please keep the default installation directory,
 `C:\Program Files\VcXsrv`.
 
 
-## Customization or problems
+## Customization and troubleshooting
 
 If you want to somewhat customize the container, or if you encounter some problems,
 please read this section.
