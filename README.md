@@ -1,5 +1,9 @@
 # Docker container for Mozart 1.4.0
 
+**Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
+**Date: Sep. 8, 2021** \
+**Git: https://github.com/fdekeers/mozart-container**
+
 This repository contains the files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
 inside a Docker container.
@@ -13,6 +17,24 @@ this repository provides a Docker image to run Mozart 1.4.0 on multiple platform
 For Mozart 1.4.0 documentation, please visit
 http://mozart2.org/mozart-v1/doc-1.4.0/.
 
+
+## Installation
+
+To use the Docker container, Docker must be installed on the computer.
+To this end, please visit Docker's installation instructions for your machine:
+https://docs.docker.com/get-docker/. Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the Docker installation guide for Windows.
+
+Additionally, to be able to deploy the container,
+Python must be installed.
+Please follow the instructions on the Python website:
+https://www.python.org/downloads/.
+
+Afterwards, please switch to the git branch corresponding to your host platform
+(`linux`, `windows` or `macos`)
+to build and run the container, and profit from the power of
+[Mozart 1.4.0](http://mozart2.org/mozart-v1/).
+
+
 ## Docker image
 
 This branch `main` only contains a [Dockerfile] describing the Docker image used to build instances of the container.
@@ -22,20 +44,6 @@ and can be pulled with the following command:
 docker pull fdekeers/mozart-1.4.0
 ```
 
-## Installation
-
-To use the Docker container, Docker must be installed on the computer.
-To this end, please visit Docker's installation instructions for your machine:
-https://docs.docker.com/get-docker/. Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the Docker installation guide for Windows.
-
-Additionally, to run the script to build and deploy the container,
-Python must be installed.
-Please follow the instructions on the Python website:
-https://www.python.org/downloads/.
-
-Afterwards, please switch to the branch corresponding to your host platform
-to build and run the container, and profit from the power of
-[Mozart 1.4.0](http://mozart2.org/mozart-v1/).
 
 ## Support for different platforms
 
