@@ -17,6 +17,9 @@ You can find here [Mozart 1.4.0 documentation](http://mozart2.org/mozart-v1/doc-
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit Docker's [installation instructions for Linux](https://docs.docker.com/engine/install/).
 
+To be able to run Docker, and thus to use the Mozart 1.4.0 container,
+`sudo` rights are required.
+
 Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
@@ -50,12 +53,11 @@ if you want more precise parameterization of the container.
 
 ## Python script for container deployment
 
-A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
+A Python script ([Mozart_Programming_Interface.py](./Mozart_Programming_Interface.py)) is provided to ease the building and deployment of instances of the container.
 To run this script, simply run it with Python in this directory, with the following command:
 ```shell
-python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
+$ python3 Mozart_Programming_Interface.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
 ```
-(or `python3`, `py`, ... instead of `python` to suit your python command)
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
