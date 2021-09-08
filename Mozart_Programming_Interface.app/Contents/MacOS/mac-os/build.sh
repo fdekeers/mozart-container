@@ -130,10 +130,10 @@ echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
 # Create function to replace correctly the emacs window
-echo "sleep 3
+echo "sleep 7
 pids=\$(xdotool search --class 'emacs')
 for pid in \$pids; do
-    xdotool windowmove \$pid 200 200
+    xdotool windowmove \$pid 100 100
 done
 " > temp.sh && chmod +x temp.sh
 
@@ -150,7 +150,7 @@ done
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
-bash ./temp.sh &
+bash ./temp.sh 2> /dev/null &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
