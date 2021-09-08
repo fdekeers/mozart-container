@@ -77,7 +77,10 @@ fi
 # Redirect socket to the X11 server
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 # Start XQuartz
-open -a Xquartz
+xdotool search --onlyvisible --name 'Xquartz' XquartzActivate
+XQUARTS_ID=$(XquartzActivate)
+xdotool windowsize $XQUARTS_ID 800 800
+xdotool windowmove $XQUARTS_ID 100 100
 # Prompt the user to check both cases in the "Security" tab of XQuartz preferences
 echo "Please go to the preferences of XQuartz (top left corner of the screen),"
 echo "'Security' tab, and check both checkboxes."
@@ -128,6 +131,15 @@ xhost +$IP
 echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
+# Create function to replace correctly the emacs window
+function movewindow(){
+    sleep 5
+    pids=$(xdotool search --class "emacs")
+    for pid in $pids; do
+        xdotool movewindow $pid 50 50
+    done
+}
+
 # Run an instance of the container
 # Options:
 #     --rm -> container instance is removed when stopped
@@ -140,20 +152,13 @@ docker pull $IMAGE
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
-function movewindow(){
-    sleep 5
-    pids=$(xdotool search --class "emacs")
-    for pid in $pids do
-        xdotool movewindow $pid 50 50
-    done
-}
 
 movewindow &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
     -e DISPLAY=$IP:0 \
-    $IMAGE
+    $IMAGE && movewindows
 
 # Re-enable host access control for X11, if all the container instances are stopped,
 # to prevent unwanted clients to connect.
@@ -163,5 +168,9 @@ then
     # List is empty, re-enable host access control
     osascript -e 'quit app "XQuartz"'
     killall socat
+<<<<<<< HEAD
     xhost -$IP
 fi
+=======
+fi
+>>>>>>> 74f368483f71319bba52e42ed71a14e49eee648e
