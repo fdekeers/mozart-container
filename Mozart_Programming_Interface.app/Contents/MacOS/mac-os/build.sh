@@ -150,7 +150,7 @@ done
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
-./test.sh &
+bash ./test.sh &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
@@ -164,7 +164,7 @@ rm temp.sh
 if [[ -z $(docker ps -aq -f ancestor=$IMAGE) ]]
 then
     # List is empty, re-enable host access control
+    xhost -$IP
     osascript -e 'quit app "XQuartz"'
     killall socat
-    xhost -$IP
 fi
