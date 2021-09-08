@@ -45,7 +45,8 @@ that will be shared with the container.
 This directory can be used, for example, to store Oz source code files.
 Inside the container, this directory will be located in `/root/DIR_BASENAME`.
 If the argument is not specified, the default host directory to be shared is
-`./oz-files`, which will be created if not present. NB : the files you create/modify and save on the container directory will be saved in the host directory too.
+`.\oz-files`, which will be created if not present.
+NB : the files you create, modify and save on the container directory will be saved in the host directory too.
 
 The `-n` option allows to provide the name to give to the container instance.
 Please note that two running instances can not have the same name.
