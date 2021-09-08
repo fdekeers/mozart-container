@@ -1,4 +1,8 @@
-# Docker container for Mozart 1.4.0
+# Docker container for Mozart 1.4.0 - Windows
+
+**Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
+**Date: Sep. 8, 2021** \
+**Git: https://github.com/fdekeers/mozart-container/tree/windows**
 
 This repository contains the setup files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
@@ -12,7 +16,10 @@ this repository provides a Docker image to run Mozart 1.4.0 on multiple platform
 
 You can find here [Mozart 1.4.0 Documentation](http://mozart2.org/mozart-v1/doc-1.4.0/).
 
-## Prerequisites
+
+## Basic usage
+
+### Prerequisites
 
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for Windows](https://docs.docker.com/desktop/windows/install/). Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the given link.
@@ -22,7 +29,7 @@ Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
 
-## Use the container
+### Use the container
 
 First of all, make sure the Docker daemon is running on your machine.
 You can do so by simply launching the Docker Desktop application.
@@ -34,10 +41,15 @@ file.
 You can not move this file, but you can create a shortcut to it
 that you can place wherever you want on your Windows machine. An icon is given in the [resources](resources) folder if you want your shortcut to have a Mozart appearence.
 
-This file will actually run a Python script ([build.py](build.py))
-that builds and deploys the container with the default options.
-This script, and its command line options, are described in more detail below,
-if you want more precise parameterization of the container.
+A directory will be shared between the host and the container.
+Any modification made to one side (host or container) of this directory,
+will be also visible on the other side.
+This allows modifying files, for example Oz source code files,
+outside of the container, and access them inside of it.
+By default, this directory is found at the path `.\oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+
+To exit the Mozart 1.4.0 container, exit the Mozart window, and type
+`exit`, or `CTRL+D` inside the container terminal.
 
 Note: If it is not already installed,
 the [X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
@@ -48,11 +60,18 @@ Please keep the default installation directory,
 `C:\Program Files\VcXsrv`.
 
 
-## Python script for container deployment
+## Customization or problems
 
-A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
-To run this script, simply run it with Python in this directory,
-by typing the following command inside a shell (CMD or PowerShell):
+If you want to somewhat customize the container, or if you encounter some problems,
+please read this section.
+
+### Python script for container deployment
+
+The clickable file [Mozart_Programming_Interface.bat](Mozart_Programming_Interface.bat)
+will actually run a Python script ([build.py](build.py))
+that builds and deploys the container with the default command line options.
+If you want to customize thos options, you can directly run the script from the
+command line, by running the following command in this directory:
 ```shell
 > python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
@@ -84,6 +103,23 @@ the following:
 - 34000:34000
 - 35000:35000
 - 36000:36000
+
+
+### Access to the container shell
+
+When the container is launched, a Mozart window is directly opened.
+However, the container shell stays open, such that advanced users can
+run shell commands inside the container.
+
+It is also possible to open other Mozart windows from the container shell,
+with the command `oz`, however this will launch the Mozart process in the foreground,
+and the shell will not be accessible anymore.
+To launch other Mozart processes in the background, run the following command
+into the container shell:
+```console
+# nohup oz &
+```
+
 
 
 ## Supported platforms
