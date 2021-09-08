@@ -150,7 +150,7 @@ done
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
-bash ./test.sh &
+bash ./temp.sh &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
