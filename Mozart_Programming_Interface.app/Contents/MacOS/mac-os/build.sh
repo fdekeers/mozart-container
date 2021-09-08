@@ -130,6 +130,7 @@ echo "sleep 10
 pids=\$(xdotool search --class 'emacs')
 for pid in \$pids; do
     xdotool windowmove \$pid 100 100
+    xdotool windowactivate \$pid
 done
 " > temp.sh && chmod +x temp.sh
 
