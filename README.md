@@ -33,10 +33,15 @@ Please follow the instructions on the [Python website](https://www.python.org/do
 
 ### Installation
 
+Download the repository files as a ZIP, by clicking the green *Code* button
+on the top right corner, then the *Download ZIP* button, and extract it.
+The newly created directory `mozart-container-linux` contains the necessary
+files, and can be placed wherever you want on your machine.
+
 The Mozart 1.4.0 container can be installed as a Linux desktop application,
 such that it can be launched by simply clicking its icon in the list of applications.
 To install the application, please run the [install.sh](install.sh) script
-at the root of this repository, with the following command:
+in the directory `mozart-container-linux`, with the following command:
 ```shell
 $ ./install.sh
 ```
