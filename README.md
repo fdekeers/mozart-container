@@ -97,7 +97,13 @@ However, the container shell stays open, such that advanced users can
 run shell commands inside the container.
 
 It is also possible to open other Mozart windows from the container shell,
-with the command `oz`.
+with the command `oz`, however this will launch the Mozart process in the foreground,
+and the shell will not be accessible anymore.
+To launch other Mozart processes in the background, run the following command
+into the container shell:
+```console
+# nohup oz &
+```
 
 
 ## Supported platforms
