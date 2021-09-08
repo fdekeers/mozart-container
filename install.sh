@@ -9,6 +9,8 @@
 # to install it as a Linux desktop application.
 # Afterwards, the container can be deployed by clicking
 # on the corresponding desktop application.
+#
+# Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 
 
 # Parent directory of this script
@@ -20,7 +22,7 @@ echo "[Desktop Entry]
 Version=1.4
 Type=Application
 Terminal=true
-Exec=$SCRIPT_DIR/Mozart_Programming_Interface.py
+Exec=$SCRIPT_DIR/build.py
 Name=Mozart Programming Interface
 Icon=$SCRIPT_DIR/resources/icon.ico
 Categories=Development;IDE;" > ~/.local/share/applications/Mozart_Programming_Interface.desktop

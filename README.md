@@ -46,17 +46,17 @@ By default, this directory is found at the path `~/oz-files` on the host
 and at the path `/root/oz-files` inside the container.
 
 This application actually runs a Python script
-([Mozart_Programming_Interface.py](Mozart_Programming_Interface.py))
+([build.py](build.py))
 that builds and deploys the container with the default options.
 This script, and its command line options, are described in more detail below,
 if you want more precise parameterization of the container.
 
 ## Python script for container deployment
 
-A Python script ([Mozart_Programming_Interface.py](./Mozart_Programming_Interface.py)) is provided to ease the building and deployment of instances of the container.
-To run this script, simply run it with Python in this directory, with the following command:
+A Python script ([build.py](./build.py)) is provided to ease the building and deployment of instances of the container.
+To run this script, simply run it with Python3 in this directory, with the following command:
 ```shell
-$ python3 Mozart_Programming_Interface.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
+$ python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
 ```
 
 The `-d` option allows to provide the path of a host directory

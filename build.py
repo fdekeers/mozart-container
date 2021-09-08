@@ -16,7 +16,7 @@ Options (optional):
         Indicate the name of the container instance that will be deployed.
         Default is `mozart-1.4.0_n`, where `n` is the index of this instance among the running instances (starting from 0).
 
-Author: Francois De Keersmaeker
+Author: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
 import os, subprocess, argparse
