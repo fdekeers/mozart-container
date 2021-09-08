@@ -2,7 +2,7 @@
 
 **Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
 **Date: Sep. 8, 2021** \
-**Git: https://github.com/fdekeers/mozart-container**
+**Git: https://github.com/fdekeers/mozart-container/tree/macos**
 
 This repository contains the setup files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
@@ -26,6 +26,8 @@ To this end, please visit [Docker's installation instructions for MacOS](https:/
 Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
+If you have [Xcode](https://developer.apple.com/xcode/) installed,
+Python is already included.
 
 ### Use the container
 
@@ -45,16 +47,29 @@ This will launch the container with the default options.
 To customize those options, or if you encounter problems,
 please read the following section.
 
+A directory will be shared between the host and the container.
+Any modification made to one side (host or container) of this directory,
+will be also visible on the other side.
+This allows modifying files, for example Oz source code files,
+outside of the container, and access them inside of it.
+By default, this directory is found at the path `~/Desktop/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+
 
 ## Customization or problems
 
-## Build and run instances of the container
+### Python script for customization
 
+When double-clicking on the [application bundle](Mozart_Programming_Interface.app),
+a Python script ([build.py](Mozart_Programming_Interface.app/Contents/MacOS/build.py))
+is run with the default values for the command line options.
+To customize those options, the script can be run directly from a terminal.
 
-A Python script ([build.py](Mozart_Programming_Interface.app/Contents/MacOS/build.py)) is provided to ease the building and deployment of instances of the container.
-To run this script, simply run it with Python in the [MacOS](Mozart_Programming_Interface.app/Contents/MacOS) directory, with the following command:
+To access the script, right-click on the [application bundle](Mozart_Programming_Interface.app)
+and inspect the files of the application.
+Go to `Mozart_Programming_Interface.app/Contents/MacOS`,
+and run the script with the following command:
 ```shell
-python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+$ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 (or `python3`, `py`, ... instead of `python` to suit your python command)
 
@@ -63,7 +78,8 @@ that will be shared with the container.
 This directory can be used, for example, to store Oz source code files.
 Inside the container, this directory will be located in `/root/DIR_BASENAME`.
 If the argument is not specified, the default host directory to be shared is
-`~/Desktop/oz-files`, which will be created if not present. NB : the files you create/modify and save on the container directory will be saved in the host directory too.
+`~/Desktop/oz-files`, which will be created if not present.
+Any modification made to one of those directories will be applied to the other too.
 
 
 The `-n` option allows to provide the name to give to the container instance.
@@ -91,6 +107,21 @@ Note: Additional necessary tools are installed during the execution of the scrip
 - A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
     [XQuartz](https://www.xquartz.org/),
     that provides GUI capabilities to applications inside containers.
+
+### Display problems with multiple screens
+
+If you are using multiple screens in "extend" mode,
+the Mozart window may be out of reach, because it is spawned outside of
+the screen limits.
+To overcome this issue, two solutions are possible,
+depending on which Mozart window it is:
+- Mozart window launched when the container starts:
+During the starting phase of the container, a white `xterm` window will spawn
+on the screen. Clicking on this window will move the first Mozart window on it,
+and it will thus be accessible.
+- All other upcoming Mozart windows, started with the `oz` command
+from within the container: Switch the multi-display mode to "mirror",
+move the Mozart window in reach, then switch back to "extend" mode.
 
 ## Support for different platforms
 
