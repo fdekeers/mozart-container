@@ -6,4 +6,4 @@
 oz-files
 
 # Finder config file
-.DS_Store
+*.DS_Store
