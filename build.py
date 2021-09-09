@@ -42,8 +42,8 @@ image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
 command = f"sudo docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
 output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")  # Run command and retrieve output
-lines = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
-instance += str(lines)  # Append the index number to the instance name
+index = str(output.count("\n"))  # Count the number of lines, which is equal to the number of instances running
+instance += index  # Append the index number to the instance name
 
 # Command line argument parsing, using an ArgumentParser object
 
