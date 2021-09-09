@@ -17,6 +17,9 @@
 # From: https://stackoverflow.com/questions/59895/how-can-i-get-the-source-directory-of-a-bash-script-from-within-the-script-itsel
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+# Make the python script executable
+chmod +x $SCRIPT_DIR/build.py
+
 # Create a file describing the application
 echo "[Desktop Entry]
 Version=1.4

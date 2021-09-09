@@ -132,5 +132,5 @@ output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communica
 # Check if the above list is empty
 if not output:
     # List is empty, re-enable host access control
-    command = "xhost local:*"
+    command = "xhost -local:*"
     subprocess.run(command, shell=True)
