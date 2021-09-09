@@ -22,7 +22,7 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import os, subprocess, argparse
+import sys, os, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
@@ -47,7 +47,7 @@ def check_and_install_package(name, install_cmd=None):
     command = f"which -s {name} &> /dev/null"
     # Run command and get return code
     return_code = subprocess.run(command, shell=True).returncode
-    if returncode == 0:
+    if return_code == 0:
         # Return code was 0, package is already installed
         print(f"{name} is already installed.")
         return True
@@ -72,6 +72,39 @@ def check_and_install_package(name, install_cmd=None):
             # Return code was not 0, installation failed
             print(f"Installation of {name} failed.")
             return False
+
+
+def get_ip(ifconfig_output):
+    '''
+    Retrieves an IPv4 address from an `ifconfig` output,
+    following the order of preference for the addresses first number:
+    192, then 130, then 172, then the first IP addres found if the first
+    number is not one of these.
+    Returns `None` if no IPv4 address was found.
+    '''
+    lst_of_ip = []
+    for line in ifconfig_output.split("\n"):
+        if "IPv4" in line:
+            # Found the line with the IPv4 address, extract address
+            ip = line.split(":")[1].strip()
+            ip = ip.partition("(")[0].strip()
+            lst_of_ip.append(ip)
+    for ip in lst_of_ip :
+        if "192" in ip[:3]:  # IPs that start with "192" are the preferred ones
+            return ip
+    for ip in lst_of_ip :
+        if "130" in ip[:3]:  # Then IPs that start with "130"
+            return ip
+    for ip in lst_of_ip :
+        if "172" in ip[:3]:  # Then IPs that start with "172"
+            return ip
+    # No IP starting with "192", "130" or "172" was found
+    try :
+        # Return the first IPv4 address found
+        return lst_of_ip[0]
+    except IndexError:
+        # No IPv4 address was found, return None
+        return None
 
 
 ##########################
@@ -143,7 +176,6 @@ for port in port_mappings:
     ports_string += f"-p {port} "
 
 
-
 #############################
 # INSTALL REQUIRED PACKAGES #
 #############################
@@ -190,8 +222,17 @@ subprocess.run(command, shell=True)
 command = "open -a Xquartz"
 subprocess.run(command, shell=True)
 
-# Get host IP address
-ip = "192.168.1.22"
+# Get host IP addresses with ifconfig
+command = "ifconfig | grep -w inet"
+output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")
+print(output)
+# Get a host IPv4 address from ifconfig output
+ip = get_ip(output)
+if ip is None:
+    # No IPv4 address was found, exit
+    sys.stderr.write("No IPv4 address was found to connect to XQuartz.\n")
+    sys.stderr.write("Please check network settings.\n")
+    exit(-1)
 print(f"Connecting to XQuartz with IP {ip}")
 # Add IP address to the addresses accepted by XQuartz
 command = f"xhost +{ip}"
