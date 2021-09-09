@@ -247,22 +247,25 @@ command = f"docker pull {image}"
 subprocess.run(command, shell=True)
 
 # Run command to make the Mozart window visible when started
-f = open("script_temp.sh", "w")
-f.write('#!/bin/zsh\n\n')
-f.write('number=$(wmctrl -l | wc - l)\n')
-f.write('while [[ $(wmctrl -l | wc - l) -eq $number ]] do\n')
-f.write('\tcontinue\n')
-f.write('done\n')
-f.write('wmctrl -r Oz -b add,fullscreen')
-f.close()
-subprocess.run("chmod +x script_temp.sh")
-subprocess.popen("script_temp.sh")
+command = """#!/bin/zsh
+number=$(wmctrl -l | wc -l)
+while [[ $(wmctrl -l | wc -l) -eq $number ]] do
+continue
+done
+win=$(wmctrl -l | sed -n $((number+1))p | cut -d' ' -f4)
+wmctrl -r $win -b add,fullscreen
+wmctrl -r $win -b remove,fullscreen
+"""
+with open(f"{user_path}/script_temp.sh", "w") as f:
+    f.writelines(command)
+subprocess.run(f"chmod +x {user_path}/script_temp.sh", shell=True)
+subprocess.Popen(f"{user_path}/script_temp.sh", shell=True)
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
 print(f"The shared host directory is {shared_dir_host}.")
 print(f"Its path inside the container is {shared_dir_container}.")
-os.remove("script_temp.sh") # delete the script used to make the Mozart window visible when started
+# os.remove(f"{user_path}/script_temp.sh") # delete the script used to make the Mozart window visible when started
 
 # Run an instance of the container
 # Options:
