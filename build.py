@@ -67,29 +67,34 @@ def get_ip(filename):
     '''
     Retrieves an IPv4 address from an `ipconfig` file output,
     following the order of preference for the addresses first number:
-    192, then 130, then 172, then the first IP addres found if the first
-    number is not one of these.
+    192, then 130, then 172, then the first IP address found if no address
+    with those starting numbers exist.
     Returns `None` if no IPv4 address was found.
     '''
+    lst_of_ip = []
     with open(filename, "r") as file:
-        lst_of_ip = []
         for line in file.readlines():
             if "IPv4" in line:
                 # Found the line with the IPv4 address, extract address
                 ip = line.split(":")[1].strip()
                 ip = ip.partition("(")[0].strip()
                 lst_of_ip.append(ip)
-        for ip in lst_of_ip :
-            if "192" in ip[:3]: # IPs that begin with "192" are the preferred ones
-                return ip
-        for ip in lst_of_ip :
-            if "130" in ip[:3]:
-                return ip
-        for ip in lst_of_ip :
-            if "172" in ip[:3]:
-                return ip
-        return lst_of_ip[0] # if it doesn't exist an IP that begin with "192" or "130" or "172", we return the first IP found
-    return None
+    for ip in lst_of_ip :
+        if "192" in ip[:3]: # IPs that begin with "192" are the preferred ones
+            return ip
+    for ip in lst_of_ip :
+        if "130" in ip[:3]:
+            return ip
+    for ip in lst_of_ip :
+        if "172" in ip[:3]:
+            return ip
+    # No IP starting with "192", "130" or "172" was found
+    try :
+        # Return the first IPv4 address found
+        return lst_of_ip[0]
+    except IndexError:
+        # No IPv4 address was found, return None
+        return None
 
 
 ##########################
@@ -107,13 +112,19 @@ image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
 command = f"docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
-lines = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
-instance += str(lines)  # Append the index number to the instance name
+index = str(output.count("\n"))  # Count the number of lines, which is equal to the number of instances running
+instance += index  # Append the index number to the instance name
 
 # Default port mappings host_port:container_port
 # Those mapping are used for Windows
 # such that the container ports can be accessed from the host IP address.
-port_mappings = ["9000:9000", "33000:33000", "34000:34000", "35000:35000", "36000:36000"]
+# The default host ports are incremented for every new container instance,
+# but the container ports are the same for every container instance.
+port_mappings = [f"{9000+index}:9000",
+                 f"{33000+index}:33000",
+                 f"{34000+index}:34000",
+                 f"{35000+index}:35000",
+                 f"{36000+index}:36000"]
 
 # Command line argument parsing, using an ArgumentParser object
 
@@ -262,6 +273,7 @@ subprocess.run(command, shell=True)
 print(f"Running instance {instance} of the container.")
 print(f"The shared host directory is {shared_dir_host}.")
 print(f"Its path inside the container is {shared_dir_container}.")
+print(f"The port mappings host_port:container_port are the following:\n{port_mappings}.")
 
 # Run an instance of the container
 # Options:
