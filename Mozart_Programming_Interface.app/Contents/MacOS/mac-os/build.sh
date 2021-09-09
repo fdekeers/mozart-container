@@ -125,13 +125,7 @@ xhost +$IP
 echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
-# Function to make Emacs window appear visible on screen
-function fullscreen(){
-    while [[ $(wmctrl -l) != *"Oz"* ]] do
-        continue
-    done
-    wmctrl -r Oz -b add,fullscreen
-}
+
 
 # Run an instance of the container
 # Options:
@@ -145,6 +139,15 @@ function fullscreen(){
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
+total_number = $(wmctrl -l | wc - l)\n
+
+number=$(wmctrl -l | wc - l)\n
+while [[ $(wmctrl -l | wc - l) -eq $number ]] do
+  if to
+done
+wmctrl -r Oz -b add,fullscreen
+
+
 
 fullscreen &
 docker run --rm --name $INSTANCE -it \
