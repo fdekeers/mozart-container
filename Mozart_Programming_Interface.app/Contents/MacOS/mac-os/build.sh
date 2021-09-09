@@ -55,6 +55,17 @@ else
     brew install xquartz
 fi
 
+# Install wmctrl, to allow X11 windows managing
+echo "Installing wmctrl, a tool to allow XQuartz windows managing."
+if which -s wmctrl &> /dev/null
+then
+    # wmctrl is already installed
+    echo "wmctrl is already installed."
+else
+    echo "Installing wmctrl."
+    brew install wmctrl
+fi
+
 # Prompt the user to log out and log back in such that everything is setup
 #echo "Please log out and log back in to your MacOS session to confirm installation."
 
@@ -114,6 +125,14 @@ xhost +$IP
 echo "Pulling container image from DockerHub, please wait..."
 docker pull $IMAGE
 
+# Function to make Emacs window appear visible on screen
+function fullscreen(){
+    while [[ $(wmctrl -l) != *"Oz"* ]] do
+        continue
+    done
+    wmctrl -r Oz -b add,fullscreen
+}
+
 # Run an instance of the container
 # Options:
 #     --rm -> container instance is removed when stopped
@@ -127,6 +146,7 @@ docker pull $IMAGE
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 
+fullscreen &
 docker run --rm --name $INSTANCE -it \
     $(echo "$PUBLISHED_PORTS") \
     --volume="$OZ_DIR_HOST:$OZ_DIR_COTAINER:rw" \
