@@ -200,13 +200,6 @@ if not install_ok:
     # Installation failed, exit
     exit(-1)
 
-# XQuartz, a X11 server for MacOS
-# Install XQuartz if not already installed, and check installation
-install_ok = check_and_install_package("xquartz")
-if not install_ok:
-    # Installation failed, exit
-    exit(-1)
-
 # wmctrl, a tool to interact with GUI windows
 # Install wmctrl if not already installed, and check installation
 install_ok = check_and_install_package("wmctrl")
