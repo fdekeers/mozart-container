@@ -125,9 +125,15 @@ lines = output.count("\n")  # Count the number of lines, which is equal to the n
 instance += str(lines)  # Append the index number to the instance name
 
 # Default port mappings host_port:container_port
-# Those mapping are used for MacOS,
+# Those mapping are used for Windows
 # such that the container ports can be accessed from the host IP address.
-port_mappings = ["9000:9000", "33000:33000", "34000:34000", "35000:35000", "36000:36000"]
+# The default host ports are incremented for every new container instance,
+# but the container ports are the same for every container instance.
+port_mappings = [f"{9000+index}:9000",
+                 f"{33000+index}:33000",
+                 f"{34000+index}:34000",
+                 f"{35000+index}:35000",
+                 f"{36000+index}:36000"]
 
 # Command line argument parsing, using an ArgumentParser object
 
@@ -246,8 +252,9 @@ print("Pulling container image from Docker Hub, please wait...")
 command = f"docker pull {image}"
 subprocess.run(command, shell=True)
 
-# Run command to make the Mozart window visible when started
-command = """#!/bin/zsh
+# Background script to make the Mozart window visible when started
+# This script will toggle fullscreen on and off on the Mozart window.
+script = """#!/bin/zsh
 number=$(wmctrl -l | wc -l)
 while [[ $(wmctrl -l | wc -l) -eq $number ]] do
 continue
@@ -256,16 +263,19 @@ win=$(wmctrl -l | sed -n $((number+1))p | cut -d' ' -f4)
 wmctrl -r $win -b add,fullscreen
 wmctrl -r $win -b remove,fullscreen
 """
-with open(f"{user_path}/script_temp.sh", "w") as f:
-    f.writelines(command)
+# Write script into a temporary file
+with open(f"{user_path}/script_temp.sh", "w") as file:
+    file.writelines(script)
+# Make the script file executable
 subprocess.run(f"chmod +x {user_path}/script_temp.sh", shell=True)
+# Run the script in background
 subprocess.Popen(f"{user_path}/script_temp.sh", shell=True)
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
 print(f"The shared host directory is {shared_dir_host}.")
 print(f"Its path inside the container is {shared_dir_container}.")
-# os.remove(f"{user_path}/script_temp.sh") # delete the script used to make the Mozart window visible when started
+print(f"The port mappings host_port:container_port are the following:\n{port_mappings}.")
 
 # Run an instance of the container
 # Options:
@@ -291,8 +301,10 @@ subprocess.run(command, shell=True)
 # CLEANING #
 ############
 
-# Clean if all the instances of the container have been stopped
+# Remove the temporary script used to make the Mozart window visible when started
+os.remove(f"{user_path}/script_temp.sh")
 
+# Stop X11 server if all the instances of the container have been stopped
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
 command = f"docker ps -aq -f ancestor={image}"
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout

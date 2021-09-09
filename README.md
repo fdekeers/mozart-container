@@ -113,6 +113,7 @@ Note: Additional necessary tools are installed during the execution of the scrip
 - A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
     [XQuartz](https://www.xquartz.org/),
     that provides GUI capabilities to applications inside containers.
+- `wmctrl`, a tool to manage the GUI windows
 
 
 ### Access to the container shell
