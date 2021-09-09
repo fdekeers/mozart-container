@@ -1,7 +1,7 @@
 # Docker container for Mozart 1.4.0 - MacOS
 
 **Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
-**Date: Sep. 8, 2021** \
+**Date: Sep. 9, 2021** \
 **Git: https://github.com/fdekeers/mozart-container/tree/macos**
 
 This repository contains the setup files to build and run
