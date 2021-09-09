@@ -24,9 +24,17 @@ You can find here [Mozart 1.4.0 Documentation](http://mozart2.org/mozart-v1/doc-
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for Windows](https://docs.docker.com/desktop/windows/install/). Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the given link.
 
-Additionally, to run the script to build and deploy the container,
+Additionally, to be able to deploy and use the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
+
+Finally, to allow the Mozart 1.4.0 to be used with its Graphical User Interface (GUI),
+a [X11](https://en.wikipedia.org/wiki/X_Window_System) server must be installed.
+Please install [VcXsrv](https://sourceforge.net/projects/vcxsrv/),
+a X11 server for Windows, by downloading the installer on
+https://sourceforge.net/projects/vcxsrv/, and executing it.
+During the installation, please keep the default installation directory,
+`C:\Program Files\VcXsrv`.
 
 
 ### Use the container
@@ -55,14 +63,6 @@ By default, this directory is found at the path `.\oz-files` on the host (it is 
 
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
-
-Note: If it is not already installed,
-the [X11](https://en.wikipedia.org/wiki/X_Window_System) server for Windows,
-[VcXsrv](https://sourceforge.net/projects/vcxsrv/),
-that provides GUI capabilities to applications inside containers,
-will first be downloaded and installed.
-Please keep the default installation directory,
-`C:\Program Files\VcXsrv`.
 
 
 ## Customization and troubleshooting
@@ -130,7 +130,6 @@ into the container shell:
 ```
 
 
-
 ## Supported platforms
 
 - Windows 10
@@ -157,3 +156,4 @@ instruction, where `PortNumber` is the number of the port:
 
 In this way, only the port used for binding must be published to the host,
 with the command line option `-p` of the deployment script.
+With the default options, as indicated before, 5 ports are already published.

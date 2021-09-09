@@ -22,7 +22,7 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import os, platform, subprocess, argparse, time
+import os, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container on Windows platforms."
@@ -33,22 +33,6 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 #############
 # Functions #
 #############
-
-def compute_md5(filename):
-    '''
-    Computes the MD5 hash of a file,
-    per chunks of 8 kB to not saturate memory.
-    From https://stackoverflow.com/questions/16874598/how-do-i-calculate-the-md5-checksum-of-a-file-in-python
-    '''
-    chunk_size = 8192
-    with open(filename, "rb") as file:
-        hash = hashlib.md5()
-        chunk = file.read(chunk_size)
-        while chunk:
-            hash.update(chunk)
-            chunk = file.read(chunk_size)
-        return hash.hexdigest()
-
 
 def find_file(filename):
     '''
@@ -172,54 +156,17 @@ for port in port_mappings:
     ports_string += f"-p {port} "
 
 
-#############################################
-# DOWNLOAD AND INSTALL A WINDOWS X11 SERVER #
-#############################################
-
-print("For this container to work properly, you need to have VcXsrv installed.")
-print("VcXsrv is a X11 server for Windows, which allows GUI application that allows GUI applications inside Docker containers.")
-# Check if VcXsrv is already installed
-# Warning: check only in C:\Program Files
-print("Checking if VcXsrv is already installed, please wait...")
-vcxsrv_exec = find_file("xlaunch.exe")
-if vcxsrv_exec is None:  # VcXsrv is not installed
-    print("VcXsrv is not installed.")
-    # VcXsrv SourceForge download link
-    vcxsrv_url = "https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.9.0/vcxsrv-64.1.20.9.0.installer.exe"
-    vcxsrv_file = "vcxsrv-64.1.20.9.0.installer.exe"  # Filename of the installer
-    vcxsrv_md5 = "3fe9fbdcc47b934cdd8e0c01f9008125"  # MD5 hash of the installer
-    # Download VcXsrv installer, with a PowerShell command
-    print("Downloading VcXsrv installer.")
-    command = f'powershell.exe -Command "Start-BitsTransfer -Source {vcxsrv_url}"'
-    subprocess.run(command, shell=True)
-    # Check MD5 hash of downloaded file
-    if compute_md5(vcxsrv_file) != vcxsrv_md5:
-        # MD5 not identical, exit
-        sys.stderr.write("MD5 verification failed !")
-        sys.stderr.write("Please run the script again to retry.")
-        # Remove installer file
-        os.remove(vcxsrv_file)
-        exit(-1)
-    # MD5 identical, proceed
-    print("MD5 of downloded file verified.")
-    # Install VcXsrv by running installer
-    print("Installing VcXsrv.")
-    print("Please keep all default settings, mostly the installation directory that should be C:\\Program Files.")
-    subprocess.run(vcxsrv_file, shell=True)
-    # Remove installer file
-    os.remove(vcxsrv_file)
-    # Find VcXsrv executable
-    # Warning: only check in C:\Program Files, VcXsrv should be installed there
-    print("Searching for VcXsrv executable, please wait...")
-    vcxsrv_exec = find_file("xlaunch.exe")
-else:  # VcXsrv is already installed
-    print("VcXsrv is already installed.")
-
-
 ################################
 # START X11 SERVER WITH VCXSRV #
 ################################
 
+# VcXsrv is a Windows X11 server, that allows applications running in Docker
+# containers to benefit from GUI capabilities.
+
+# Find VcXsrv executable
+# Warning: only check in C:\Program Files, VcXsrv should be installed there
+print("Searching for VcXsrv executable, please wait...")
+vcxsrv_exec = find_file("xlaunch.exe")
 # Check if VcXsrv executable has been found in C:\Program Files
 if vcxsrv_exec is None:
     # Executable not found, exit
@@ -248,7 +195,6 @@ command = f"ipconfig /all > {filename}"  # `ipconfig` command
 subprocess.run(command, shell=True)
 # Get IPv4 address from file
 ip = get_ip(filename)
-print(f"Your local IPv4 address is {ip}")
 # Remove temporary ipconfig results file
 os.remove(filename)
 # Check if IP was found
@@ -256,6 +202,7 @@ if ip is None:
     # IP was not found, exit
     sys.stderr.write("Could not find any host IPv4 address.\n")
     exit(-1)
+print(f"Connecting to VcXsrv with IP {ip}")
 # Add port to address, which will be used for GUI applications inside the container
 ip = f"{ip}:0"
 
