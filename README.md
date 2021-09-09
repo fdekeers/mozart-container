@@ -27,8 +27,8 @@ To this end, please visit Docker's [installation instructions for Linux](https:/
 To be able to run Docker, and thus to use the Mozart 1.4.0 container,
 `sudo` rights are required.
 
-Additionally, to run the script to build and deploy the container,
-Python must be installed.
+Additionally, to be able to deploy and use the container,
+Python version 3 or more must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
 ### Installation
@@ -48,6 +48,10 @@ $ ./install.sh
 
 This will add an application named "Mozart Programming Interface" to the list
 of applications.
+
+Note: If you move the directory containing the container files,
+you will have to execute the install script again
+to update the desktop application with the new path.
 
 ### Usage
 
