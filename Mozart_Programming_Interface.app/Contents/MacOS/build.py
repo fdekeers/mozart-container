@@ -213,9 +213,9 @@ if not install_ok:
 # SETUP X11 SERVER WITH XQUARTZ #
 #################################
 
-# Redirect socket to the X1 server
-command = 'socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &'
-subprocess.run(command, shell=True)
+# Redirect socket to the X11 server
+command = "socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
+subprocess.Popen(command, shell=True)
 
 # Start XQuartz
 command = "open -a Xquartz"
@@ -224,7 +224,6 @@ subprocess.run(command, shell=True)
 # Get host IP addresses with ifconfig
 command = "ifconfig | grep -w inet"
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")
-print(output)
 # Get a host IPv4 address from ifconfig output
 ip = get_ip(output)
 if ip is None:
