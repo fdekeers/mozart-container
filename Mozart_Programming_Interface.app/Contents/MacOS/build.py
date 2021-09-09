@@ -28,6 +28,8 @@ import sys, os, subprocess, argparse
 description = "Build and deploy the Mozart 1.4.0 container."
 # User home directory path
 user_path = os.path.expanduser("~")
+# Parent directory of this script
+parent_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 #############
@@ -247,22 +249,11 @@ subprocess.run(command, shell=True)
 
 # Background script to make the Mozart window visible when started
 # This script will toggle fullscreen on and off on the Mozart window.
-script = """#!/bin/zsh
-number=$(wmctrl -l | wc -l)
-while [[ $(wmctrl -l | wc -l) -eq $number ]] do
-continue
-done
-win=$(wmctrl -l | sed -n $((number+1))p | cut -d' ' -f4)
-wmctrl -r $win -b add,fullscreen
-wmctrl -r $win -b remove,fullscreen
-"""
-# Write script into a temporary file
-with open(f"{user_path}/script_temp.sh", "w") as file:
-    file.writelines(script)
+display_script = f"{parent_dir}/display_window.sh"
 # Make the script file executable
-subprocess.run(f"chmod +x {user_path}/script_temp.sh", shell=True)
+subprocess.run(f"chmod +x {display_script}", shell=True)
 # Run the script in background
-subprocess.Popen(f"{user_path}/script_temp.sh", shell=True)
+subprocess.Popen(f"{display_script}", shell=True)
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
@@ -300,8 +291,6 @@ command = f"docker ps -aq -f ancestor={image}"
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout
 if not output:
     # Output of command is empty, all the instances have been stopped
-    # Remove the temporary script used to make the Mozart window visible when started
-    os.remove(f"{user_path}/script_temp.sh")
     # Remove IP address from the addresses accepted by XQuartz
     command = f"xhost -{ip}"
     subprocess.run(command, shell=True)
