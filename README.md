@@ -1,4 +1,8 @@
-# Docker container for Mozart 1.4.0
+# Docker container for Mozart 1.4.0 - MacOS
+
+**Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
+**Date: Sep. 8, 2021** \
+**Git: https://github.com/fdekeers/mozart-container/tree/macos**
 
 This repository contains the setup files to build and run
 the Oz development environment, [Mozart 1.4.0](http://mozart2.org/mozart-v1/),
@@ -12,7 +16,9 @@ this repository provides a Docker image to run Mozart 1.4.0 on multiple platform
 
 You can find here [Documentation for Mozart 1.4.0](http://mozart2.org/mozart-v1/doc-1.4.0/).
 
-## Prerequisites
+## Basic usage
+
+### Prerequisites
 
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for MacOS](https://docs.docker.com/desktop/mac/install/).
@@ -20,31 +26,66 @@ To this end, please visit [Docker's installation instructions for MacOS](https:/
 Additionally, to run the script to build and deploy the container,
 Python must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
+If you have [Xcode](https://developer.apple.com/xcode/) installed,
+Python is already included.
 
-Lastly, when you clone/download a zip of this project, be sure to put it in your user applications folder (/applications) for it to work properly.
-
-## Build and run instances of the container
+### Use the container
 
 First of all, make sure the Docker daemon is running on your machine. You can do this simply by launching the Docker Desktop application.
 
-A Python script ([build.py](Mozart_Programming_Interface.app/Contents/MacOS/build.py)) is provided to ease the building and deployment of instances of the container.
-To run this script, simply run it with Python in the [MacOS](Mozart_Programming_Interface.app/Contents/MacOS) directory, with the following command:
+Download the repository files as a ZIP, by clicking the green *Code* button
+on the top right corner, then the *Download ZIP* button, and extract it.
+Take the application bundle,
+[Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
+inside the newly created directory `mozart-container-macos`,
+and move it to your application folder, `/Applications`.
+
+To launch the Mozart 1.4.0 container, you can then simply double-click on the
+[Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
+application bundle, or search for it with Spotlight.
+This will launch the container with the default options.
+To customize those options, or if you encounter problems,
+please read the following section.
+
+A directory will be shared between the host and the container.
+Any modification made to one side (host or container) of this directory,
+will be also visible on the other side.
+This allows modifying files, for example Oz source code files,
+outside of the container, and access them inside of it.
+By default, this directory is found at the path `~/Desktop/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+
+To exit the Mozart 1.4.0 container, exit the Mozart window, and type
+`exit`, or `CTRL+D` inside the container terminal.
+
+
+## Customization and troubleshooting
+
+If you want to somewhat customize the container, or if you encounter some problems,
+please read this section.
+
+### Python script for customization
+
+When double-clicking on the [application bundle](Mozart_Programming_Interface.app),
+a Python script ([build.py](Mozart_Programming_Interface.app/Contents/MacOS/build.py))
+is run with the default values for the command line options.
+To customize those options, the script can be run directly from a terminal.
+
+To access the script, right-click on the [application bundle](Mozart_Programming_Interface.app)
+and inspect the files of the application.
+Go to `Mozart_Programming_Interface.app/Contents/MacOS`,
+and run the script with the following command:
 ```shell
-python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+$ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 (or `python3`, `py`, ... instead of `python` to suit your python command)
-
-You can also simply double-click on the [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
-application bundle or search for it with Spotlight to run the deployment script and build and run the container,
-with the default values for the optional command line arguments,
-that will be described below.
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
 This directory can be used, for example, to store Oz source code files.
 Inside the container, this directory will be located in `/root/DIR_BASENAME`.
 If the argument is not specified, the default host directory to be shared is
-`~/Desktop/oz-files`, which will be created if not present. NB : the files you create/modify and save on the container directory will be saved in the host directory too.
+`~/Desktop/oz-files`, which will be created if not present.
+Any modification made to one of those directories will be applied to the other too.
 
 
 The `-n` option allows to provide the name to give to the container instance.
@@ -66,14 +107,43 @@ the following:
 - 35000:35000
 - 36000:36000
 
-Notes:
-
-On MacOS, additional necessary tools are installed during the execution of the script:
-    - [Homebrew](https://brew.sh/index_fr), a package manager to install other software
-    - `socat`, a tool to forward sockets
-    - A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
+Note: Additional necessary tools are installed during the execution of the script:
+- [Homebrew](https://brew.sh/index_fr), a package manager to install other software
+- `socat`, a tool to forward sockets
+- A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
     [XQuartz](https://www.xquartz.org/),
     that provides GUI capabilities to applications inside containers.
+
+
+### Access to the container shell
+
+When the container is launched, a Mozart window is directly opened.
+However, the container shell stays open, such that advanced users can
+run shell commands inside the container.
+
+It is also possible to open other Mozart windows from the container shell,
+with the command `oz`, however this will launch the Mozart process in the foreground,
+and the shell will not be accessible anymore.
+To launch other Mozart processes in the background, run the following command
+into the container shell:
+```console
+# nohup oz &> /dev/null &
+```
+
+### Display problems with multiple screens
+
+If you are using multiple screens in "extend" mode,
+the Mozart window may be out of reach, because it is spawned outside of
+the screen limits.
+To overcome this issue, two solutions are possible,
+depending on which Mozart window it is:
+- Mozart window launched when the container starts:
+During the starting phase of the container, a white `xterm` window will spawn
+on the screen. Clicking on this window will move the first Mozart window on it,
+and it will thus be accessible.
+- All other upcoming Mozart windows, started with the `oz` command
+from within the container: Switch the multi-display mode to "mirror",
+move the Mozart window in reach, then switch back to "extend" mode.
 
 ## Support for different platforms
 
