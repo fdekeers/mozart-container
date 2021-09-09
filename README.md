@@ -61,6 +61,14 @@ By default, this directory is found at the path `~/Desktop/oz-files` on the host
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
+Note: Additional necessary tools are installed when the container is launched:
+- [Homebrew](https://brew.sh/index_fr), a package manager to install other software
+- `socat`, a tool to forward sockets
+- A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
+    [XQuartz](https://www.xquartz.org/),
+    that provides GUI capabilities to applications inside containers.
+- `wmctrl`, a tool to manage the GUI windows
+
 
 ## Customization and troubleshooting
 
@@ -102,22 +110,18 @@ and the container ports, with the syntax `host_port:container_port`.
 More precisely, this means that, for every mapping,
 the port `container_port` inside the container can be accessed from
 the host port `host_port`.
-To provide multiple mappings, simply provide this option multiple times. NB : since multiple instances cannot be mapped to the same ports, if you plan on running more than one container you must override the default mappings with the `-p` option.
+To provide multiple mappings, simply provide this option multiple times.
+Please note that a same host port cannot be mapped to multiple container instances.
 If this option is not specified, the default port mappings are
 the following:
-- 9000:9000
-- 33000:33000
-- 34000:34000
-- 35000:35000
-- 36000:36000
+- {9000+`index`}:9000
+- {33000+`index`}:33000
+- {34000+`index`}:34000
+- {35000+`index`}:35000
+- {36000+`index`}:36000
 
-Note: Additional necessary tools are installed during the execution of the script:
-- [Homebrew](https://brew.sh/index_fr), a package manager to install other software
-- `socat`, a tool to forward sockets
-- A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
-    [XQuartz](https://www.xquartz.org/),
-    that provides GUI capabilities to applications inside containers.
-- `wmctrl`, a tool to manage the GUI windows
+where `index` is the index of this instance among all the running instances,
+starting from 0.
 
 
 ### Access to the container shell
@@ -137,9 +141,10 @@ into the container shell:
 
 ### Display problems with multiple screens
 
-If you are using multiple screens in "extend" mode,
-the Mozart window may be out of reach, because it is spawned outside of
-the screen limits.
+If you are using multiple screens in "extend" mode, some display problems may occur.
+
+The first one is that
+the Mozart window may be invisible.
 To overcome this issue, two solutions are possible,
 depending on which Mozart window it is:
 - Mozart window launched when the container starts:
@@ -149,6 +154,12 @@ and it will thus be accessible.
 - All other upcoming Mozart windows, started with the `oz` command
 from within the container: Switch the multi-display mode to "mirror",
 move the Mozart window in reach, then switch back to "extend" mode.
+
+The second one is that the *Oz Panel*,
+started from the *Oz* drop-down menu,
+may appear too small and thus not show all the information.
+In that case, please switch to "mirror" multi-screen mode,
+or use only one screen.
 
 ## Support for different platforms
 
