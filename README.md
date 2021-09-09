@@ -24,10 +24,16 @@ To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for MacOS](https://docs.docker.com/desktop/mac/install/).
 
 Additionally, to run the script to build and deploy the container,
-Python must be installed.
+Python version 3 or above must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 If you have [Xcode](https://developer.apple.com/xcode/) installed,
 Python is already included.
+
+Finally, to allow the Mozart 1.4.0 to be used with its Graphical User Interface (GUI),
+a [X11](https://en.wikipedia.org/wiki/X_Window_System) server must be installed.
+Please install [XQuartz](https://www.xquartz.org/),
+a X11 server for MacOS, by downloading it from
+https://www.xquartz.org/.
 
 ### Use the container
 
@@ -61,14 +67,6 @@ By default, this directory is found at the path `~/Desktop/oz-files` on the host
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
-Note: Additional necessary tools are installed when the container is launched:
-- [Homebrew](https://brew.sh/index_fr), a package manager to install other software
-- `socat`, a tool to forward sockets
-- A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
-    [XQuartz](https://www.xquartz.org/),
-    that provides GUI capabilities to applications inside containers.
-- `wmctrl`, a tool to manage the GUI windows
-
 
 ## Customization and troubleshooting
 
@@ -87,9 +85,8 @@ and inspect the files of the application.
 Go to `Mozart_Programming_Interface.app/Contents/MacOS`,
 and run the script with the following command:
 ```shell
-$ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+$ python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
-(or `python3`, `py`, ... instead of `python` to suit your python command)
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
