@@ -20,9 +20,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Make the python script executable
 chmod +x $SCRIPT_DIR/build.py
 
-# Create a file describing the application
+# Create a file describing the application,
+# in ~/.local/share/applications,
+# such that it appears in the list of applications.
 echo "[Desktop Entry]
-Version=1.4
+Version=1
 Type=Application
 Terminal=true
 Exec=$SCRIPT_DIR/build.py
