@@ -37,12 +37,13 @@ to build and run the container, and profit from the power of
 
 ## Docker image
 
-This branch `main` only contains a [Dockerfile] describing the Docker image used to build instances of the container.
+This branch `main` only contains a [Dockerfile](Dockerfile) describing the Docker image used to build instances of the container.
 This image is also available on Docker Hub (https://hub.docker.com/r/fdekeers/mozart-1.4.0),
 and can be pulled with the following command:
 ```shell
 docker pull fdekeers/mozart-1.4.0
 ```
+This is also done automatically when running the container.
 
 
 ## Support for different platforms
