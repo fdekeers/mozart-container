@@ -100,14 +100,18 @@ and the container ports, with the syntax `host_port:container_port`.
 More precisely, this means that, for every mapping,
 the port `container_port` inside the container can be accessed from
 the host port `host_port`.
-To provide multiple mappings, simply provide this option multiple times. NB : since multiple instances cannot be mapped to the same ports, if you plan on running more than one container you must override the default mappings with the `-p` option.
+To provide multiple mappings, simply provide this option multiple times.
+Please note that a same host port cannot be mapped to multiple container instances.
 If this option is not specified, the default port mappings are
 the following:
-- 9000:9000
-- 33000:33000
-- 34000:34000
-- 35000:35000
-- 36000:36000
+- {9000+`index`}:9000
+- {33000+`index`}:33000
+- {34000+`index`}:34000
+- {35000+`index`}:35000
+- {36000+`index`}:36000
+
+where `index` is the index of this instance among all the running instances,
+starting from 0.
 
 
 ### Access to the container shell
