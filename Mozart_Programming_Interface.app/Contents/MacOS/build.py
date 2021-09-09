@@ -83,11 +83,10 @@ def get_ip(ifconfig_output):
     Returns `None` if no IPv4 address was found.
     '''
     lst_of_ip = []
-    for line in ifconfig_output.split("\n"):
-        if "IPv4" in line:
+    for line in ifconfig_output.strip().split("\n"):
+        if "inet" in line:
             # Found the line with the IPv4 address, extract address
-            ip = line.split(":")[1].strip()
-            ip = ip.partition("(")[0].strip()
+            ip = line.split(" ")[1].strip()
             lst_of_ip.append(ip)
     for ip in lst_of_ip :
         if "192" in ip[:3]:  # IPs that start with "192" are the preferred ones
