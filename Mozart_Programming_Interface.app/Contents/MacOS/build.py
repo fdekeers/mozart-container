@@ -301,15 +301,14 @@ subprocess.run(command, shell=True)
 # CLEANING #
 ############
 
-# Remove the temporary script used to make the Mozart window visible when started
-os.remove(f"{user_path}/script_temp.sh")
-
 # Stop X11 server if all the instances of the container have been stopped
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
 command = f"docker ps -aq -f ancestor={image}"
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout
 if not output:
     # Output of command is empty, all the instances have been stopped
+    # Remove the temporary script used to make the Mozart window visible when started
+    os.remove(f"{user_path}/script_temp.sh")
     # Remove IP address from the addresses accepted by XQuartz
     command = f"xhost -{ip}"
     subprocess.run(command, shell=True)

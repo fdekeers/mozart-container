@@ -40,7 +40,11 @@ Take the application bundle,
 inside the newly created directory `mozart-container-macos`,
 and move it to your application folder, `/Applications`.
 
-To launch the Mozart 1.4.0 container, you can then simply double-click on the
+To launch the Mozart 1.4.0 container for the first time, you have to right click
+on the application bundle, then click on *Open*,
+because the application is not trusted yet.
+For every following use,
+you can then simply double-click on the
 [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
 application bundle, or search for it with Spotlight.
 This will launch the container with the default options.
