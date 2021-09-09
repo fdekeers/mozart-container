@@ -112,8 +112,8 @@ image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
 command = f"docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
-index = str(output.count("\n"))  # Count the number of lines, which is equal to the number of instances running
-instance += index  # Append the index number to the instance name
+index = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
+instance += str(index)  # Append the index number to the instance name
 
 # Default port mappings host_port:container_port
 # Those mapping are used for Windows
