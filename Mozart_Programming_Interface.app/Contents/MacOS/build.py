@@ -34,7 +34,7 @@ user_path = os.path.expanduser("~")
 # FUNCTIONS #
 #############
 
-def check_and_install_package(name, install_cmd):
+def check_and_install_package(name, install_cmd=None):
     '''
     Check if a package is installed, and install it if not.
     :param name: package name
@@ -55,6 +55,9 @@ def check_and_install_package(name, install_cmd):
         # Return code was not 0, package is not installed.
         # Install the package
         print(f"Installing {name}.")
+        if not install_cmd:
+            # Default install command with brew
+            install_cmd = f"brew install {name}"
         subprocess.run(install_cmd, shell=True)
         # Check if installation was successful
         # Command to check if the package is installed
@@ -154,17 +157,22 @@ if not install_ok:
     exit(-1)
 
 # socat, a tool to redirect sockets
-command = "brew install socat"
 # Install socat if not already installed, and check installation
-install_ok = check_and_install_package("socat", command)
+install_ok = check_and_install_package("socat")
 if not install_ok:
     # Installation failed, exit
     exit(-1)
 
 # XQuartz, a X11 server for MacOS
-command = "brew install xquartz"
 # Install XQuartz if not already installed, and check installation
-install_ok = check_and_install_package("xquartz", command)
+install_ok = check_and_install_package("xquartz")
+if not install_ok:
+    # Installation failed, exit
+    exit(-1)
+
+# wmctrl, a tool to interact with GUI windows
+# Install wmctrl if not already installed, and check installation
+install_ok = check_and_install_package("wmctrl")
 if not install_ok:
     # Installation failed, exit
     exit(-1)
@@ -198,6 +206,9 @@ subprocess.run(command, shell=True)
 print("Pulling container image from Docker Hub, please wait...")
 command = f"docker pull {image}"
 subprocess.run(command, shell=True)
+
+# Run command to make the Mozart window visible when started
+# TODO Jeremie
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
