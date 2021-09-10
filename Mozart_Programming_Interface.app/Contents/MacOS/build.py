@@ -24,7 +24,7 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import sys, os, subprocess, argparse
+import sys, os, stat, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
@@ -177,21 +177,23 @@ if not check_package("xquartz"):
 # Check if socat binary is present in the application bundle
 print("Check if `socat` binary is present.")
 socat_path = f"{parent_dir}/../Resources/binaries/socat.bin"
-subprocess.run(f'chmod +x "{socat_path}"', shell=True)
 if not os.path.isfile(socat_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find socat binary in application bundle.\n")
     exit(-1)
+# Make socat binary executable
+subprocess.run(f'chmod +x "{socat_path}"', shell=True)
 
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
 print("Check if `wmctrl` binary is present.")
 wmctrl_path = f"{parent_dir}/../Resources/binaries/wmctrl.bin"
-subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
 if not os.path.isfile(wmctrl_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
     exit(-1)
+# Make wmctrl binary executable
+subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
 
 
 #################################

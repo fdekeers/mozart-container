@@ -7,21 +7,21 @@
 #
 # Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 
-# wmctrl binary path: first argument
+# First command line argument: wmctrl binary path
 WMCTRL=$1
 
 # Initial number of windows on screen
-number=$($WMCTRL -l | wc -l)
+number=$("$WMCTRL" -l | wc -l)
 
 # Loop while there is no new window
-while [[ $($WMCTRL -l | wc -l) -eq $number ]] do
+while [[ $("$WMCTRL" -l | wc -l) -eq $number ]] do
     continue
 done
 # End of loop, a new window appeared, which is the Mozart window
 
 # Get the identifier of the Mozart window
-win=$($WMCTRL -l | sed -n $((number+1))p | cut -d' ' -f4)
+win=$("$WMCTRL" -l | sed -n $((number+1))p | cut -d' ' -f4)
 
 # Toggle fullscreen on and off
-$WMCTRL -r $win -b add,fullscreen
-$WMCTRL -r $win -b remove,fullscreen
+"$WMCTRL" -r $win -b add,fullscreen
+"$WMCTRL" -r $win -b remove,fullscreen
