@@ -1,4 +1,6 @@
 #!/bin/zsh
-osascript -e 'tell app "Terminal"
-    do script "cd /Applications/Mozart_Programming_Interface.app/Contents/MacOS/ && python3 build.py"
+osascript -e '
+set myPath to POSIX path of (path to me as text)
+tell app "Terminal"
+    do script "cd " & myPath & " && python3 Contents/MacOS/build.py"
 end tell'

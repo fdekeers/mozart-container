@@ -5,7 +5,7 @@
   <key>CFBundleGetInfoString</key>
   <string>Mozart_Programming_Interface</string>
   <key>CFBundleExecutable</key>
-  <string>build.py</string>
+  <string>Mozart_Programming_Interface</string>
   <key>CFBundleName</key>
   <string>Mozart_Programming_Interface</string>
   <key>CFBundleDisplayName</key>

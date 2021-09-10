@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3
 
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
@@ -176,7 +176,8 @@ if not check_package("xquartz"):
 # socat, a tool to redirect sockets
 # Check if socat binary is present in the application bundle
 print("Check if `socat` binary is present.")
-socat_path = f"{parent_dir}/../Resources/binaries/socat.bin"
+print(socat_path := f"{parent_dir}/../Resources/binaries/socat.bin")
+subprocess.run(f"chmod +x {socat_path}", shell=True)
 if not os.path.isfile(socat_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find socat binary in application bundle.\n")
@@ -185,7 +186,8 @@ if not os.path.isfile(socat_path):
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
 print("Check if `wmctrl` binary is present.")
-wmctrl_path = f"{parent_dir}/../Resources/binaries/wmctrl.bin"
+print(wmctrl_path := f"{parent_dir}/../Resources/binaries/wmctrl.bin")
+subprocess.run(f"chmod +x {wmctrl_path}", shell=True)
 if not os.path.isfile(wmctrl_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
