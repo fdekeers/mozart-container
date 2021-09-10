@@ -1,7 +1,7 @@
 # Docker container for Mozart 1.4.0 - Windows
 
 **Contributors: DEFRERE Sacha, DE KEERSMAEKER François, KUPERBLUM Jérémie** \
-**Date: Sep. 8, 2021** \
+**Date: Sep. 10, 2021** \
 **Git: https://github.com/fdekeers/mozart-container/tree/windows**
 
 This repository contains the setup files to build and run
@@ -22,13 +22,9 @@ You can find here [Mozart 1.4.0 Documentation](http://mozart2.org/mozart-v1/doc-
 ### Prerequisites
 
 To use the Docker container, Docker must be installed on the computer.
-To this end, please visit [Docker's installation instructions for Windows](https://docs.docker.com/desktop/windows/install/). Note : Docker for Windows will require you to install WSL on your computer, which steps are described in the given link.
+To this end, please visit [Docker's installation instructions for Windows](https://docs.docker.com/desktop/windows/install/). Note: Docker for Windows will require you to install WSL on your computer, which steps are described in the given link.
 
-Additionally, to be able to deploy and use the container,
-Python must be installed.
-Please follow the instructions on the [Python website](https://www.python.org/downloads/).
-
-Finally, to allow the Mozart 1.4.0 to be used with its Graphical User Interface (GUI),
+To allow the Mozart 1.4.0 container to be used with its Graphical User Interface (GUI),
 a [X11](https://en.wikipedia.org/wiki/X_Window_System) server must be installed.
 Please install [VcXsrv](https://sourceforge.net/projects/vcxsrv/),
 a X11 server for Windows, by downloading the installer on
@@ -42,41 +38,44 @@ During the installation, please keep the default installation directory,
 First of all, make sure the Docker daemon is running on your machine.
 You can do so by simply launching the Docker Desktop application.
 
-Download the repository files as a ZIP, by clicking the green *Code* button
-on the top right corner, then the *Download ZIP* button, and extract it.
-The newly created directory `mozart-container-windows` contains the necessary
-files, and can be placed wherever you want on your machine.
+Download the application executable by clicking on the *Releases* tab on the
+right on the screen, then on the Windows release, and finally on the Windows
+executable file `mozart-1.4.0-win.exe`.
 
-To launch and use the Mozart 1.4.0 container, you can simply double-click on the
-[Mozart_Programming_Interface.bat](Mozart_Programming_Interface.bat)
-file.
-
-You can not move this file, but you can create a shortcut to it
-that you can place wherever you want on your Windows machine. An icon is given in the [resources](resources) folder if you want your shortcut to have a Mozart appearence.
+To launch and use the Mozart 1.4.0 container, you can then simply double-click on the
+`mozart-1.4.0-win.exe` executable file.
+This will open a terminal, the container terminal,
+and after some time the Mozart Programming Interface will start.
+Note: The first time the application is launched, the container image must be
+downloaded, which takes some time. Please be patient !
 
 A directory will be shared between the host and the container.
 Any modification made to one side (host or container) of this directory,
 will be also visible on the other side.
 This allows modifying files, for example Oz source code files,
 outside of the container, and access them inside of it.
-By default, this directory is found at the path `.\oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+By default, this directory is found at the path `C:\Users\USER\oz-files`
+on the host, where USER is the name of the current user (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
 
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
 
-## Customization and troubleshooting
+## Advanced usage
 
-If you want to somewhat customize the container, or if you encounter some problems,
-please read this section.
+If you are familiar with programmation or Docker containers, you may want
+to customize the Mozart 1.4.0.
+This section provides more advanced documentation to do so.
 
 ### Python script for container deployment
 
-The clickable file [Mozart_Programming_Interface.bat](Mozart_Programming_Interface.bat)
+The executable
 will actually run a Python script ([build.py](build.py))
 that builds and deploys the container with the default command line options.
-If you want to customize thos options, you can directly run the script from the
-command line, by running the following command in this directory:
+If you want to customize those options, you can directly run the script from the
+command line.
+To do this, clone or download this repository,
+then run the following command in the repository root directory:
 ```shell
 > python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
@@ -85,9 +84,11 @@ command line, by running the following command in this directory:
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
 This directory can be used, for example, to store Oz source code files.
-Inside the container, this directory will be located in `/root/DIR_BASENAME`.
+Inside the container, this directory will be located in `/root/DIR_BASENAME`,
+where DIR_BASENAME is the basename of the shared host directory.
 If the argument is not specified, the default host directory to be shared is
-`.\oz-files`, which will be created if not present.
+`C:\Users\USER\oz-files`, where USER is the name of the current user,
+which will be created if not present.
 NB : the files you create, modify and save on the container directory will be saved in the host directory too.
 
 The `-n` option allows to provide the name to give to the container instance.
@@ -128,6 +129,22 @@ into the container shell:
 ```console
 # nohup oz &> /dev/null &
 ```
+
+### Rebuild the executable
+
+The application executable was build with PyInstaller, a Python tool to build
+executable files from Python source code.
+If you want to rebuild the executable from the source code, please follow those
+instructions:
+- Install Python, version 3.5 or higher: https://www.python.org/downloads/
+- Install PyInstaller: https://www.pyinstaller.org/
+- Clone or download this repository.
+- Run, in the root directory of this repository, the following command in a shell:
+```shell
+> pyinstaller --clean --onefile --add-data "resources\config.xlaunch;." -i resources\oz.ico -n mozart-1.4.0-win build.py
+```
+
+The executable will be located in `dist\mozart-1.4.0-win.exe`.
 
 
 ## Supported platforms

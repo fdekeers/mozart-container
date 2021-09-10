@@ -218,7 +218,7 @@ ip = f"{ip}:0"
 ##############################################
 
 # Pull container image from Docker Hub
-print("Pulling container image from DockerHub, please wait...")
+print("Pulling container image from Docker Hub, please wait...")
 command = f"docker pull {image}"
 subprocess.run(command, shell=True)
 
