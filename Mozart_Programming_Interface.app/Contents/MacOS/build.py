@@ -176,8 +176,8 @@ if not check_package("xquartz"):
 # socat, a tool to redirect sockets
 # Check if socat binary is present in the application bundle
 print("Check if `socat` binary is present.")
-print(socat_path := f"{parent_dir}/../Resources/binaries/socat.bin")
-subprocess.run(f"chmod +x {socat_path}", shell=True)
+socat_path = f"{parent_dir}/../Resources/binaries/socat.bin"
+subprocess.run(f'chmod +x "{socat_path}"', shell=True)
 if not os.path.isfile(socat_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find socat binary in application bundle.\n")
@@ -186,8 +186,8 @@ if not os.path.isfile(socat_path):
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
 print("Check if `wmctrl` binary is present.")
-print(wmctrl_path := f"{parent_dir}/../Resources/binaries/wmctrl.bin")
-subprocess.run(f"chmod +x {wmctrl_path}", shell=True)
+wmctrl_path = f"{parent_dir}/../Resources/binaries/wmctrl.bin"
+subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
 if not os.path.isfile(wmctrl_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
@@ -199,7 +199,7 @@ if not os.path.isfile(wmctrl_path):
 #################################
 
 # Redirect socket to the X11 server
-command = f"{socat_path} TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
+command = f"\"{socat_path}\" TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
 subprocess.Popen(command, shell=True)
 
 # Start XQuartz
@@ -235,9 +235,9 @@ subprocess.run(command, shell=True)
 # This script will toggle fullscreen on and off on the Mozart window.
 display_script = f"{parent_dir}/display_window.sh"
 # Make the script file executable
-subprocess.run(f"chmod +x {display_script}", shell=True)
+subprocess.run(f'chmod +x "{display_script}"', shell=True)
 # Run the script in background
-subprocess.Popen(f'{display_script} "{wmctrl_path}"', shell=True)
+subprocess.Popen(f'"{display_script}" "{wmctrl_path}"', shell=True)
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
