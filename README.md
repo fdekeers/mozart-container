@@ -41,10 +41,10 @@ First of all, make sure the Docker daemon is running on your machine. You can do
 
 Download the repository files as a ZIP, by clicking the green *Code* button
 on the top right corner, then the *Download ZIP* button, and extract it.
-Take the application bundle,
-[Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
-inside the newly created directory `mozart-container-macos`,
-and move it to your application folder, `/Applications`.
+Inside the newly created directory `mozart-container-macos`,
+you will find an application bundle, [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app),
+that you can place wherever you want on your computer,
+and that will be used to launch the container.
 
 To launch the Mozart 1.4.0 container for the first time, you have to right click
 on the application bundle, then click on *Open*,
@@ -62,7 +62,7 @@ Any modification made to one side (host or container) of this directory,
 will be also visible on the other side.
 This allows modifying files, for example Oz source code files,
 outside of the container, and access them inside of it.
-By default, this directory is found at the path `~/Desktop/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+By default, this directory is found at the path `~/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
 
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
@@ -139,24 +139,13 @@ into the container shell:
 ### Display problems with multiple screens
 
 If you are using multiple screens in "extend" mode, some display problems may occur.
-
-The first one is that
-the Mozart window may be invisible.
-To overcome this issue, two solutions are possible,
-depending on which Mozart window it is:
-- Mozart window launched when the container starts:
-During the starting phase of the container, a white `xterm` window will spawn
-on the screen. Clicking on this window will move the first Mozart window on it,
-and it will thus be accessible.
-- All other upcoming Mozart windows, started with the `oz` command
-from within the container: Switch the multi-display mode to "mirror",
-move the Mozart window in reach, then switch back to "extend" mode.
-
-The second one is that the *Oz Panel*,
+Here is the list of known problems, with proposed solutions:
+- The *Oz Panel*,
 started from the *Oz* drop-down menu,
 may appear too small and thus not show all the information.
 In that case, please switch to "mirror" multi-screen mode,
 or use only one screen.
+
 
 ## Support for different platforms
 

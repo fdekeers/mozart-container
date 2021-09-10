@@ -8,9 +8,13 @@
   <string>Mozart_Programming_Interface</string>
   <key>CFBundleName</key>
   <string>Mozart_Programming_Interface</string>
+  <key>CFBundleDisplayName</key>
+  <string>Mozart Programming Interface</string>
   <key>CFBundleIconFile</key>
   <string>icon.ico</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
+  <key>CFBundleVersion</key>
+  <string>1.4.0</string>
 </dict>
 </plist>

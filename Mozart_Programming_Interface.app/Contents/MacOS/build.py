@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
 on a MacOS operating system.
@@ -8,7 +10,7 @@ Options (optional):
         Show the help message.
     * -d SHARED_DIR, --directory SHARED_DIR
         Indicate the host directory that will be shared with the container, to store (for example) Oz source code files.
-        Default is ~/Desktop/oz-files.
+        Default is ~/oz-files.
     * -n NAME, --name Name
         Indicate the name of the container instance that will be deployed.
         Default is `mozart-1.4.0_n`, where `n` is the index of this instance among the running instances (starting from 0).
@@ -22,7 +24,7 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import sys, os, subprocess, argparse
+import sys, os, stat, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
@@ -36,44 +38,19 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 # FUNCTIONS #
 #############
 
-def check_and_install_package(name, install_cmd=None):
+def check_package(name):
     '''
-    Check if a package is installed, and install it if not.
+    Check if a package is installed.
     :param name: package name
-    :param install_cmd: command used to install the package
-    :return: True if package was already installed or was successfully installed,
+    :return: True if package is installed,
              False otherwise
     '''
-    print(f"Checking if {name} is installed.")
     # Command to check if the package is installed
     command = f"which -s {name} &> /dev/null"
     # Run command and get return code
     return_code = subprocess.run(command, shell=True).returncode
-    if return_code == 0:
-        # Return code was 0, package is already installed
-        print(f"{name} is already installed.")
-        return True
-    else:
-        # Return code was not 0, package is not installed.
-        # Install the package
-        print(f"Installing {name}.")
-        if not install_cmd:
-            # Default install command with brew
-            install_cmd = f"brew install {name}"
-        subprocess.run(install_cmd, shell=True)
-        # Check if installation was successful
-        # Command to check if the package is installed
-        command = f"which -s {name} &> /dev/null"
-        # Run command and get return code
-        return_code = subprocess.run(command, shell=True).returncode
-        if return_code == 0:
-            # Return code was 0, installation was successful
-            print(f"Successfully installed {name}.")
-            return True
-        else:
-            # Return code was not 0, installation failed
-            print(f"Installation of {name} failed.")
-            return False
+    # Return code = 0 ==> package is installed
+    return return_code == 0
 
 
 def get_ip(ifconfig_output):
@@ -144,7 +121,7 @@ parser = argparse.ArgumentParser(description=description)
 
 # First argument: host shared directory, option `-d` or `--directory`
 help = """Host directory that will be shared with the container.
-Default is ~/Desktop/oz-files."""
+Default is ~/oz-files."""
 parser.add_argument("-d", "--directory", type=str,
                     help=help)
 
@@ -183,31 +160,40 @@ for port in port_mappings:
     ports_string += f"-p {port} "
 
 
-#############################
-# INSTALL REQUIRED PACKAGES #
-#############################
+#####################
+# REQUIRED BINARIES #
+#####################
 
-# Homebrew, a package manager, to ease the installation of upcoming packages
-command = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-# Install Homebrew if not already installed, and check installation
-install_ok = check_and_install_package("brew", command)
-if not install_ok:
-    # Installation failed, exit
+# XQuartz, a X11 server for MacOS
+# Check if XQuartz is installed.
+print("Check if XQuartz is installed.")
+if not check_package("xquartz"):
+    # XQuartz is not installed, prompt user to install it
+    sys.stderr.write("XQuartz is not installed.\n")
+    sys.stderr.write("Please go to https://www.xquartz.org/ and install it.\n")
     exit(-1)
 
 # socat, a tool to redirect sockets
-# Install socat if not already installed, and check installation
-install_ok = check_and_install_package("socat")
-if not install_ok:
-    # Installation failed, exit
+# Check if socat binary is present in the application bundle
+print("Check if `socat` binary is present.")
+socat_path = f"{parent_dir}/../Resources/binaries/socat.bin"
+if not os.path.isfile(socat_path):
+    # socat binary is not present, exit
+    sys.stderr.write("Could not find socat binary in application bundle.\n")
     exit(-1)
+# Make socat binary executable
+subprocess.run(f'chmod +x "{socat_path}"', shell=True)
 
 # wmctrl, a tool to interact with GUI windows
-# Install wmctrl if not already installed, and check installation
-install_ok = check_and_install_package("wmctrl")
-if not install_ok:
-    # Installation failed, exit
+# Check if wmctrl binary is present in the application bundle
+print("Check if `wmctrl` binary is present.")
+wmctrl_path = f"{parent_dir}/../Resources/binaries/wmctrl.bin"
+if not os.path.isfile(wmctrl_path):
+    # socat binary is not present, exit
+    sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
     exit(-1)
+# Make wmctrl binary executable
+subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
 
 
 #################################
@@ -215,7 +201,7 @@ if not install_ok:
 #################################
 
 # Redirect socket to the X11 server
-command = "socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
+command = f"\"{socat_path}\" TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
 subprocess.Popen(command, shell=True)
 
 # Start XQuartz
@@ -251,9 +237,9 @@ subprocess.run(command, shell=True)
 # This script will toggle fullscreen on and off on the Mozart window.
 display_script = f"{parent_dir}/display_window.sh"
 # Make the script file executable
-subprocess.run(f"chmod +x {display_script}", shell=True)
+subprocess.run(f'chmod +x "{display_script}"', shell=True)
 # Run the script in background
-subprocess.Popen(f"{display_script}", shell=True)
+subprocess.Popen(f'"{display_script}" "{wmctrl_path}"', shell=True)
 
 # Indicate argument configuration to the user
 print(f"Running instance {instance} of the container.")
@@ -275,7 +261,7 @@ print(f"The port mappings host_port:container_port are the following:\n{port_map
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 command = f'docker run --rm --name {instance} -it ' \
           f'{ports_string} ' \
-          f'--volume="{shared_dir_host}:{shared_dir_container}:rw" ' \
+          f'--volume="{shared_dir_host}":"{shared_dir_container}":rw ' \
           f'-e DISPLAY={ip}:0 ' \
           f'{image}'
 subprocess.run(command, shell=True)
