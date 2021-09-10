@@ -121,7 +121,7 @@ parser = argparse.ArgumentParser(description=description)
 
 # First argument: host shared directory, option `-d` or `--directory`
 help = """Host directory that will be shared with the container.
-Default is ~/Desktop/oz-files."""
+Default is ~/oz-files."""
 parser.add_argument("-d", "--directory", type=str,
                     help=help)
 
@@ -259,7 +259,7 @@ print(f"The port mappings host_port:container_port are the following:\n{port_map
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 command = f'docker run --rm --name {instance} -it ' \
           f'{ports_string} ' \
-          f'--volume="{shared_dir_host}:{shared_dir_container}:rw" ' \
+          f'--volume="{shared_dir_host}":"{shared_dir_container}":rw ' \
           f'-e DISPLAY={ip}:0 ' \
           f'{image}'
 subprocess.run(command, shell=True)

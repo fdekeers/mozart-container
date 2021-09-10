@@ -24,10 +24,16 @@ To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for MacOS](https://docs.docker.com/desktop/mac/install/).
 
 Additionally, to run the script to build and deploy the container,
-Python must be installed.
+Python version 3 or above must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 If you have [Xcode](https://developer.apple.com/xcode/) installed,
 Python is already included.
+
+Finally, to allow the Mozart 1.4.0 to be used with its Graphical User Interface (GUI),
+a [X11](https://en.wikipedia.org/wiki/X_Window_System) server must be installed.
+Please install [XQuartz](https://www.xquartz.org/),
+a X11 server for MacOS, by downloading it from
+https://www.xquartz.org/.
 
 ### Use the container
 
@@ -35,10 +41,10 @@ First of all, make sure the Docker daemon is running on your machine. You can do
 
 Download the repository files as a ZIP, by clicking the green *Code* button
 on the top right corner, then the *Download ZIP* button, and extract it.
-Take the application bundle,
-[Mozart_Programming_Interface.app](Mozart_Programming_Interface.app)
-inside the newly created directory `mozart-container-macos`,
-and move it to your application folder, `/Applications`.
+Inside the newly created directory `mozart-container-macos`,
+you will find an application bundle, [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app),
+that you can place wherever you want on your computer,
+and that will be used to launch the container.
 
 To launch the Mozart 1.4.0 container for the first time, you have to right click
 on the application bundle, then click on *Open*,
@@ -56,7 +62,7 @@ Any modification made to one side (host or container) of this directory,
 will be also visible on the other side.
 This allows modifying files, for example Oz source code files,
 outside of the container, and access them inside of it.
-By default, this directory is found at the path `~/Desktop/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
+By default, this directory is found at the path `~/oz-files` on the host (it is created if it does not exist), and at the path `/root/oz-files` inside the container.
 
 To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
@@ -79,9 +85,8 @@ and inspect the files of the application.
 Go to `Mozart_Programming_Interface.app/Contents/MacOS`,
 and run the script with the following command:
 ```shell
-$ python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+$ python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
-(or `python3`, `py`, ... instead of `python` to suit your python command)
 
 The `-d` option allows to provide the path of a host directory
 that will be shared with the container.
@@ -102,22 +107,18 @@ and the container ports, with the syntax `host_port:container_port`.
 More precisely, this means that, for every mapping,
 the port `container_port` inside the container can be accessed from
 the host port `host_port`.
-To provide multiple mappings, simply provide this option multiple times. NB : since multiple instances cannot be mapped to the same ports, if you plan on running more than one container you must override the default mappings with the `-p` option.
+To provide multiple mappings, simply provide this option multiple times.
+Please note that a same host port cannot be mapped to multiple container instances.
 If this option is not specified, the default port mappings are
 the following:
-- 9000:9000
-- 33000:33000
-- 34000:34000
-- 35000:35000
-- 36000:36000
+- {9000+`index`}:9000
+- {33000+`index`}:33000
+- {34000+`index`}:34000
+- {35000+`index`}:35000
+- {36000+`index`}:36000
 
-Note: Additional necessary tools are installed during the execution of the script:
-- [Homebrew](https://brew.sh/index_fr), a package manager to install other software
-- `socat`, a tool to forward sockets
-- A [X11](https://en.wikipedia.org/wiki/X_Window_System) server for MacOS,
-    [XQuartz](https://www.xquartz.org/),
-    that provides GUI capabilities to applications inside containers.
-- `wmctrl`, a tool to manage the GUI windows
+where `index` is the index of this instance among all the running instances,
+starting from 0.
 
 
 ### Access to the container shell
@@ -137,18 +138,13 @@ into the container shell:
 
 ### Display problems with multiple screens
 
-If you are using multiple screens in "extend" mode,
-the Mozart window may be out of reach, because it is spawned outside of
-the screen limits.
-To overcome this issue, two solutions are possible,
-depending on which Mozart window it is:
-- Mozart window launched when the container starts:
-During the starting phase of the container, a white `xterm` window will spawn
-on the screen. Clicking on this window will move the first Mozart window on it,
-and it will thus be accessible.
-- All other upcoming Mozart windows, started with the `oz` command
-from within the container: Switch the multi-display mode to "mirror",
-move the Mozart window in reach, then switch back to "extend" mode.
+If you are using multiple screens in "extend" mode, some display problems may occur.
+Here is the list of known problems, with proposed solutions:
+- The *Oz Panel*,
+started from the *Oz* drop-down menu,
+may appear too small and thus not show all the information.
+In that case, please switch to "mirror" multi-screen mode,
+or use only one screen.
 
 ## Support for different platforms
 

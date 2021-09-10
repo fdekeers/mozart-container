@@ -1,4 +1,13 @@
 #!/bin/zsh
+
+# Zsh script to launch the Python script,
+# deploying and running the Mozart 1.4.0 container.
+# This script is run when the "Mozart Programming Interface"
+# application bundle is launched.
+# It should not be run directly from the terminal.
+#
+# Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
+
 osascript -e '
 set myPath to POSIX path of (path to me as text)
 tell app "Terminal"
