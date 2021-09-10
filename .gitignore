@@ -8,3 +8,9 @@ oz-files
 # Windows temporary files
 windows/.ipconfig
 windows/vcxsrv-64.1.20.9.0.installer.exe
+
+# PyInstaller files
+__pycache__
+build
+dist
+*.spec
