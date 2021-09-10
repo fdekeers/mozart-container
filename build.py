@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
