@@ -8,7 +8,7 @@ Options (optional):
         Show the help message.
     * -d SHARED_DIR, --directory SHARED_DIR
         Indicate the host directory that will be shared with the container, to store (for example) Oz source code files.
-        Default is .\oz-files.
+        Default is C:\\Users\\USER\\oz-files.
     * -n NAME, --name Name
         Indicate the name of the container instance that will be deployed.
         Default is `mozart-1.4.0_n`, where `n` is the index of this instance among the running instances (starting from 0).
@@ -22,10 +22,12 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import os, subprocess, argparse
+import sys, os, subprocess, argparse
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container on Windows platforms."
+# User home directory path
+user_path = os.path.expanduser("~")
 # Parent directory of this script
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -87,8 +89,8 @@ def get_ip(filename):
 
 # Default values for optional command line arguments
 
-# Shared host drectory, default is .\oz-files
-shared_dir_host = f"{parent_dir}\\oz-files"
+# Shared host drectory, default is C:\Users\USER\oz-files
+shared_dir_host = f"{user_path}\\oz-files"
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
@@ -117,7 +119,7 @@ parser = argparse.ArgumentParser(description=description)
 
 # First argument: host shared directory, option `-d` or `--directory`
 help = """Host directory that will be shared with the container.
-Default is .\oz-files."""
+Default is C:\\Users\\USER\\oz-files."""
 parser.add_argument("-d", "--directory", type=str,
                     help=help)
 
@@ -174,14 +176,18 @@ if vcxsrv_exec is None:
     sys.stderr.write("Please check that the VcXsrv installation was correctly done in the directory C:\\Program Files\\VcXsrv.\n")
     exit(-1)
 
-# Launch VcXsrv executable with configuration file, if it has not been already started
+# Launch VcXsrv executable, if it has not been already started
 # Windows CMD command to check if there is a running process called vcxsrv.exe
 command = 'tasklist /fi "ImageName eq vcxsrv.exe" /fo csv 2>NUL | find /I "vcxsrv.exe" > NUL'
 if subprocess.run(command, shell=True).returncode != 0:
     # VcXsrv has not been started yet
     print("Starting X11 server.")
+    # Directory where the VcXsrv configuration file is located,
+    # depends on if the application is launched from source code or bundle
+    bundle_dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.join(parent_dir, "resources")))
+    config_path = os.path.abspath(os.path.join(bundle_dir, "config.xlaunch"))
     # Start VcXsrv with configuration file, to allow all clients to connect
-    command = f'"{vcxsrv_exec}" -run "{parent_dir}\\resources\\config.xlaunch"'
+    command = f'"{vcxsrv_exec}" -run "{config_path}"'
     subprocess.run(command, shell=True)
 
 
