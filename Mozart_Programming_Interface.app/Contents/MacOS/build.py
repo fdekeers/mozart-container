@@ -182,7 +182,7 @@ if not os.path.isfile(socat_path):
     sys.stderr.write("Could not find socat binary in application bundle.\n")
     exit(-1)
 # Make socat binary executable
-subprocess.run(f'chmod +x "{socat_path}"', shell=True)
+subprocess.run('chmod +x "{}"'.format(socat_path), shell=True)
 
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
@@ -193,7 +193,7 @@ if not os.path.isfile(wmctrl_path):
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
     exit(-1)
 # Make wmctrl binary executable
-subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
+subprocess.run('chmod +x "{}"'.format(wmctrl_path), shell=True)
 
 
 #################################
@@ -237,9 +237,9 @@ subprocess.run(command, shell=True)
 # This script will toggle fullscreen on and off on the Mozart window.
 display_script = "{}/display_window.sh".format(parent_dir)
 # Make the script file executable
-subprocess.run(f'chmod +x "{display_script}"', shell=True)
+subprocess.run('chmod +x "{}"'.format(display_script), shell=True)
 # Run the script in background
-subprocess.Popen(f'"{display_script}" "{wmctrl_path}"', shell=True)
+subprocess.Popen('"{}" "{}"'.format(display_script, wmctrl_path), shell=True)
 
 # Indicate argument configuration to the user
 print("Running instance {} of the container.".format(instance))
@@ -259,11 +259,11 @@ print("The port mappings host_port:container_port are the following:\n{}.".forma
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
-command = f'docker run --rm --name {instance} -it ' \
-          f'{ports_string} ' \
-          f'--volume="{shared_dir_host}":"{shared_dir_container}":rw ' \
-          f'-e DISPLAY={ip}:0 ' \
-          f'{image}'
+command = 'docker run --rm --name {} -it '.format(instance) \
+          '{} '.format(ports_string) \
+          '--volume="{}":"{}":rw '.format(shared_dir_host, shared_dir_container) \
+          '-e DISPLAY={}:0 '.format(ip) \
+          '{}'.format(image)
 subprocess.run(command, shell=True)
 
 
