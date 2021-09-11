@@ -270,7 +270,7 @@ subprocess.call(command, shell=True)
 # Stop X11 server if all the instances of the container have been stopped
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
 command = "docker ps -aq -f ancestor={}".format(image)
-output = subprocess.call(command, shell=True)
+output = subprocess.check_output(command, shell=True)
 if not output:
     # Output of command is empty, all the instances have been stopped
     # Remove IP address from the addresses accepted by XQuartz
