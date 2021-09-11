@@ -46,7 +46,7 @@ def check_package(name):
              False otherwise
     '''
     # Command to check if the package is installed
-    command = f"which -s {name} &> /dev/null"
+    command = "which -s {} &> /dev/null".format(name)
     # Run command and get return code
     return_code = subprocess.run(command, shell=True).returncode
     # Return code = 0 ==> package is installed
@@ -92,13 +92,13 @@ def get_ip(ifconfig_output):
 # Default values for optional command line arguments
 
 # Shared host drectory, default is ~/oz-files
-shared_dir_host = f"{user_path}/oz-files"
+shared_dir_host = "{}/oz-files".format(user_path)
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
 image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
-command = f"docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
+command = "docker ps -aq -f ancestor={}".format(image)  # Docker command to get the list of already running instances of the image mozart-1.4.0
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
 index = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(index)  # Append the index number to the instance name
@@ -108,11 +108,11 @@ instance += str(index)  # Append the index number to the instance name
 # such that the container ports can be accessed from the host IP address.
 # The default host ports are incremented for every new container instance,
 # but the container ports are the same for every container instance.
-port_mappings = [f"{9000+index}:9000",
-                 f"{33000+index}:33000",
-                 f"{34000+index}:34000",
-                 f"{35000+index}:35000",
-                 f"{36000+index}:36000"]
+port_mappings = ["{}:9000".format(9000+index),
+                 "{}:33000".format(33000+index),
+                 "{}:34000".format(34000+index),
+                 "{}:35000".format(35000+index),
+                 "{}:36000".format(36000+index)]
 
 # Command line argument parsing, using an ArgumentParser object
 
