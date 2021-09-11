@@ -259,11 +259,7 @@ print("The port mappings host_port:container_port are the following:\n{}.".forma
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
-command = 'docker run --rm --name {} -it '.format(instance) \
-          '{} '.format(ports_string) \
-          '--volume="{}":"{}":rw '.format(shared_dir_host, shared_dir_container) \
-          '-e DISPLAY={}:0 '.format(ip) \
-          '{}'.format(image)
+command = 'docker run --rm --name {} -it {} --volume="{}":"{}":rw -e DISPLAY={}:0 {}'.format(instance, ports_string, shared_dir_host, shared_dir_container, ip, image)
 subprocess.run(command, shell=True)
 
 
