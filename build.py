@@ -90,14 +90,14 @@ def get_ip(filename):
 # Default values for optional command line arguments
 
 # Shared host drectory, default is C:\Users\USER\oz-files
-shared_dir_host = f"{user_path}\\oz-files"
+shared_dir_host = "{}\\oz-files".format(user_path)
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
 image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
-command = f"docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
-output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
+command = "docker ps -aq -f ancestor={}".format(image)  # Docker command to get the list of already running instances of the image mozart-1.4.0
+output = subprocess.check_output(command, shell=True).decode("utf-8")  # Run command and retrieve output
 index = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(index)  # Append the index number to the instance name
 
@@ -106,11 +106,11 @@ instance += str(index)  # Append the index number to the instance name
 # such that the container ports can be accessed from the host IP address.
 # The default host ports are incremented for every new container instance,
 # but the container ports are the same for every container instance.
-port_mappings = [f"{9000+index}:9000",
-                 f"{33000+index}:33000",
-                 f"{34000+index}:34000",
-                 f"{35000+index}:35000",
-                 f"{36000+index}:36000"]
+port_mappings = ["{}:9000".format(9000+index),
+                 "{}:33000".format(33000+index),
+                 "{}:34000".format(34000+index),
+                 "{}:35000".format(35000+index),
+                 "{}:36000".format(36000+index)]
 
 # Command line argument parsing, using an ArgumentParser object
 
@@ -143,7 +143,7 @@ instance = args.name if args.name else instance
 port_mappings = args.port if args.port else port_mappings
 
 # Set container shared directory path from host shared directory
-shared_dir_container = f"/root/{os.path.basename(shared_dir_host)}"
+shared_dir_container = "/root/{}".format(os.path.basename(shared_dir_host))
 
 # Create shared host directory if it does not exist
 if not os.path.exists(shared_dir_host):
@@ -155,7 +155,7 @@ if not os.path.exists(shared_dir_host):
 # (-p host_1:container_1 -p host_2:container_2 -p host_3:container_3 ...)
 ports_string = ""
 for port in port_mappings:
-    ports_string += f"-p {port} "
+    ports_string += "-p {} ".format(port)
 
 
 ################################
@@ -179,7 +179,7 @@ if vcxsrv_exec is None:
 # Launch VcXsrv executable, if it has not been already started
 # Windows CMD command to check if there is a running process called vcxsrv.exe
 command = 'tasklist /fi "ImageName eq vcxsrv.exe" /fo csv 2>NUL | find /I "vcxsrv.exe" > NUL'
-if subprocess.run(command, shell=True).returncode != 0:
+if subprocess.call(command, shell=True) != 0:
     # VcXsrv has not been started yet
     print("Starting X11 server.")
     # Directory where the VcXsrv configuration file is located,
@@ -187,8 +187,8 @@ if subprocess.run(command, shell=True).returncode != 0:
     bundle_dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.join(parent_dir, "resources")))
     config_path = os.path.abspath(os.path.join(bundle_dir, "config.xlaunch"))
     # Start VcXsrv with configuration file, to allow all clients to connect
-    command = f'"{vcxsrv_exec}" -run "{config_path}"'
-    subprocess.run(command, shell=True)
+    command = '"{}" -run "{}"'.format(vcxsrv_exec, config_path)
+    subprocess.call(command, shell=True)
 
 
 #########################################################
@@ -197,8 +197,8 @@ if subprocess.run(command, shell=True).returncode != 0:
 
 # The `ipconfig` tool will be used, that lists IP addresses
 filename = ".ipconfig"  # Temporary file to write the `ipconfig` results to
-command = f"ipconfig /all > {filename}"  # `ipconfig` command
-subprocess.run(command, shell=True)
+command = "ipconfig /all > {}".format(filename)  # `ipconfig` command
+subprocess.call(command, shell=True)
 # Get IPv4 address from file
 ip = get_ip(filename)
 # Remove temporary ipconfig results file
@@ -208,9 +208,9 @@ if ip is None:
     # IP was not found, exit
     sys.stderr.write("Could not find any host IPv4 address.\n")
     exit(-1)
-print(f"Connecting to VcXsrv with IP {ip}")
+print("Connecting to VcXsrv with IP {}".format(ip))
 # Add port to address, which will be used for GUI applications inside the container
-ip = f"{ip}:0"
+ip = "{}:0".format(ip)
 
 
 ##############################################
@@ -219,14 +219,14 @@ ip = f"{ip}:0"
 
 # Pull container image from Docker Hub
 print("Pulling container image from Docker Hub, please wait...")
-command = f"docker pull {image}"
-subprocess.run(command, shell=True)
+command = "docker pull {}".format(image)
+subprocess.call(command, shell=True)
 
 # Indicate argument configuration to the user
-print(f"Running instance {instance} of the container.")
-print(f"The shared host directory is {shared_dir_host}.")
-print(f"Its path inside the container is {shared_dir_container}.")
-print(f"The port mappings host_port:container_port are the following:\n{port_mappings}.")
+print("Running instance {} of the container.".format(instance))
+print("The shared host directory is {}.".format(shared_dir_host))
+print("Its path inside the container is {}.".format(shared_dir_container))
+print("The port mappings host_port:container_port are the following:\n{}.".format(port_mappings))
 
 # Run an instance of the container
 # Options:
@@ -240,12 +240,8 @@ print(f"The port mappings host_port:container_port are the following:\n{port_map
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
-command = f'docker run --rm --name {instance} -it ' \
-          f'{ports_string} ' \
-          f'--volume="{shared_dir_host}:{shared_dir_container}:rw" ' \
-          f'-e DISPLAY={ip} ' \
-          f'{image}'
-subprocess.run(command, shell=True)
+command = 'docker run --rm --name {} -it {} --volume="{}:{}:rw" -e DISPLAY={} {}'.format(instance, ports_string, shared_dir_host, shared_dir_container, ip, image)
+subprocess.call(command, shell=True)
 
 
 ############
@@ -255,11 +251,11 @@ subprocess.run(command, shell=True)
 # Stop X11 server, if all the instances of the container have been stopped
 
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
-command = f"docker ps -aq -f ancestor={image}"
-output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout
+command = "docker ps -aq -f ancestor={}".format(image)
+output = subprocess.call(command, shell=True)
 if not output:
     # Output of command is empty, all the instances have been stopped
     print("Stopping X11 server.")
     # Command to kill the vcxsrv.exe process
     command = "taskkill /f /im vcxsrv.exe"
-    subprocess.run(command, shell=True)
+    subprocess.call(command, shell=True)
