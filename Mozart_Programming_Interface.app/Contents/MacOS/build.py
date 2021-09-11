@@ -145,7 +145,7 @@ instance = args.name if args.name else instance
 port_mappings = args.port if args.port else port_mappings
 
 # Set container shared directory path from host shared directory
-shared_dir_container = f"/root/{os.path.basename(shared_dir_host)}"
+shared_dir_container = "/root/{}".format(os.path.basename(shared_dir_host))
 
 # Create shared host directory if it does not exist
 if not os.path.exists(shared_dir_host):
@@ -157,7 +157,7 @@ if not os.path.exists(shared_dir_host):
 # (-p host_1:container_1 -p host_2:container_2 -p host_3:container_3 ...)
 ports_string = ""
 for port in port_mappings:
-    ports_string += f"-p {port} "
+    ports_string += "-p {} ".format(port)
 
 
 #####################
@@ -176,7 +176,7 @@ if not check_package("xquartz"):
 # socat, a tool to redirect sockets
 # Check if socat binary is present in the application bundle
 print("Check if `socat` binary is present.")
-socat_path = f"{parent_dir}/../Resources/binaries/socat.bin"
+socat_path = "{}/../Resources/binaries/socat.bin".format(parent_dir)
 if not os.path.isfile(socat_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find socat binary in application bundle.\n")
@@ -187,7 +187,7 @@ subprocess.run(f'chmod +x "{socat_path}"', shell=True)
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
 print("Check if `wmctrl` binary is present.")
-wmctrl_path = f"{parent_dir}/../Resources/binaries/wmctrl.bin"
+wmctrl_path = "{}/../Resources/binaries/wmctrl.bin".format(parent_dir)
 if not os.path.isfile(wmctrl_path):
     # socat binary is not present, exit
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
@@ -201,7 +201,7 @@ subprocess.run(f'chmod +x "{wmctrl_path}"', shell=True)
 #################################
 
 # Redirect socket to the X11 server
-command = f"\"{socat_path}\" TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\""
+command = "\"{}\" TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\"".format(socat_path)
 subprocess.Popen(command, shell=True)
 
 # Start XQuartz
@@ -218,9 +218,9 @@ if ip is None:
     sys.stderr.write("No IPv4 address was found to connect to XQuartz.\n")
     sys.stderr.write("Please check network settings.\n")
     exit(-1)
-print(f"Connecting to XQuartz with IP {ip}")
+print("Connecting to XQuartz with IP {}".format(ip))
 # Add IP address to the addresses accepted by XQuartz
-command = f"xhost +{ip}"
+command = "xhost +{}".format(ip)
 subprocess.run(command, shell=True)
 
 
@@ -230,22 +230,22 @@ subprocess.run(command, shell=True)
 
 # Pull container image from Docker DockerHub
 print("Pulling container image from Docker Hub, please wait...")
-command = f"docker pull {image}"
+command = "docker pull {}".format(image)
 subprocess.run(command, shell=True)
 
 # Background script to make the Mozart window visible when started
 # This script will toggle fullscreen on and off on the Mozart window.
-display_script = f"{parent_dir}/display_window.sh"
+display_script = "{}/display_window.sh".format(parent_dir)
 # Make the script file executable
 subprocess.run(f'chmod +x "{display_script}"', shell=True)
 # Run the script in background
 subprocess.Popen(f'"{display_script}" "{wmctrl_path}"', shell=True)
 
 # Indicate argument configuration to the user
-print(f"Running instance {instance} of the container.")
-print(f"The shared host directory is {shared_dir_host}.")
-print(f"Its path inside the container is {shared_dir_container}.")
-print(f"The port mappings host_port:container_port are the following:\n{port_mappings}.")
+print("Running instance {} of the container.".format(instance))
+print("The shared host directory is {}.".format(shared_dir_host))
+print("Its path inside the container is {}.".format(shared_dir_container))
+print("The port mappings host_port:container_port are the following:\n{}.".format(port_mappings))
 
 # Run an instance of the container
 # Options:
@@ -273,12 +273,12 @@ subprocess.run(command, shell=True)
 
 # Stop X11 server if all the instances of the container have been stopped
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
-command = f"docker ps -aq -f ancestor={image}"
+command = "docker ps -aq -f ancestor={}".format(image)
 output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout
 if not output:
     # Output of command is empty, all the instances have been stopped
     # Remove IP address from the addresses accepted by XQuartz
-    command = f"xhost -{ip}"
+    command = "xhost -{}".format(ip)
     subprocess.run(command, shell=True)
     # Stop XQuartz
     command = "osascript -e 'quit app \"XQuartz\"'"
