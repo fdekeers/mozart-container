@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python
 
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
@@ -33,6 +33,23 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 #############
+# LIB SYMLINK #
+#############
+
+# symlinks = [
+#     ("{}/../Resources/lib/libsm".format(parent_dir), "/usr/local/opt/libsm"),
+#     ("{}/../Resources/lib/libice".format(parent_dir), "/usr/local/opt/libice"),
+#     ("{}/../Resources/lib/libx11".format(parent_dir), "/usr/local/opt/libx11"),
+#     ("{}/../Resources/lib/libxmu".format(parent_dir), "/usr/local/opt/libxmu"),
+#     ("{}/../Resources/lib/glib".format(parent_dir), "/usr/local/opt/glib"),
+# ]
+
+# for src, dest in symlinks:
+#     if not os.path.islink(dest):
+#         os.symlink(src, dest)
+
+
+#############
 # FUNCTIONS #
 #############
 
@@ -46,7 +63,7 @@ def check_package(name):
     # Command to check if the package is installed
     command = "which -s {} &> /dev/null".format(name)
     # Run command and get return code
-    return_code = subprocess.run(command, shell=True).returncode
+    return_code = subprocess.call(command, shell=True)
     # Return code = 0 ==> package is installed
     return return_code == 0
 
@@ -97,7 +114,7 @@ shared_dir_host = "{}/oz-files".format(user_path)
 image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
 command = "docker ps -aq -f ancestor={}".format(image)  # Docker command to get the list of already running instances of the image mozart-1.4.0
-output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")  # Run command and retrieve output
+output = subprocess.check_output(command, shell=True).decode("utf-8")  # Run command and retrieve output
 index = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
 instance += str(index)  # Append the index number to the instance name
 
@@ -180,7 +197,7 @@ if not os.path.isfile(socat_path):
     sys.stderr.write("Could not find socat binary in application bundle.\n")
     exit(-1)
 # Make socat binary executable
-subprocess.run('chmod +x "{}"'.format(socat_path), shell=True)
+subprocess.call('chmod +x "{}"'.format(socat_path), shell=True)
 
 # wmctrl, a tool to interact with GUI windows
 # Check if wmctrl binary is present in the application bundle
@@ -191,7 +208,7 @@ if not os.path.isfile(wmctrl_path):
     sys.stderr.write("Could not find wmctrl binary in application bundle.\n")
     exit(-1)
 # Make wmctrl binary executable
-subprocess.run('chmod +x "{}"'.format(wmctrl_path), shell=True)
+subprocess.call('chmod +x "{}"'.format(wmctrl_path), shell=True)
 
 
 #################################
@@ -204,11 +221,11 @@ subprocess.Popen(command, shell=True)
 
 # Start XQuartz
 command = "open -a Xquartz"
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 # Get host IP addresses with ifconfig
 command = "ifconfig | grep -w inet"
-output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")
+output = subprocess.check_output(command, shell=True).decode("utf-8")
 # Get a host IPv4 address from ifconfig output
 ip = get_ip(output)
 if ip is None:
@@ -219,7 +236,7 @@ if ip is None:
 print("Connecting to XQuartz with IP {}".format(ip))
 # Add IP address to the addresses accepted by XQuartz
 command = "xhost +{}".format(ip)
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 
 ##############################################
@@ -229,13 +246,13 @@ subprocess.run(command, shell=True)
 # Pull container image from Docker DockerHub
 print("Pulling container image from Docker Hub, please wait...")
 command = "docker pull {}".format(image)
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 # Background script to make the Mozart window visible when started
 # This script will toggle fullscreen on and off on the Mozart window.
 display_script = "{}/display_window.sh".format(parent_dir)
 # Make the script file executable
-subprocess.run('chmod +x "{}"'.format(display_script), shell=True)
+subprocess.call('chmod +x "{}"'.format(display_script), shell=True)
 # Run the script in background
 subprocess.Popen('"{}" "{}"'.format(display_script, wmctrl_path), shell=True)
 
@@ -258,7 +275,7 @@ print("The port mappings host_port:container_port are the following:\n{}.".forma
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
 command = 'docker run --rm --name {} -it {} --volume="{}":"{}":rw -e DISPLAY={}:0 {}'.format(instance, ports_string, shared_dir_host, shared_dir_container, ip, image)
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 
 ############
@@ -268,15 +285,16 @@ subprocess.run(command, shell=True)
 # Stop X11 server if all the instances of the container have been stopped
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
 command = "docker ps -aq -f ancestor={}".format(image)
-output = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout
+output = subprocess.check_output(command, shell=True)
+print(output)
 if not output:
     # Output of command is empty, all the instances have been stopped
     # Remove IP address from the addresses accepted by XQuartz
     command = "xhost -{}".format(ip)
-    subprocess.run(command, shell=True)
+    subprocess.call(command, shell=True)
     # Stop XQuartz
     command = "osascript -e 'quit app \"XQuartz\"'"
-    subprocess.run(command, shell=True)
+    subprocess.call(command, shell=True)
     # Stop socat
     command = "killall socat"
-    subprocess.run(command, shell=True)
+    subprocess.call(command, shell=True)
