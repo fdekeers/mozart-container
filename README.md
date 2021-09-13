@@ -44,6 +44,8 @@ executable file `mozart-1.4.0-win.exe`.
 
 To launch and use the Mozart 1.4.0 container, you can then simply double-click on the
 `mozart-1.4.0-win.exe` executable file.
+If a security message appears, stating that the application could not be trusted,
+simply discard the message and run the application anyway.
 This will open a terminal, the container terminal,
 and after some time the Mozart Programming Interface will start.
 Note: The first time the application is launched, the container image must be
