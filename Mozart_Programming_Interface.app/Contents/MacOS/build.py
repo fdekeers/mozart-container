@@ -28,6 +28,7 @@ import sys, os, stat, subprocess, argparse
 description = "Build and deploy the Mozart 1.4.0 container."
 # User home directory path
 user_path = os.path.expanduser("~")
+user_name = user_path.split("/")[-1]
 # Parent directory of this script
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,17 +37,32 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 # LIB SYMLINK #
 #############
 
-# symlinks = [
-#     ("{}/../Resources/lib/libsm".format(parent_dir), "/usr/local/opt/libsm"),
-#     ("{}/../Resources/lib/libice".format(parent_dir), "/usr/local/opt/libice"),
-#     ("{}/../Resources/lib/libx11".format(parent_dir), "/usr/local/opt/libx11"),
-#     ("{}/../Resources/lib/libxmu".format(parent_dir), "/usr/local/opt/libxmu"),
-#     ("{}/../Resources/lib/glib".format(parent_dir), "/usr/local/opt/glib"),
-# ]
+symlinks = [
+    ("{}/../Resources/lib/libsm/1.2.3".format(parent_dir), "/usr/local/opt/libsm"),
+    ("{}/../Resources/lib/libice/1.0.10".format(parent_dir), "/usr/local/opt/libice"),
+    ("{}/../Resources/lib/libx11/1.7.2".format(parent_dir), "/usr/local/opt/libx11"),
+    ("{}/../Resources/lib/libxmu/1.1.3".format(parent_dir), "/usr/local/opt/libxmu"),
+    ("{}/../Resources/lib/glib/2.68.4".format(parent_dir), "/usr/local/opt/glib"),
+    ("{}/../Resources/lib/openssl@1.1/1.1.1l".format(parent_dir), "/usr/local/opt/openssl@1.1"),
+    ("{}/../Resources/lib/readline/8.1".format(parent_dir), "/usr/local/opt/readline"),
+    ("{}/../Resources/lib/libxt/1.2.1".format(parent_dir), "/usr/local/opt/libxt"),
+    ("{}/../Resources/lib/libxext/1.3.4".format(parent_dir), "/usr/local/opt/libxext"),
+    ("{}/../Resources/lib/libxcb/1.14_1".format(parent_dir), "/usr/local/opt/libxcb"),
+    ("{}/../Resources/lib/libxau/1.0.9".format(parent_dir), "/usr/local/opt/libxau"),
+    ("{}/../Resources/lib/libxdmcp/1.1.3".format(parent_dir), "/usr/local/opt/libxdmcp"),
+    ("{}/../Resources/lib/gettext/0.21".format(parent_dir), "/usr/local/opt/gettext"),
+    ("{}/../Resources/lib/pcre/8.45".format(parent_dir), "/usr/local/opt/pcre"),
+    ("{}/../Resources/lib/pcre/8.45".format(parent_dir), "/usr/local/opt/pcre1"),
+]
 
-# for src, dest in symlinks:
-#     if not os.path.islink(dest):
-#         os.symlink(src, dest)
+if not os.path.isdir("/usr/local/opt"):
+    command = "sudo mkdir /usr/local/opt && sudo chown {}:admin /usr/local/opt".format(user_name)
+    subprocess.call(command, shell=True)
+
+
+for src, dest in symlinks:
+    if not os.path.islink(dest):
+        os.symlink(src, dest)
 
 
 #############

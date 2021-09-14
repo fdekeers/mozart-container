@@ -1,0 +1,53 @@
+{
+  "homebrew_version": "3.1.12-25-gd391331",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": false,
+  "installed_on_request": true,
+  "changed_files": [
+    "bin/pcre-config",
+    "README",
+    "lib/pkgconfig/libpcre.pc",
+    "lib/pkgconfig/libpcre16.pc",
+    "lib/pkgconfig/libpcre32.pc",
+    "lib/pkgconfig/libpcrecpp.pc",
+    "lib/pkgconfig/libpcreposix.pc",
+    "share/doc/pcre/README",
+    "share/man/man3/pcredemo.3"
+  ],
+  "time": 1631609462,
+  "source_modified_time": 1623773637,
+  "compiler": "clang",
+  "aliases": [
+    "pcre1"
+  ],
+  "runtime_dependencies": [
+
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "8.45",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/pcre.rb",
+    "tap_git_head": "4a1c985d576379bab789b566de5200c8323861b6",
+    "tap": "homebrew/core"
+  },
+  "arch": "x86_64",
+  "built_on": {
+    "os": "Macintosh",
+    "os_version": "macOS 10.14.6",
+    "cpu_family": "penryn",
+    "xcode": "11.3.1",
+    "clt": "11.3.1.0.1.1576735732",
+    "preferred_perl": "5.18"
+  }
+}
