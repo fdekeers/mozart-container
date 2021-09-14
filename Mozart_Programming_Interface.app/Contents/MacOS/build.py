@@ -22,13 +22,13 @@ Options (optional):
 Authors: DEFRERE Sacha, DE KEERSMAEKER Francois, KUPERBLUM Jeremie
 '''
 
-import sys, os, stat, subprocess, argparse
+import sys, os, stat, subprocess, argparse, getpass
 
 # Description of the script, used by the argument parser
 description = "Build and deploy the Mozart 1.4.0 container."
 # User home directory path
 user_path = os.path.expanduser("~")
-user_name = user_path.split("/")[-1]
+user_name = getpass.getuser()
 # Parent directory of this script
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -56,7 +56,7 @@ symlinks = [
 ]
 
 if not os.path.isdir("/usr/local/opt"):
-    command = "sudo mkdir /usr/local/opt && sudo chown {}:admin /usr/local/opt".format(user_name)
+    command = "sudo mkdir /usr/local/opt && sudo chown {}: /usr/local/opt".format(user_name)
     subprocess.call(command, shell=True)
 
 
