@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/local/bin/python3
 
 '''
 Python script to build and deploy an instance of the Mozart 1.4.0 container,
@@ -240,7 +240,7 @@ command = "open -a Xquartz"
 subprocess.call(command, shell=True)
 
 # Get host IP addresses with ifconfig
-command = "ifconfig | grep -w inet"
+command = "ifconfig | grep -w inet | grep -v 127.0.0.1"
 output = subprocess.check_output(command, shell=True).decode("utf-8")
 # Get a host IPv4 address from ifconfig output
 ip = get_ip(output)
