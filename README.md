@@ -23,7 +23,10 @@ You can find here [Documentation for Mozart 1.4.0](http://mozart2.org/mozart-v1/
 To use the Docker container, Docker must be installed on the computer.
 To this end, please visit [Docker's installation instructions for MacOS](https://docs.docker.com/desktop/mac/install/).
 
-Additionally, to run the script to build and deploy the container,
+To be able to install the container as an application bundle,
+`sudo` rights are required.
+
+Additionally, to be able to deploy and use the container,
 Python version 3 or above must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 If you have [Xcode](https://developer.apple.com/xcode/) installed,
@@ -136,6 +139,19 @@ into the container shell:
 # nohup oz &> /dev/null &
 ```
 
+### Unable to download the container image
+
+On some enterprise or open networks, it can be impossible to download
+the container image from Docker Hub, and thus to use the container.
+When this happens, the following error is displayed on the container terminal
+when trying to launch the container:
+```console
+Error response from daemon: Get "https://registry-1.docker.io/v2/": Service Unavailable
+```
+
+In this case, please switch to a different network to download the container image.
+
+
 ### Display problems with multiple screens
 
 If you are using multiple screens in "extend" mode, some display problems may occur.
@@ -149,7 +165,7 @@ or use only one screen.
 
 ## Support for different platforms
 
-- Tested on BigSur 11.2, should be supported on other versions too
+- Tested on Big Sur 11.2, should be supported on other versions too
 
 ## Limitations
 

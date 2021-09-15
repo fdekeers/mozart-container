@@ -33,10 +33,14 @@ user_name = getpass.getuser()
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 
 
-#############
+###############
 # LIB SYMLINK #
-#############
+###############
 
+# Create symlinks to all the necessary libraries
+
+# Necessary libraries:
+# [(path in app bundle, path where they are searched for on the machine)]
 symlinks = [
     ("{}/../Resources/lib/libsm/1.2.3".format(parent_dir), "/usr/local/opt/libsm"),
     ("{}/../Resources/lib/libice/1.0.10".format(parent_dir), "/usr/local/opt/libice"),
@@ -55,13 +59,14 @@ symlinks = [
     ("{}/../Resources/lib/pcre/8.45".format(parent_dir), "/usr/local/opt/pcre1"),
 ]
 
+# Create libraries directory if not present
 if not os.path.isdir("/usr/local/opt"):
     command = "sudo mkdir /usr/local/opt && sudo chown {}: /usr/local/opt".format(user_name)
     subprocess.call(command, shell=True)
 
-
+# Create symlinks to libraries if not present or broken
 for src, dest in symlinks:
-    if not os.path.islink(dest):
+    if not os.path.exists(dest):
         os.symlink(src, dest)
 
 
