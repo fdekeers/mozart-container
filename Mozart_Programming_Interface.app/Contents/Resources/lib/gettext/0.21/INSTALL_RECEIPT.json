@@ -1,0 +1,51 @@
+{
+  "homebrew_version": "2.4.9-93-gf4f4d91",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": true,
+  "installed_on_request": false,
+  "changed_files": [
+    "bin/autopoint",
+    "bin/gettextize",
+    "lib/gettext/user-email",
+    "share/doc/gettext/examples/hello-c++-kde/autogen.sh",
+    "INSTALL_RECEIPT.json",
+    "share/aclocal/lib-link.m4",
+    "share/aclocal/lib-prefix.m4",
+    "share/doc/gettext/examples/hello-c++-kde/admin/acinclude.m4.in",
+    "share/doc/gettext/examples/hello-c++-kde/admin/libtool.m4.in",
+    "share/doc/gettext/examples/hello-c++-qt/m4/qt.m4",
+    "share/doc/gettext/examples/installpaths",
+    "share/man/man1/gettext.1",
+    "share/man/man1/ngettext.1"
+  ],
+  "time": 1631543155,
+  "source_modified_time": 1595806374,
+  "stdlib": "libcxx",
+  "compiler": "clang",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "0.21",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/gettext.rb",
+    "tap_git_head": "48f554acd1a523d49f01adf9d2a6ef9b69f4c9b0",
+    "tap": "homebrew/core"
+  },
+  "arch": "x86_64",
+  "built_on": null
+}

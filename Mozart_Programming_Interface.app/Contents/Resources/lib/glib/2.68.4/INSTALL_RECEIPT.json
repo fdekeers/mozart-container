@@ -1,0 +1,108 @@
+{
+  "homebrew_version": "3.2.8-36-g30e081b",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": false,
+  "installed_on_request": true,
+  "changed_files": [
+    "bin/gdbus-codegen",
+    "bin/glib-genmarshal",
+    "bin/glib-gettextize",
+    "bin/glib-mkenums",
+    "bin/gtester-report",
+    "lib/pkgconfig/gio-2.0.pc",
+    "lib/pkgconfig/gio-unix-2.0.pc",
+    "lib/pkgconfig/glib-2.0.pc",
+    "lib/pkgconfig/gmodule-2.0.pc",
+    "lib/pkgconfig/gmodule-export-2.0.pc",
+    "lib/pkgconfig/gmodule-no-export-2.0.pc",
+    "lib/pkgconfig/gobject-2.0.pc",
+    "lib/pkgconfig/gthread-2.0.pc",
+    "share/gdb/auto-load/usr/local/Cellar/glib/2.68.4/lib/libglib-2.0.so.0.6800.4-gdb.py",
+    "share/gdb/auto-load/usr/local/Cellar/glib/2.68.4/lib/libgobject-2.0.so.0.6800.4-gdb.py"
+  ],
+  "time": 1631543179,
+  "source_modified_time": 1629386845,
+  "compiler": "clang",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+    {
+      "full_name": "gettext",
+      "version": "0.21",
+      "declared_directly": true
+    },
+    {
+      "full_name": "libffi",
+      "version": "3.3",
+      "declared_directly": true
+    },
+    {
+      "full_name": "pcre",
+      "version": "8.45",
+      "declared_directly": true
+    },
+    {
+      "full_name": "gdbm",
+      "version": "1.20",
+      "declared_directly": false
+    },
+    {
+      "full_name": "mpdecimal",
+      "version": "2.5.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "openssl@1.1",
+      "version": "1.1.1l",
+      "declared_directly": false
+    },
+    {
+      "full_name": "readline",
+      "version": "8.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "sqlite",
+      "version": "3.36.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "xz",
+      "version": "5.2.5",
+      "declared_directly": false
+    },
+    {
+      "full_name": "python@3.9",
+      "version": "3.9.7",
+      "declared_directly": true
+    }
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "2.68.4",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/glib.rb",
+    "tap_git_head": "48f554acd1a523d49f01adf9d2a6ef9b69f4c9b0",
+    "tap": "homebrew/core"
+  },
+  "arch": "x86_64",
+  "built_on": {
+    "os": "Macintosh",
+    "os_version": "macOS 10.14.6",
+    "cpu_family": "penryn",
+    "xcode": "11.3.1",
+    "clt": "11.3.1.0.1.1576735732",
+    "preferred_perl": "5.18"
+  }
+}

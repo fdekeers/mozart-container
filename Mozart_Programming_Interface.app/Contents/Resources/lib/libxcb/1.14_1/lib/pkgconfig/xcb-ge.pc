@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/libxcb/1.14_1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: XCB GenericEvent
+Description: XCB GenericEvent Extension
+Version: 1.14
+Requires.private: xcb
+Libs: -L${libdir} -lxcb-ge
+Cflags: -I${includedir}

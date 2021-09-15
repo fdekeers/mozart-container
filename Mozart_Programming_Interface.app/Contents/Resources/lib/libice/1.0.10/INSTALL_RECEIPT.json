@@ -1,0 +1,48 @@
+{
+  "homebrew_version": "2.5.2-80-g7af967d",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": true,
+  "installed_on_request": false,
+  "changed_files": [
+    "INSTALL_RECEIPT.json",
+    "lib/pkgconfig/ice.pc"
+  ],
+  "time": 1631542001,
+  "source_modified_time": 1563126227,
+  "compiler": "clang",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+    {
+      "full_name": "xorgproto",
+      "version": "2019.2"
+    }
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "1.0.10",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/libice.rb",
+    "tap_git_head": "616af548930ad4b500c1d316ace0952595220eca",
+    "tap": "homebrew/core"
+  },
+  "arch": "x86_64",
+  "built_on": {
+    "os": "Macintosh",
+    "os_version": "macOS 10.14.6",
+    "cpu_family": "penryn",
+    "xcode": "11.3.1",
+    "clt": "10.3.0.0.1.1562985497"
+  }
+}
