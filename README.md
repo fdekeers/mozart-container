@@ -66,7 +66,7 @@ To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 ## Advanced usage
 
 If you are familiar with programmation or Docker containers, you may want
-to customize the Mozart 1.4.0.
+to customize the Mozart 1.4.0 container.
 This section provides more advanced documentation to do so.
 
 ### Python script for container deployment
