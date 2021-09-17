@@ -43,7 +43,7 @@ such that it can be launched by simply clicking its icon in the list of applicat
 To install the application, please run the [install.sh](install.sh) script
 in the directory `mozart-container-linux`, with the following command:
 ```shell
-$ ./install.sh
+./install.sh
 ```
 
 This will add an application named "Mozart Programming Interface" to the list
@@ -83,7 +83,7 @@ You can also run the script directly from the command line,
 to customize the command line options.
 To do so, simply run the script with Python3 in this directory, with the following command:
 ```shell
-$ python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
+python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME]
 ```
 
 The `-d` option allows to provide the path of a host directory
@@ -114,7 +114,7 @@ and the shell will not be accessible anymore.
 To launch other Mozart processes in the background, run the following command
 into the container shell:
 ```console
-# nohup oz &> /dev/null &
+nohup oz &> /dev/null &
 ```
 
 
