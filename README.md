@@ -133,7 +133,7 @@ with the command `oz`, however this will launch the Mozart process in the foregr
 and the shell will not be accessible anymore.
 To launch other Mozart processes in the background, run the following command
 into the container shell:
-```console
+```shell
 nohup oz &> /dev/null &
 ```
 
