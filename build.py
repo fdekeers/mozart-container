@@ -5,7 +5,7 @@ Python script to build and deploy an instance of the Mozart 1.4.0 container,
 on a Linux host.
 Warning: The user running this script must have `sudo` permissions.
 
-Usage: python build.py OPTIONS
+Usage: python3 build.py OPTIONS
 Options (optional):
     * -h, --help
         Show the help message.
@@ -34,16 +34,16 @@ user_path = os.path.expanduser("~")
 # Default values for command line arguments
 
 # Shared host directory, default is ~/oz-files
-shared_dir_host = f"{user_path}/oz-files"
+shared_dir_host = "{}/oz-files".format(user_path)
 
 # Name of the container instance, based on the number of already running instances:
 # "mozart-1.4.0_n", where n is the index of the instance among the running instances
 image = "fdekeers/mozart-1.4.0"  # Name of the container image
 instance = "mozart-1.4.0_"  # Base name of the instance, without the index
-command = f"sudo docker ps -aq -f ancestor={image}"  # Docker command to get the list of already running instances of the image mozart-1.4.0
-output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")  # Run command and retrieve output
-index = str(output.count("\n"))  # Count the number of lines, which is equal to the number of instances running
-instance += index  # Append the index number to the instance name
+command = "docker ps -aq -f ancestor={}".format(image)  # Docker command to get the list of already running instances of the image mozart-1.4.0
+output = subprocess.check_output(command, shell=True).decode("utf-8")  # Run command and retrieve output
+index = output.count("\n")  # Count the number of lines, which is equal to the number of instances running
+instance += str(index)  # Append the index number to the instance name
 
 # Command line argument parsing, using an ArgumentParser object
 
@@ -68,7 +68,7 @@ shared_dir_host = os.path.abspath(args.directory) if args.directory else shared_
 instance = args.name if args.name else instance
 
 # Set container shared directory path from host shared directory
-shared_dir_container = f"/root/{os.path.basename(shared_dir_host)}"
+shared_dir_container = "/root/{}".format(os.path.basename(shared_dir_host))
 
 # Create shared host directory if it does not exist
 if not os.path.exists(shared_dir_host):
@@ -82,22 +82,22 @@ if not os.path.exists(shared_dir_host):
 
 # Disable host access control for X11, to allow GUI applications from containers
 command = "xhost +local:*"
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 # Start Docker daemon
 print("Starting Docker daemon.")
 command = "sudo systemctl start docker"
-subprocess.run(command, shell=True)
+subprocess.call(command, shell=True)
 
 # Pull container image from Docker Hub
 print("Pulling container image from Docker Hub, please wait...")
-command = f"sudo docker pull {image}"
-subprocess.run(command, shell=True)
+command = "sudo docker pull {}".format(image)
+subprocess.call(command, shell=True)
 
 # Indicate argument configuration to the user
-print(f"Running instance {instance} of the container.")
-print(f"The shared host directory is {shared_dir_host}.")
-print(f"Its path inside the container is {shared_dir_container}.")
+print("Running instance {} of the container.".format(instance))
+print("The shared host directory is {}.".format(shared_dir_host))
+print("Its path inside the container is {}.".format(shared_dir_container))
 
 # Run an instance of the container
 # Options:
@@ -109,13 +109,13 @@ print(f"Its path inside the container is {shared_dir_container}.")
 #                                               with the specified access mode (rw for read-write)
 #     --env -> set environmental variables (here, "DISPLAY" to allow GUI applications inside the container)
 #     --net -> set networking mode (here, host networking)
-command = f'''sudo docker run --rm --name {instance} -it \\
---volume="{shared_dir_host}:{shared_dir_container}:rw" \\
---volume="{user_path}/.Xauthority:/root/.Xauthority:rw" \\
---env="DISPLAY" \\
---net=host \\
-{image}'''
-subprocess.run(command, shell=True)
+command =  "sudo docker run --rm --name {} -it ".format(instance)
+command += '--volume="{}":"{}":rw '.format(shared_dir_host, shared_dir_container)
+command += '--volume="{}/.Xauthority:/root/.Xauthority:rw" '.format(user_path)
+command += '--env="DISPLAY" '
+command += "--net=host "
+command += "{}".format(image)
+subprocess.call(command, shell=True)
 
 
 ############
@@ -126,11 +126,10 @@ subprocess.run(command, shell=True)
 # to prevent unwanted clients to connect.
 
 # Get list of running instances of the image fdekeers/mozart-1.4.0
-command = f"sudo docker ps -aq -f ancestor={image}"
-output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
-
-# Check if the above list is empty
+command = "sudo docker ps -aq -f ancestor={}".format(image)
+output = subprocess.check_output(command, shell=True).decode("utf-8")
+# Check if the instances list is empty
 if not output:
     # List is empty, re-enable host access control
     command = "xhost -local:*"
-    subprocess.run(command, shell=True)
+    subprocess.call(command, shell=True)
