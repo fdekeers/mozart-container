@@ -42,9 +42,8 @@ https://www.xquartz.org/.
 
 First of all, make sure the Docker daemon is running on your machine. You can do this simply by launching the Docker Desktop application.
 
-Download the repository files as a ZIP, by clicking the green *Code* button
-on the top right corner, then the *Download ZIP* button, and extract it.
-Inside the newly created directory `mozart-container-macos`,
+Download the repository files as a ZIP, by clicking on the *Releases* tab on the right on the screen, then on the MacOS release, and finally on the MacOS archive file `mozart-1.4.0-macos.zip`. Extract the files from the downloaded archive.
+Inside the newly created directory `mozart-1.4.0-macos`,
 you will find an application bundle, [Mozart_Programming_Interface.app](Mozart_Programming_Interface.app),
 that you can place wherever you want on your computer,
 and that will be used to launch the container.
