@@ -28,7 +28,7 @@ To be able to run Docker, and thus to use the Mozart 1.4.0 container,
 `sudo` rights are required.
 
 Additionally, to be able to deploy and use the container,
-Python version 3 or more must be installed.
+Python version 3 or higher must be installed.
 Please follow the instructions on the [Python website](https://www.python.org/downloads/).
 
 ### Installation
@@ -75,10 +75,9 @@ To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
 
-## Customization and troubleshooting
+## Advanced usage
 
-If you want to somewhat customize the container, or if you encounter some problems,
-please read this section.
+If you are familiar with programmation or Docker containers, you may want to customize the Mozart 1.4.0 container. This section provides more advanced documentation to do so.
 
 ### Python script for customization
 
