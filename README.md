@@ -70,10 +70,9 @@ To exit the Mozart 1.4.0 container, exit the Mozart window, and type
 `exit`, or `CTRL+D` inside the container terminal.
 
 
-## Customization and troubleshooting
+## Advanced usage
 
-If you want to somewhat customize the container, or if you encounter some problems,
-please read this section.
+If you are familiar with programmation or Docker containers, you may want to customize the Mozart 1.4.0 container. This section provides more advanced documentation to do so.
 
 ### Python script for customization
 
@@ -87,7 +86,7 @@ and inspect the files of the application.
 Go to `Mozart_Programming_Interface.app/Contents/MacOS`,
 and run the script with the following command:
 ```shell
-$ python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+python3 build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 
 The `-d` option allows to provide the path of a host directory
@@ -135,8 +134,13 @@ and the shell will not be accessible anymore.
 To launch other Mozart processes in the background, run the following command
 into the container shell:
 ```console
-# nohup oz &> /dev/null &
+nohup oz &> /dev/null &
 ```
+
+## Troubleshooting
+
+This section documents the known problems,
+and their possible solutions.
 
 ### Unable to download the container image
 
