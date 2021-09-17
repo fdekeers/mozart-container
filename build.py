@@ -241,7 +241,10 @@ print("The port mappings host_port:container_port are the following:\n{}.".forma
 #                                               with the specified access mode (rw for read-write)
 #     -e -> set environmental variables
 #         (here, set DISPLAY to the host IP address, to allow GUI applications inside the container)
-command = 'docker run --rm --name {} -it {} --volume="{}:{}:rw" -e DISPLAY={} {}'.format(instance, ports_string, shared_dir_host, shared_dir_container, ip, image)
+command =  "docker run --rm --name {} -it {} ".format(instance, ports_string)
+command += '--volume="{}":"{}":rw '.format(shared_dir_host, shared_dir_container)
+command += "-e DISPLAY={} ".format(ip)
+command += "{}".format(image)
 subprocess.call(command, shell=True)
 
 
@@ -253,7 +256,8 @@ subprocess.call(command, shell=True)
 
 # Docker command to list all running instances of the fdekeers/mozart-1.4.0 image
 command = "docker ps -aq -f ancestor={}".format(image)
-output = subprocess.call(command, shell=True)
+output = subprocess.check_output(command, shell=True)
+# Check if the instances list is empty
 if not output:
     # Output of command is empty, all the instances have been stopped
     print("Stopping X11 server.")
