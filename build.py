@@ -64,7 +64,8 @@ def get_ip(filename):
                 # Found the line with the IPv4 address, extract address
                 ip = line.split(":")[1].strip()
                 ip = ip.partition("(")[0].strip()
-                lst_of_ip.append(ip)
+                if ip != "127.0.0.1":
+                    lst_of_ip.append(ip)
     for ip in lst_of_ip :
         if "192" in ip[:3]: # IPs that begin with "192" are the preferred ones
             return ip
