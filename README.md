@@ -79,7 +79,7 @@ command line.
 To do this, clone or download this repository,
 then run the following command in the repository root directory:
 ```shell
-> python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
+python build.py [-d SHARED_DIR_HOST] [-n INSTANCE_NAME] [-p PORT_MAPPING]
 ```
 (or `python3`, `py`, ... instead of `python` to suit your python command)
 
@@ -129,7 +129,7 @@ and the shell will not be accessible anymore.
 To launch other Mozart processes in the background, run the following command
 into the container shell:
 ```console
-# nohup oz &> /dev/null &
+nohup oz &> /dev/null &
 ```
 
 ### Rebuild the executable
@@ -143,7 +143,7 @@ instructions:
 - Clone or download this repository.
 - Run, in the root directory of this repository, the following command in a shell:
 ```shell
-> pyinstaller --clean --onefile --add-data "resources\config.xlaunch;." -i resources\oz.ico -n mozart-1.4.0-win build.py
+pyinstaller --clean --onefile --add-data "resources\config.xlaunch;." -i resources\oz.ico -n mozart-1.4.0-win build.py
 ```
 
 The executable will be located in `dist\mozart-1.4.0-win.exe`.
